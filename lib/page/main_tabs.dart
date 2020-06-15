@@ -22,12 +22,12 @@ class _MainTabsPageState extends State<MainTabsPage> {
 
   _MainTabsPageState(this._selectedIndex);
 
-  List<Widget> _list = [AlbumPage(), SettingPage()];
+  List<Widget> _pageList = [AlbumPage(), SettingPage()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: this._list[this._selectedIndex],
+      body: this._pageList[this._selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: this._selectedIndex,
         onTap: (value) {

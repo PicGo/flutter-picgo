@@ -1,5 +1,5 @@
 name: flutter_picgo
-description: A new Flutter project.
+description: PicGo For Flutter
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.0
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -26,6 +26,7 @@ dependencies:
   shared_preferences: ^0.5.7+3
   dio: ^3.0.9
   image_picker: ^0.6.7+1
+  package_info: ^0.4.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -48,8 +49,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - images/logo.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
