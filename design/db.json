@@ -1,0 +1,79 @@
+{
+  "uploaded": [],
+  "picBed": {
+    "current": "github",
+    "list": [
+      {
+        "name": "SM.MS图床",
+        "type": "smms",
+        "visible": false
+      },
+      {
+        "name": "腾讯云COS",
+        "type": "tcyun",
+        "visible": false
+      },
+      {
+        "name": "微博图床",
+        "type": "weibo",
+        "visible": false
+      },
+      {
+        "name": "GitHub图床",
+        "type": "github",
+        "visible": true
+      },
+      {
+        "name": "七牛图床",
+        "type": "qiniu",
+        "visible": true
+      },
+      {
+        "name": "Imgur图床",
+        "type": "imgur",
+        "visible": false
+      },
+      {
+        "name": "阿里云OSS",
+        "type": "aliyun",
+        "visible": false
+      },
+      {
+        "name": "又拍云图床",
+        "type": "upyun",
+        "visible": false
+      }
+    ],
+    "github": {
+      "branch": "master",
+      "customUrl": "https://github.static.si-yee.com",
+      "path": "posts/",
+      "repo": "hackycy/picture-bed",
+      "token": "7e84c31bfe3845dc0ababd0fdd1ec4d070cd5212"
+    }
+  },
+  "settings": {
+    "shortKey": {
+      "picgo:upload": {
+        "enable": true,
+        "key": "CommandOrControl+Shift+P",
+        "name": "upload",
+        "label": "快捷上传"
+      }
+    },
+    "server": {
+      "enable": true,
+      "host": "127.0.0.1",
+      "port": 36677
+    },
+    "showUpdateTip": false,
+    "autoRename": true,
+    "rename": true,
+    "pasteStyle": "markdown",
+    "uploadNotification": true
+  },
+  "picgoPlugins": {},
+  "debug": true,
+  "PICGO_ENV": "GUI",
+  "needReload": false
+}
