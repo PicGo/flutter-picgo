@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_picgo/utils/shared_preferences.dart';
 
 class PicGoSettingPage extends StatefulWidget {
 
@@ -10,16 +11,20 @@ class PicGoSettingPage extends StatefulWidget {
 
 class _PicGoSettingPageState extends State<PicGoSettingPage> {
 
-  bool isUploadedRename;
-  bool isTimestampRename;
-  bool isUploadedTip;
+  bool isUploadedRename = false;
+  bool isTimestampRename = false;
+  bool isUploadedTip = false;
 
   @override
   void initState() {
     super.initState();
-    this.isTimestampRename = false;
-    this.isUploadedRename = false;
-    this.isUploadedTip = false;
+    SpUtil.getInstance().then((u) {
+      setState(() {
+        this.isUploadedRename = u?.getBool(SharedPreferencesKeys.settingIsUploadedRename) ?? false;
+        this.isTimestampRename = u?.getBool(SharedPreferencesKeys.settingIsTimestampRename) ?? false;
+        this.isUploadedTip = u?.getBool(SharedPreferencesKeys.settingIsUploadedTip) ?? false;
+      });
+    });
   }
 
   @override
@@ -36,6 +41,7 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
             trailing: CupertinoSwitch(
               value: this.isUploadedRename,
               onChanged: (value) {
+                this._save(SharedPreferencesKeys.settingIsUploadedRename, value);
                 setState(() {
                   this.isUploadedRename = value;
                 });
@@ -47,6 +53,7 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
             trailing: CupertinoSwitch(
               value: this.isTimestampRename,
               onChanged: (value) {
+                this._save(SharedPreferencesKeys.settingIsTimestampRename, value);
                 setState(() {
                   this.isTimestampRename = value;
                 });
@@ -58,6 +65,7 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
             trailing: CupertinoSwitch(
               value: this.isUploadedTip,
               onChanged: (value) {
+                this._save(SharedPreferencesKeys.settingIsUploadedTip, value);
                 setState(() {
                   this.isUploadedTip = value;
                 });
@@ -79,6 +87,11 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
         ],
       ),
     );
+  }
+
+  void _save(String key, bool value) async {
+    var instance = await SpUtil.getInstance();
+    instance.putBool(key, value);
   }
 
 }
