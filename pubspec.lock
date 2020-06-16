@@ -71,6 +71,13 @@ packages:
       url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub"
     source: hosted
     version: "3.0.9"
+  event_bus:
+    dependency: "direct main"
+    description:
+      name: event_bus
+      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub"
+    source: hosted
+    version: "1.1.1"
   fluro:
     dependency: "direct main"
     description:
