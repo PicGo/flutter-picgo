@@ -58,7 +58,7 @@ class DbProvider {
           )''');
           await db.transaction((txn) async {
             int id1 = await txn.rawInsert(
-                'INSERT INTO pb_setting VALUES (1, "github", "Github图床", NULL, 1)');
+                'INSERT INTO pb_setting VALUES (1, "github", "/setting/pb/github", "Github图床", NULL, 1)');
             debugPrint('inserted1: $id1');
           });
         },
