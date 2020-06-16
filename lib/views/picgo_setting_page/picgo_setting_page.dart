@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 
-class PBSettingPage extends StatelessWidget {
-
-  static const routeName = '/setting/pb';
+class PicGoSettingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('图床设置'),
+        title: Text('PicGo设置'),
         centerTitle: true,
       ),
     );

@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
-
-import 'route/route.dart';
+import 'package:fluro/fluro.dart';
+import 'package:flutter_picgo/routers/application.dart';
+import 'package:flutter_picgo/routers/routers.dart';
 
 void main() {
   runApp(App());
 }
 
 class App extends StatelessWidget {
+
+  App() {
+    final router = new Router();
+    Routes.configureRoutes(router);
+    Application.router = router;
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -29,7 +37,7 @@ class App extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       initialRoute: '/',
-      routes: routes,
+      onGenerateRoute: Application.router.generator,
     );
   }
 }

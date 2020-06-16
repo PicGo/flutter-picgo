@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 
-import 'album.dart';
-import 'setting.dart';
+import '../album_page/album_page.dart';
+import '../setting_page/setting_page.dart';
 
-class MainTabsPage extends StatefulWidget {
-
-  static const routeName = '/';
+class AppPage extends StatefulWidget {
 
   final int selectedIndex;
 
-  MainTabsPage({this.selectedIndex = 0});
+  AppPage({this.selectedIndex = 0});
 
   @override
   _MainTabsPageState createState() => _MainTabsPageState(this.selectedIndex);
 
 }
 
-class _MainTabsPageState extends State<MainTabsPage> {
+class _MainTabsPageState extends State<AppPage> {
 
   int _selectedIndex;
 

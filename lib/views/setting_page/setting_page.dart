@@ -1,11 +1,9 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_picgo/routers/application.dart';
 import 'package:package_info/package_info.dart';
 
-import '../route/route.dart';
-
 class SettingPage extends StatefulWidget {
-  static const routeName = '/setting';
-
   @override
   _SettingPageState createState() => _SettingPageState();
 }
@@ -67,13 +65,13 @@ class _SettingPageState extends State<SettingPage> {
           ListTile(
             title: Text('图床设置'),
             onTap: () {
-              Navigator.pushNamed(context, PBSettingPagePath);
+              Application.router.navigateTo(context, '/setting/pb', transition: TransitionType.cupertino);
             },
           ),
           ListTile(
             title: Text('PicGo设置'),
             onTap: () {
-              Navigator.pushNamed(context, PicGoSettingPagePath);
+              Application.router.navigateTo(context, '/setting/picgo', transition: TransitionType.cupertino);
             },
           ),
         ],
