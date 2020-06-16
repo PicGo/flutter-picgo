@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picgo/routers/application.dart';
+import 'package:flutter_picgo/routers/routers.dart';
 import 'package:package_info/package_info.dart';
 
 class SettingPage extends StatefulWidget {
@@ -65,13 +66,13 @@ class _SettingPageState extends State<SettingPage> {
           ListTile(
             title: Text('图床设置'),
             onTap: () {
-              Application.router.navigateTo(context, '/setting/pb', transition: TransitionType.cupertino);
+              Application.router.navigateTo(context, Routes.settingPb, transition: TransitionType.cupertino);
             },
           ),
           ListTile(
             title: Text('PicGo设置'),
             onTap: () {
-              Application.router.navigateTo(context, '/setting/picgo', transition: TransitionType.cupertino);
+              Application.router.navigateTo(context, Routes.settingPicgo, transition: TransitionType.cupertino);
             },
           ),
         ],
