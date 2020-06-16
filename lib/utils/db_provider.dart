@@ -46,6 +46,7 @@ class DbProvider {
           CREATE TABLE pb_setting (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             type varchar(20) NOT NULL UNIQUE,
+            path varchar(20) NOT NULL UNIQUE,
             name varchar(50) DEFAULT NULL,
             config varchar(255) DEFAULT NULL,
             visible tinyint DEFAULT 1
