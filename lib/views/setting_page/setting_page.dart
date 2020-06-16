@@ -68,12 +68,14 @@ class _SettingPageState extends State<SettingPage> {
             onTap: () {
               Application.router.navigateTo(context, Routes.settingPb, transition: TransitionType.cupertino);
             },
+            trailing: Icon(Icons.arrow_right),
           ),
           ListTile(
             title: Text('PicGo设置'),
             onTap: () {
               Application.router.navigateTo(context, Routes.settingPicgo, transition: TransitionType.cupertino);
             },
+            trailing: Icon(Icons.arrow_right),
           ),
         ],
       ),

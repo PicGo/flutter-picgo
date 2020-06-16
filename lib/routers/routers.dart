@@ -9,6 +9,7 @@ class Routes {
   static String notfound = '/404';
   static String setting = '/setting';
   static String settingPb = '/setting/pb';
+  static String settingPbGithub = '/setting/pb/github';
   static String settingPicgo = '/setting/picgo';
 
   static void configureRoutes(Router router) {
@@ -18,6 +19,7 @@ class Routes {
     router.define(album, handler: albumHandler);
     router.define(setting, handler: settingHandler);
     router.define(settingPb, handler: pbsettingHandler);
+    router.define(settingPbGithub, handler: pbsettingGithubHandler);
     router.define(settingPicgo, handler: picgosettinghandler);
   }
 

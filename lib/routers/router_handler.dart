@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_picgo/views/app_page/app_page.dart';
 import 'package:flutter_picgo/views/album_page/album_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/pb_setting_page.dart';
+import 'package:flutter_picgo/views/pb_setting_page/github_page.dart';
 import 'package:flutter_picgo/views/picgo_setting_page/picgo_setting_page.dart';
 import 'package:flutter_picgo/views/setting_page/setting_page.dart';
 import 'package:flutter_picgo/views/404.dart';
@@ -21,31 +22,25 @@ var appHandler = new Handler(
 );
 
 var notfoundHandler = new Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return PageNotFound();
-  },
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) => PageNotFound(),
 );
 
 var albumHandler = new Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return AlbumPage();
-  },
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) => AlbumPage(),
 );
 
 var settingHandler = new Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return SettingPage();
-  },
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) => SettingPage(),
 );
 
 var pbsettingHandler = new Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return PBSettingPage();
-  },
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) => PBSettingPage(),
+);
+
+var pbsettingGithubHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) => GithubPage()
 );
 
 var picgosettinghandler = new Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    return PicGoSettingPage();
-  },
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) => PicGoSettingPage(),
 );
