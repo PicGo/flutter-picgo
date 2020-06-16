@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter_picgo/routers/application.dart';
 import 'package:flutter_picgo/routers/routers.dart';
+import 'package:flutter_picgo/utils/db_provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); 
+  final provider = DbProvider();
+  await provider.init();
   runApp(App());
 }
 
