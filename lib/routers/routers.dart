@@ -12,6 +12,7 @@ class Routes {
   static String settingPicgo = '/setting/picgo';
 
   static void configureRoutes(Router router) {
+    router.notFoundHandler = notfoundHandler;
     router.define(root, handler: appHandler);
     router.define(notfound, handler: notfoundHandler);
     router.define(album, handler: albumHandler);
