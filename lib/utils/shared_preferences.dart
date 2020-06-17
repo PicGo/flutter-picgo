@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/resources/shared_preferences_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -44,7 +45,7 @@ class SpUtil {
 
   /// 获取当前默认图床，默认为github
   String getDefaultPB() {
-    return getString(SharedPreferencesKeys.settingDefaultPB) ?? 'github';
+    return getString(SharedPreferencesKeys.settingDefaultPB) ?? PBTypeKeys.github;
   }
 
   // 判断是否存在数据
