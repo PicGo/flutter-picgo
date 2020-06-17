@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_picgo/routers/application.dart';
 import 'package:flutter_picgo/routers/routers.dart';
 import 'package:package_info/package_info.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -74,6 +75,13 @@ class _SettingPageState extends State<SettingPage> {
             title: Text('PicGo设置'),
             onTap: () {
               Application.router.navigateTo(context, Routes.settingPicgo, transition: TransitionType.cupertino);
+            },
+            trailing: Icon(Icons.arrow_right),
+          ),
+          ListTile(
+            title: Text('关于Flutter-PicGo'),
+            onTap: () {
+              launch('https://github.com/hackycy/flutter_picgo');
             },
             trailing: Icon(Icons.arrow_right),
           ),
