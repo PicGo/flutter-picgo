@@ -1,11 +1,38 @@
-class PbSetting {
-  final String id;
-  final String type;
-  final String name;
-  final String config;
-  final String  path;
-  final bool visible;
+class PBSetting {
+  int _id;
+  String _type;
+  String _name;
+  String _config;
+  String _path;
+  bool _visible;
 
-  PbSetting(this.id, this.type, this.name, this.path, {this.config, this.visible});
+  PBSetting();
 
+  int get id => _id;
+  String get type => _type;
+  String get name => _name;
+  String get config => _config;
+  String get path => _path;
+  bool get visible => _visible;
+
+  PBSetting.fromMap(Map<String, dynamic> map) {
+    this._id = map['id'];
+    this._type = map['type'];
+    this._name = map['name'];
+    this._config = map['config'];
+    this._path = map['path'];
+    this._visible = map['visible'] == 1;
+  }
+
+  Map<String, dynamic> toMap() {
+    var map = {
+      'id': _id,
+      'type': _type,
+      'name': _name,
+      'config': _config,
+      'path': _path,
+      'visible': _visible ? 1 : 0,
+    };
+    return map;
+  }
 }

@@ -47,7 +47,7 @@ class _SettingPageState extends State<SettingPage> {
                     height: 80,
                     child: ClipOval(
                       child: Image.asset(
-                        'images/logo.png',
+                        'assets/images/logo.png',
                         fit: BoxFit.cover,
                         width: 80,
                         height: 80,

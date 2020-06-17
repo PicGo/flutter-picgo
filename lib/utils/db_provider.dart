@@ -49,7 +49,7 @@ class DbProvider {
             path varchar(20) NOT NULL UNIQUE,
             name varchar(50) DEFAULT NULL,
             config varchar(255) DEFAULT NULL,
-            visible tinyint DEFAULT 1
+            visible INTEGER DEFAULT 1
           )''');
           await db.execute('''
           CREATE TABLE uploaded (
