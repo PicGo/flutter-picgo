@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../album_page/album_page.dart';
-import '../setting_page/setting_page.dart';
+import 'album_page/album_page.dart';
+import 'setting_page/setting_page.dart';
 
 class AppPage extends StatefulWidget {
 

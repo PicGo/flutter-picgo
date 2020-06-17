@@ -12,14 +12,16 @@ class Sql extends BaseModel {
     return await this.query(tableName);
   }
 
-  String getTableName() {
-    return tableName;
+  Future<List> getBySql(String where, List<dynamic> whereArgs) async {
+    return await this.query(tableName, where: where, whereArgs: whereArgs);
   }
 
-  Future<int> delete(String value, String key) async {
-    return await this
-        .db
-        .delete(tableName, where: '$key = ?', whereArgs: [value]);
+  Future<int> rawUpdate(String sql, [List<dynamic> arguments]) async {
+    return await this.db.rawUpdate('UPDATE $tableName SET $sql', arguments);
+  }
+
+  String getTableName() {
+    return tableName;
   }
 
   Future<int> deleteAll() async {

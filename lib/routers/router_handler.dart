@@ -1,7 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_picgo/views/app_page/app_page.dart';
+import 'package:flutter_picgo/views/home.dart';
 import 'package:flutter_picgo/views/album_page/album_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/pb_setting_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/github_page/github_page.dart';
