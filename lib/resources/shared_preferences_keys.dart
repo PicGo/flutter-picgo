@@ -1,7 +1,8 @@
 class SharedPreferencesKeys {
 
-  static String settingIsUploadedRename = 'settingIsUploadedRename';
-  static String settingIsTimestampRename = 'settingIsTimestampRename';
-  static String settingIsUploadedTip = 'settingIsUploadedTip';
+  static final String settingIsUploadedRename = 'settingIsUploadedRename';
+  static final String settingIsTimestampRename = 'settingIsTimestampRename';
+  static final String settingIsUploadedTip = 'settingIsUploadedTip';
+  static final String settingDefaultPB = 'settingDefaultPB';
 
 }

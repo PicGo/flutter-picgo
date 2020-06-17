@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_picgo/model/github_config.dart';
+import 'package:flutter_picgo/resources/pb_type_keys.dart';
+import 'package:flutter_picgo/utils/shared_preferences.dart';
 import 'package:flutter_picgo/views/pb_setting_page/github_page/github_page_presenter.dart';
 import 'package:toast/toast.dart';
 
@@ -180,8 +182,16 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
     }
   }
 
-  void _setDefaultPB() {
-    if (_formKey.currentState.validate()) {}
+  void _setDefaultPB() async {
+    if (_formKey.currentState.validate()) {
+      var sp = await SpUtil.getInstance();
+      if (sp.getDefaultPB() == PBTypeKeys.github) {
+        Toast.show('已设为默认图床', context);
+      } else {
+        sp.setDefaultPB('github');
+        Toast.show('设置成功', context);
+      }
+    }
   }
 
   @override

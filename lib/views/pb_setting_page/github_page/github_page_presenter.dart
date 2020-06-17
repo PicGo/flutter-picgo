@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_picgo/model/github_config.dart';
+import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/utils/sql.dart';
 
 abstract class GithubPageContract {
@@ -18,7 +19,7 @@ class GithubPagePresenter {
   doLoadConfig() async {
     try {
       var sql = Sql.setTable('pb_setting');
-      var pbsettingRow = (await sql.getBySql('type = ?', ['github']))?.first;
+      var pbsettingRow = (await sql.getBySql('type = ?', [PBTypeKeys.github]))?.first;
       if (pbsettingRow != null &&
           (pbsettingRow["config"] != null || pbsettingRow["config"] != '')) {
         GithubConfig config = GithubConfig.fromJson(json.decode(pbsettingRow["config"]));
@@ -35,7 +36,7 @@ class GithubPagePresenter {
         String jsondata = json.encode(config);
         var sql = Sql.setTable('pb_setting');
         int raw = await sql
-            .rawUpdate('config = ? WHERE type = ?', [jsondata, 'github']);
+            .rawUpdate('config = ? WHERE type = ?', [jsondata, PBTypeKeys.github]);
         if (raw == 1) {
           _view.saveConfigSuccess();
         } else {

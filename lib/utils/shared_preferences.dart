@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_picgo/resources/shared_preferences_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 export 'package:flutter_picgo/resources/shared_preferences_keys.dart';
@@ -34,6 +35,16 @@ class SpUtil {
       return true;
     }
     return false;
+  }
+
+  /// 设置默认图床
+  setDefaultPB(String type) {
+    putString(SharedPreferencesKeys.settingDefaultPB, type);
+  }
+
+  /// 获取当前默认图床，默认为github
+  String getDefaultPB() {
+    return getString(SharedPreferencesKeys.settingDefaultPB) ?? 'github';
   }
 
   // 判断是否存在数据
