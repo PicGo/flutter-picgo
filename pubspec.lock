@@ -294,6 +294,13 @@ packages:
       url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub"
     source: hosted
     version: "0.2.15"
+  toast:
+    dependency: "direct main"
+    description:
+      name: toast
+      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub"
+    source: hosted
+    version: "0.1.5"
   typed_data:
     dependency: transitive
     description:

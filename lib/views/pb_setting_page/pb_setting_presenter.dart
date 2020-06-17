@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_picgo/model/pb_setting.dart';
 import 'package:flutter_picgo/utils/sql.dart';
 
@@ -22,7 +23,8 @@ class PBSettingPagePresenter {
       }).toList();
       _view.loadPb(realList);
     } catch (e) {
-      _view.loadError(e);
+      debugPrint('Error >>>> $e');
+      _view.loadError('${e.toString()}');
     }
   }
 }
