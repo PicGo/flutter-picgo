@@ -21,7 +21,7 @@ class GithubPagePresenter {
       var sql = Sql.setTable('pb_setting');
       var pbsettingRow = (await sql.getBySql('type = ?', [PBTypeKeys.github]))?.first;
       if (pbsettingRow != null &&
-          (pbsettingRow["config"] != null || pbsettingRow["config"] != '')) {
+          pbsettingRow["config"] != null && pbsettingRow["config"] != '') {
         GithubConfig config = GithubConfig.fromJson(json.decode(pbsettingRow["config"]));
         _view.loadConfig(config);
       }
