@@ -1,12 +1,17 @@
 import 'dart:convert';
+import 'package:flutter_picgo/api/github_api.dart';
 import 'package:flutter_picgo/model/github_config.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
+import 'package:flutter_picgo/resources/table_name_keys.dart';
+import 'package:flutter_picgo/utils/github_net.dart';
 import 'package:flutter_picgo/utils/sql.dart';
 
 abstract class GithubPageContract {
   loadConfig(GithubConfig config);
 
   saveConfigSuccess();
+
+  testConfigSuccess();
 
   showError(String errorMsg);
 }
@@ -18,7 +23,7 @@ class GithubPagePresenter {
 
   doLoadConfig() async {
     try {
-      var sql = Sql.setTable('pb_setting');
+      var sql = Sql.setTable(TABLE_NAME_PBSETTING);
       var pbsettingRow = (await sql.getBySql('type = ?', [PBTypeKeys.github]))?.first;
       if (pbsettingRow != null &&
           pbsettingRow["config"] != null && pbsettingRow["config"] != '') {
@@ -34,7 +39,7 @@ class GithubPagePresenter {
     if (config != null) {
       try {
         String jsondata = json.encode(config);
-        var sql = Sql.setTable('pb_setting');
+        var sql = Sql.setTable(TABLE_NAME_PBSETTING);
         int raw = await sql
             .rawUpdate('config = ? WHERE type = ?', [jsondata, PBTypeKeys.github]);
         if (raw == 1) {
@@ -47,4 +52,14 @@ class GithubPagePresenter {
       }
     }
   }
+
+  doTestConfig() async {
+    try {
+      await GithubNetUtils.get(GithubApi.BASE_URL);
+      _view.testConfigSuccess();
+    } catch (e) {
+      _view.showError('$e');
+    }
+  }
+
 }

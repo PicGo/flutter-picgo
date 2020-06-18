@@ -11,7 +11,6 @@ class GithubPage extends StatefulWidget {
 }
 
 class _GithubPageState extends State<GithubPage> implements GithubPageContract {
-  BuildContext _ctx;
   GithubConfig _config;
 
   GithubPagePresenter _presenter;
@@ -36,7 +35,6 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
 
   @override
   Widget build(BuildContext context) {
-    _ctx = context;
     _repositoryNameController =
         TextEditingController(text: _config?.repositoryName ?? '');
     _branchNameController =
@@ -167,7 +165,9 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
   }
 
   void _testConfig() {
-    if (_formKey.currentState.validate()) {}
+    if (_formKey.currentState.validate()) {
+      _presenter.doTestConfig();
+    }
   }
 
   void _saveConfig() {
@@ -209,5 +209,10 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
   @override
   showError(String errorMsg) {
     Toast.show(errorMsg, context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+  }
+
+  @override
+  testConfigSuccess() {
+    Toast.show("测试成功", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
   }
 }
