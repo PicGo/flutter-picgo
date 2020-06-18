@@ -31,6 +31,7 @@ dependencies:
   event_bus: ^1.1.1
   toast: ^0.1.5
   image_picker: ^0.6.7+2
+  json_serializable: ^3.3.0
 
 
   # The following adds the Cupertino Icons font to your application.
