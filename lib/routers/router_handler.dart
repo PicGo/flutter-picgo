@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_picgo/views/home.dart';
 import 'package:flutter_picgo/views/album_page/album_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/pb_setting_page.dart';
+import 'package:flutter_picgo/views/upload_page/upload_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/github_page/github_page.dart';
 import 'package:flutter_picgo/views/picgo_setting_page/picgo_setting_page.dart';
 import 'package:flutter_picgo/views/setting_page/setting_page.dart';
@@ -31,6 +32,10 @@ var albumHandler = new Handler(
 
 var settingHandler = new Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) => SettingPage(),
+);
+
+var uploadHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) => UploadPage(),
 );
 
 var pbsettingHandler = new Handler(
