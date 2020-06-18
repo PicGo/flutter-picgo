@@ -113,20 +113,20 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
                   SizedBox(height: 5),
                   TextFormField(
                     controller: _storagePathController,
-                    obscureText: true,
                     decoration: new InputDecoration(
                       labelText: "指定存储路径",
+                      hintText: "例如 wallpaper/"
                     ),
                     keyboardType: TextInputType.text,
                   ),
                   SizedBox(height: 5),
                   TextFormField(
                     controller: _customDomainController,
-                    obscureText: true,
                     decoration: new InputDecoration(
                       labelText: "设置自定义域名",
+                      hintText: "例如 https://www.baidu.com/"
                     ),
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.url,
                   )
                 ],
               ),
