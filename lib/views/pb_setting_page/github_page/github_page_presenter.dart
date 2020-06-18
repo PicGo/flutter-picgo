@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter_picgo/api/github_api.dart';
 import 'package:flutter_picgo/model/github_config.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
@@ -24,10 +25,13 @@ class GithubPagePresenter {
   doLoadConfig() async {
     try {
       var sql = Sql.setTable(TABLE_NAME_PBSETTING);
-      var pbsettingRow = (await sql.getBySql('type = ?', [PBTypeKeys.github]))?.first;
+      var pbsettingRow =
+          (await sql.getBySql('type = ?', [PBTypeKeys.github]))?.first;
       if (pbsettingRow != null &&
-          pbsettingRow["config"] != null && pbsettingRow["config"] != '') {
-        GithubConfig config = GithubConfig.fromJson(json.decode(pbsettingRow["config"]));
+          pbsettingRow["config"] != null &&
+          pbsettingRow["config"] != '') {
+        GithubConfig config =
+            GithubConfig.fromJson(json.decode(pbsettingRow["config"]));
         _view.loadConfig(config);
       }
     } catch (e) {
@@ -40,8 +44,8 @@ class GithubPagePresenter {
       try {
         String jsondata = json.encode(config);
         var sql = Sql.setTable(TABLE_NAME_PBSETTING);
-        int raw = await sql
-            .rawUpdate('config = ? WHERE type = ?', [jsondata, PBTypeKeys.github]);
+        int raw = await sql.rawUpdate(
+            'config = ? WHERE type = ?', [jsondata, PBTypeKeys.github]);
         if (raw == 1) {
           _view.saveConfigSuccess();
         } else {
@@ -57,9 +61,11 @@ class GithubPagePresenter {
     try {
       await GithubNetUtils.get(GithubApi.BASE_URL);
       _view.testConfigSuccess();
+    } on DioError catch (e) {
+      _view.showError(
+          'ErrorCode : ${e.response.statusCode}, Message : ${e.response.data['message'] ?? '未知异常'}');
     } catch (e) {
       _view.showError('$e');
     }
   }
-
 }
