@@ -20,7 +20,7 @@ class NetLoadingDialog extends StatefulWidget {
   NetLoadingDialog(
       {Key key,
       this.loadingText = "loading...",
-      this.outsideDismiss = true,
+      this.outsideDismiss = false,
       this.dismissCallback,
       this.loading,
       this.requestCallBack})
