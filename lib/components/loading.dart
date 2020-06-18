@@ -63,6 +63,7 @@ class _LoadingDialog extends State<NetLoadingDialog> {
             height: 120.0,
             child: new Container(
               decoration: ShapeDecoration(
+                color: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(8.0),

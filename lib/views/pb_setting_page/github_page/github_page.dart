@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_picgo/components/loading.dart';
 import 'package:flutter_picgo/model/github_config.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/utils/shared_preferences.dart';
@@ -14,6 +15,8 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
   GithubConfig _config;
 
   GithubPagePresenter _presenter;
+
+  NetLoadingDialog _dialog;
 
   TextEditingController _repositoryNameController,
       _branchNameController,
@@ -112,18 +115,15 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
                   TextFormField(
                     controller: _storagePathController,
                     decoration: new InputDecoration(
-                      labelText: "指定存储路径",
-                      hintText: "例如 wallpaper/"
-                    ),
+                        labelText: "指定存储路径", hintText: "例如 wallpaper/"),
                     keyboardType: TextInputType.text,
                   ),
                   SizedBox(height: 5),
                   TextFormField(
                     controller: _customDomainController,
                     decoration: new InputDecoration(
-                      labelText: "设置自定义域名",
-                      hintText: "例如 https://www.baidu.com/"
-                    ),
+                        labelText: "设置自定义域名",
+                        hintText: "例如 https://www.baidu.com/"),
                     keyboardType: TextInputType.url,
                   )
                 ],
@@ -166,7 +166,17 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
 
   void _testConfig() {
     if (_formKey.currentState.validate()) {
-      _presenter.doTestConfig();
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return NetLoadingDialog(
+            loading: true,
+            loadingText: "测试连接中...",
+            requestCallBack: _presenter.doTestConfig(),
+          );
+        },
+      );
     }
   }
 
@@ -203,16 +213,19 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
 
   @override
   saveConfigSuccess() {
-    Toast.show("保存成功", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+    Toast.show("保存成功", context,
+        duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
   }
 
   @override
   showError(String errorMsg) {
-    Toast.show(errorMsg, context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+    Toast.show(errorMsg, context,
+        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
   }
 
   @override
   testConfigSuccess() {
-    Toast.show("测试成功", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+    Toast.show("测试成功", context,
+        duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
   }
 }
