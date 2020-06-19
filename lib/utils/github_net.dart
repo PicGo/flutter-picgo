@@ -16,7 +16,7 @@ var dio = new Dio(BaseOptions(
     connectTimeout: 30000, headers: optHeader, baseUrl: GithubApi.BASE_URL));
 
 class GithubNetUtils {
-  static Future get(String url, [Map<String, dynamic> params]) async {
+  static Future get(String url, {Map<String, dynamic> params}) async {
     // 拦截器
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (RequestOptions options) async {
@@ -36,14 +36,25 @@ class GithubNetUtils {
     return response.data;
   }
 
-  static Future post(String url, Map<String, dynamic> params) async {
+  static Future post(String url, Map<String, dynamic> data) async {
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (RequestOptions options) async {
         var token = await oAuth();
         options.headers["Authorization"] = 'Token $token';
       },
     ));
-    Response response = await dio.post(url, data: params);
+    Response response = await dio.post(url, data: data);
+    return response.data;
+  }
+
+  static Future put(String url, Map<String, dynamic> data) async {
+    dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (RequestOptions options) async {
+        var token = await oAuth();
+        options.headers["Authorization"] = 'Token $token';
+      },
+    ));
+    Response response = await dio.put(url, data: data);
     return response.data;
   }
 

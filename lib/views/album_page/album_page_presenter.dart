@@ -20,8 +20,4 @@ class AlbumPagePresenter {
 
   }
 
-  doUploadImage(File imgFile) {
-    
-  }
-
 }
