@@ -1,6 +1,8 @@
-![](https://raw.githubusercontent.com/hackycy/flutter-picgo/master/docs/design/squareLogo.png)
-
-<center><b>Flutter-PicGo</b></center>
+<div align="center">
+  <img src="https://raw.githubusercontent.com/hackycy/flutter-picgo/master/docs/design/squareLogo144.png" alt="">
+  <h1>Flutter-PicGo</h1>
+  <blockquote>图片上传+管理新体验 </blockquote>
+</div>
 
 # 应用概述
 
