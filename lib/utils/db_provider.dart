@@ -35,7 +35,6 @@ class DbProvider {
   Future init({bool isCreate = false}) async {
     String dbPath = await getDatabasesPath();
     String path = join(dbPath, 'picgo.db');
-    debugPrint(path);
     try {
       db = await openDatabase(
         path,
