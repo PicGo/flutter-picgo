@@ -53,7 +53,8 @@ class DbProvider {
           await db.execute('''
           CREATE TABLE uploaded (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            path varchar(255) NOT NULL
+            path varchar(255) NOT NULL,
+            type varchar(20) NOT NULL UNIQUE
           )''');
           await db.transaction((txn) async {
             int id1 = await txn.rawInsert(
