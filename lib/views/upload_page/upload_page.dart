@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_picgo/components/loading.dart';
+import 'package:flutter_picgo/utils/shared_preferences.dart';
 import 'package:flutter_picgo/views/upload_page/upload_page_presenter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:toast/toast.dart';
+import 'package:path/path.dart' as path;
 
 class UploadPage extends StatefulWidget {
   _UploadPageState createState() => _UploadPageState();
@@ -12,6 +14,8 @@ class UploadPage extends StatefulWidget {
 class _UploadPageState extends State<UploadPage> implements UploadPageContract {
   String _title = '';
   String _previewPath = '';
+  String _renameImage = '';
+  TextEditingController _controller;
   int _selectButton = 1;
 
   UploadPagePresenter _presenter;
@@ -152,19 +156,59 @@ class _UploadPageState extends State<UploadPage> implements UploadPageContract {
     );
   }
 
+  /// 获取图片
   _getImage() async {
     try {
       final pickedFile = await picker.getImage(source: ImageSource.gallery);
       if (pickedFile != null) {
+        var sp = await SpUtil.getInstance();
+        var settingIsTimestampRename =
+            sp.getBool(SharedPreferencesKeys.settingIsTimestampRename) ?? false;
+        var settingIsUploadedRename =
+            sp.getBool(SharedPreferencesKeys.settingIsUploadedRename) ?? false;
+        /// 获取文件后缀
+        String suffix = path.extension(pickedFile.path);
+        String filename = path.basenameWithoutExtension(pickedFile.path);
+        String realSettingImageName = settingIsTimestampRename
+            ? '${new DateTime.now().millisecondsSinceEpoch.toString()}$suffix'
+            : '$filename$suffix';
+        if (settingIsUploadedRename) {
+          _controller = TextEditingController(text: realSettingImageName);
+          await showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) {
+              return AlertDialog(
+                title: Center(
+                  child: Text('重命名图片'),
+                ),
+                content: Padding(
+                  padding: EdgeInsets.only(left: 4, right: 4),
+                  child: TextField(
+                    controller: _controller,
+                  ),
+                ),
+                actions: <Widget>[
+                  FlatButton(child: Text('确定'), onPressed: () {
+                    this._renameImage = _controller.text;
+                    Navigator.pop(context);
+                  }),
+                ],
+              );
+            },
+          );
+        }
         setState(() {
           this._previewPath = pickedFile.path;
         });
       }
     } catch (e) {
+      debugPrint(e);
       Toast.show("请给予权限", context);
     }
   }
 
+  /// 上传图片
   _uploadImage() {
     showDialog(
         context: context,
@@ -193,7 +237,6 @@ class _UploadPageState extends State<UploadPage> implements UploadPageContract {
 
   @override
   uploadSuccess(String imageUrl) {
-    print(imageUrl);
     Toast.show(imageUrl ?? '', context);
   }
 }
