@@ -18,7 +18,6 @@ abstract class UploadPageContract {
 
 class UploadPagePresenter {
   UploadPageContract _view;
-
   UploadPagePresenter(this._view);
 
   /// 读取当前默认图床
@@ -76,5 +75,15 @@ class UploadPagePresenter {
     } catch (e) {
       _view.uploadFaild('未知异常');
     }
+  }
+
+  /// 保存已上传列表
+  doSaveUploadedImage(String imageUrl) async {
+    try {
+      var sp = await SpUtil.getInstance();
+      String pbType = sp.getDefaultPB();
+      var sql = Sql.setTable(TABLE_NAME_UPLOADED);
+      await sql.rawInsert('(type, path) VALUES(?, ?)', [pbType, imageUrl]);
+    } catch (e) {}
   }
 }

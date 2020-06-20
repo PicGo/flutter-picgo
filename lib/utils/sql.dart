@@ -20,6 +20,10 @@ class Sql extends BaseModel {
     return await this.db.rawUpdate('UPDATE $tableName SET $sql', arguments);
   }
 
+  Future<int> rawInsert(String valueNames, [List<dynamic> arguments]) async {
+    return await this.db.rawInsert('INSERT INTO $tableName$valueNames', arguments);
+  }
+
   String getTableName() {
     return tableName;
   }
