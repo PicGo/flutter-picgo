@@ -59,11 +59,11 @@ class GithubPagePresenter {
 
   doTestConfig() async {
     try {
-      await GithubNetUtils.get(GithubApi.BASE_URL);
+      var result = await GithubNetUtils.get(GithubApi.BASE_URL);
       _view.testConfigSuccess();
     } on DioError catch (e) {
       _view.showError(
-          'ErrorCode : ${e.response.statusCode}, Message : ${e.response.data['message'] ?? '未知异常'}');
+          'ErrorCode : ${e.response?.statusCode ?? -1}, Message : ${e.response?.statusMessage ?? '网络异常，请重试'}');
     } catch (e) {
       _view.showError('$e');
     }
