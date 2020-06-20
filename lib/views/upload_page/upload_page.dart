@@ -238,6 +238,6 @@ class _UploadPageState extends State<UploadPage> implements UploadPageContract {
   @override
   uploadSuccess(String imageUrl) async {
     await _presenter.doSaveUploadedImage(imageUrl);
-    Toast.show(imageUrl ?? '', context);
+    Toast.show('上传成功：图片链接为：$imageUrl', context);
   }
 }

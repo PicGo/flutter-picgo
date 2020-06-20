@@ -62,10 +62,12 @@ class UploadPagePresenter {
         });
         String imagePath = result["content"]["path"];
         String downloadUrl = result["content"]["download_url"];
-        _view.uploadSuccess(
+        String imageUrl =
             config.customDomain == null || config.customDomain == ''
                 ? downloadUrl
-                : '${path.joinAll([config.customDomain, imagePath])}');
+                : '${path.joinAll([config.customDomain, imagePath])}';
+        debugPrint(imageUrl);
+        _view.uploadSuccess(imageUrl);
       } else {
         _view.uploadFaild('读取配置错误，请重试!');
       }
@@ -84,6 +86,8 @@ class UploadPagePresenter {
       String pbType = sp.getDefaultPB();
       var sql = Sql.setTable(TABLE_NAME_UPLOADED);
       await sql.rawInsert('(type, path) VALUES(?, ?)', [pbType, imageUrl]);
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_picgo/resources/table_name_keys.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -21,7 +22,7 @@ class DbProvider {
 
   /// 检查数据库中, 表是否完整, 在部份android中, 会出现表丢失的情况
   Future checkTableIsRight() async {
-    List<String> expectTables = ['pb_setting', 'uploaded'];
+    List<String> expectTables = [TABLE_NAME_UPLOADED, TABLE_NAME_PBSETTING];
     List<String> tables = await getTables();
     for (int i = 0; i < expectTables.length; i++) {
       if (!tables.contains(expectTables[i])) {
@@ -54,12 +55,11 @@ class DbProvider {
           CREATE TABLE uploaded (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             path varchar(255) NOT NULL,
-            type varchar(20) NOT NULL UNIQUE
+            type varchar(20) NOT NULL
           )''');
           await db.transaction((txn) async {
-            int id1 = await txn.rawInsert(
+            await txn.rawInsert(
                 'INSERT INTO pb_setting VALUES (1, "github", "/setting/pb/github", "Github图床", NULL, 1)');
-            debugPrint('inserted1: $id1');
           });
         },
         onUpgrade: (db, oldVersion, newVersion) {
