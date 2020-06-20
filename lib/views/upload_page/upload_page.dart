@@ -14,7 +14,7 @@ class UploadPage extends StatefulWidget {
 class _UploadPageState extends State<UploadPage> implements UploadPageContract {
   String _title = '';
   String _previewPath = '';
-  String _renameImage = '';
+  String _renameImage ;
   TextEditingController _controller;
   int _selectButton = 1;
 
@@ -169,11 +169,11 @@ class _UploadPageState extends State<UploadPage> implements UploadPageContract {
         /// 获取文件后缀
         String suffix = path.extension(pickedFile.path);
         String filename = path.basenameWithoutExtension(pickedFile.path);
-        String realSettingImageName = settingIsTimestampRename
+        _renameImage = settingIsTimestampRename
             ? '${new DateTime.now().millisecondsSinceEpoch.toString()}$suffix'
             : '$filename$suffix';
         if (settingIsUploadedRename) {
-          _controller = TextEditingController(text: realSettingImageName);
+          _controller = TextEditingController(text: _renameImage);
           await showDialog(
             context: context,
             barrierDismissible: false,
@@ -218,7 +218,7 @@ class _UploadPageState extends State<UploadPage> implements UploadPageContract {
             loading: true,
             loadingText: "上传中",
             requestCallBack:
-                _presenter.doUploadImage(new File(this._previewPath)),
+                _presenter.doUploadImage(new File(this._previewPath), _renameImage),
           );
         });
   }

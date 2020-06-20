@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_picgo/model/github_config.dart';
 import 'package:flutter_picgo/resources/table_name_keys.dart';
 import 'package:flutter_picgo/utils/encrypt.dart';
@@ -35,7 +37,7 @@ class UploadPagePresenter {
   }
 
   /// 根据配置上传图片
-  doUploadImage(File file) async {
+  doUploadImage(File file, String renameImage) async {
     // 读取配置
     try {
       var sp = await SpUtil.getInstance();
@@ -52,7 +54,7 @@ class UploadPagePresenter {
           config.repositoryName,
           'contents',
           config.storagePath,
-          path.basename(file.path)
+          renameImage
         ]);
         var result = await GithubNetUtils.put(realUrl, {
           "message": "Upload by Flutter-PicGo",
@@ -68,9 +70,11 @@ class UploadPagePresenter {
       } else {
         _view.uploadFaild('读取配置错误，请重试!');
       }
+    } on DioError catch (e) {
+      debugPrint(e.message);
+      _view.uploadFaild('${e.message}');
     } catch (e) {
-      print(e);
-      _view.uploadFaild('$e');
+      _view.uploadFaild('未知异常');
     }
   }
 }

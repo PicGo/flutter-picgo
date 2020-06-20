@@ -13,7 +13,11 @@ Map<String, dynamic> optHeader = {
 };
 
 var dio = new Dio(BaseOptions(
-    connectTimeout: 30000, headers: optHeader, baseUrl: GithubApi.BASE_URL));
+    connectTimeout: 10000,
+    receiveTimeout: 10000,
+    sendTimeout: 10000,
+    headers: optHeader,
+    baseUrl: GithubApi.BASE_URL));
 
 class GithubNetUtils {
   static Future get(String url, {Map<String, dynamic> params}) async {
