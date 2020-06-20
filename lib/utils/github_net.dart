@@ -7,15 +7,17 @@ import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/resources/table_name_keys.dart';
 import 'package:flutter_picgo/utils/sql.dart';
 
+const bool inProduction = const bool.fromEnvironment("dart.vm.product");
+
 Map<String, dynamic> optHeader = {
   'accept-language': 'zh-cn',
   'content-type': 'application/json'
 };
 
 var dio = new Dio(BaseOptions(
-    connectTimeout: 10000,
-    receiveTimeout: 10000,
-    sendTimeout: 10000,
+    connectTimeout: 30000,
+    receiveTimeout: 30000,
+    sendTimeout: 30000,
     headers: optHeader,
     baseUrl: GithubApi.BASE_URL));
 
@@ -58,6 +60,9 @@ class GithubNetUtils {
         options.headers["Authorization"] = 'Token $token';
       },
     ));
+    if (!inProduction) {
+      dio.interceptors.add(LogInterceptor());
+    }
     Response response = await dio.put(url, data: data);
     return response.data;
   }
