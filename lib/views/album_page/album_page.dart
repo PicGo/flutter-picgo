@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picgo/model/uploaded.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_picgo/routers/application.dart';
 import 'package:flutter_picgo/routers/routers.dart';
 import 'package:flutter_picgo/views/album_page/album_page_presenter.dart';
 import 'package:toast/toast.dart';
+import 'package:flutter/services.dart';
 
 class AlbumPage extends StatefulWidget {
   @override
@@ -40,22 +42,50 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
         },
       ),
       body: GridView.builder(
+        padding: EdgeInsets.all(2),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, //每行三列
+            crossAxisSpacing: 2,
+            mainAxisSpacing: 2,
             childAspectRatio: 1.0 //显示区域宽高相等
-        ),
+            ),
         itemCount: _uploadeds?.length ?? 0,
         itemBuilder: (context, index) {
-          return Container(
-            height: 150,
-            child: Image.network(
-              _uploadeds[index].path,
-              fit: BoxFit.cover,
+          return GestureDetector(
+            onTap: (){
+              handleTap(index);
+            },
+            child: Container(
+              height: 150,
+              child: CachedNetworkImage(
+                imageUrl: _uploadeds[index].path,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => Center(
+                  child: Container(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+                errorWidget: (context, url, error) {
+                  return Container(
+                    color: Colors.grey,
+                    child: Center(
+                      child: Icon(Icons.error),
+                    ),
+                  );
+                },
+              ),
             ),
           );
-        }
-    ),
+        },
+      ),
     );
+  }
+
+  handleTap(int index) {
+    Clipboard.setData(ClipboardData(text: _uploadeds[index].path));
+    Toast.show('已复制到剪切板', context);
   }
 
   @override
