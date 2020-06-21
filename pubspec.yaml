@@ -33,7 +33,7 @@ dependencies:
   image_picker: ^0.6.7+2
   json_serializable: ^3.3.0
   cached_network_image: ^2.2.0+1
-  url_launcher: ^5.4.11
+  url_launcher: ^5.4.9
 
 
   # The following adds the Cupertino Icons font to your application.
