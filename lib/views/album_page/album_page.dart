@@ -31,7 +31,7 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('相册'),
+        title: Text('相册 - ${_uploadeds?.length ?? 0}'),
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
