@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_picgo/routers/application.dart';
 import 'package:flutter_picgo/routers/routers.dart';
 import 'package:package_info/package_info.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingPage extends StatefulWidget {
   @override
@@ -80,7 +81,7 @@ class _SettingPageState extends State<SettingPage> {
           ListTile(
             title: Text('关于Flutter-PicGo'),
             onTap: () {
-              // launch('https://github.com/hackycy/flutter_picgo');
+              launch('https://github.com/hackycy/flutter-picgo');
             },
             trailing: Icon(Icons.arrow_right),
           ),
