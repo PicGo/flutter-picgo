@@ -21,7 +21,7 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-Get Key Sign Info
+//Get Key Sign Info
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('../keystore/key.properties')
 if (keystorePropertiesFile.exists()) {
