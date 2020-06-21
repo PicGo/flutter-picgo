@@ -15,7 +15,7 @@ class AlbumPage extends StatefulWidget {
 
 class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
   AlbumPagePresenter _presenter;
-  List<Uploaded> _uploadeds;
+  List<Uploaded> _uploadeds = [];
 
   _AlbumPageState() {
     _presenter = AlbumPagePresenter(this);
@@ -41,7 +41,9 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
               transition: TransitionType.cupertino);
         },
       ),
-      body: GridView.builder(
+      body: RefreshIndicator(
+        onRefresh: _onRefresh,
+        child: GridView.builder(
         padding: EdgeInsets.all(2),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, //每行三列
@@ -114,7 +116,15 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
           );
         },
       ),
+      ),
     );
+  }
+
+  Future<dynamic> _onRefresh() async {
+    setState(() {
+      _uploadeds.clear();
+    });
+    return _presenter.doLoadUploadedImages();
   }
 
   handleTap(int index) {
@@ -125,7 +135,7 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
   @override
   void loadUploadedImages(List<Uploaded> uploadeds) {
     setState(() {
-      this._uploadeds = uploadeds;
+      this._uploadeds.addAll(uploadeds);
     });
   }
 
