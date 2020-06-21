@@ -6,6 +6,7 @@ import 'package:flutter_picgo/views/upload_page/upload_page_presenter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:toast/toast.dart';
 import 'package:path/path.dart' as path;
+import 'package:flutter/services.dart';
 
 class UploadPage extends StatefulWidget {
   _UploadPageState createState() => _UploadPageState();
@@ -14,9 +15,14 @@ class UploadPage extends StatefulWidget {
 class _UploadPageState extends State<UploadPage> implements UploadPageContract {
   String _title = '';
   String _previewPath = '';
-  String _renameImage ;
+  String _renameImage;
+  String _clipUrl;
   TextEditingController _controller;
   int _selectButton = 1;
+
+  static const MARKDOWN = 1;
+  static const HTML = 2;
+  static const URL = 3;
 
   UploadPagePresenter _presenter;
   final picker = ImagePicker();
@@ -86,45 +92,49 @@ class _UploadPageState extends State<UploadPage> implements UploadPageContract {
               SizedBox(width: 10),
               Expanded(
                 child: RaisedButton(
-                  color: this._selectButton == 1
+                  color: this._selectButton == MARKDOWN
                       ? Theme.of(context).accentColor
                       : Colors.white,
-                  textColor:
-                      this._selectButton == 1 ? Colors.white : Colors.black,
+                  textColor: this._selectButton == MARKDOWN
+                      ? Colors.white
+                      : Colors.black,
                   child: Text('Markdown'),
                   onPressed: () {
                     setState(() {
-                      this._selectButton = 1;
+                      this._selectButton = MARKDOWN;
+                      setClipData();
                     });
                   },
                 ),
               ),
               Expanded(
                 child: RaisedButton(
-                  color: this._selectButton == 2
+                  color: this._selectButton == HTML
                       ? Theme.of(context).accentColor
                       : Colors.white,
                   textColor:
-                      this._selectButton == 2 ? Colors.white : Colors.black,
+                      this._selectButton == HTML ? Colors.white : Colors.black,
                   child: Text('HTML'),
                   onPressed: () {
                     setState(() {
-                      this._selectButton = 2;
+                      this._selectButton = HTML;
+                      setClipData();
                     });
                   },
                 ),
               ),
               Expanded(
                 child: RaisedButton(
-                  color: this._selectButton == 3
+                  color: this._selectButton == URL
                       ? Theme.of(context).accentColor
                       : Colors.white,
                   textColor:
-                      this._selectButton == 3 ? Colors.white : Colors.black,
+                      this._selectButton == URL ? Colors.white : Colors.black,
                   child: Text('URL'),
                   onPressed: () {
                     setState(() {
-                      this._selectButton = 3;
+                      this._selectButton = URL;
+                      setClipData();
                     });
                   },
                 ),
@@ -166,6 +176,7 @@ class _UploadPageState extends State<UploadPage> implements UploadPageContract {
             sp.getBool(SharedPreferencesKeys.settingIsTimestampRename) ?? false;
         var settingIsUploadedRename =
             sp.getBool(SharedPreferencesKeys.settingIsUploadedRename) ?? false;
+
         /// 获取文件后缀
         String suffix = path.extension(pickedFile.path);
         String filename = path.basenameWithoutExtension(pickedFile.path);
@@ -189,10 +200,12 @@ class _UploadPageState extends State<UploadPage> implements UploadPageContract {
                   ),
                 ),
                 actions: <Widget>[
-                  FlatButton(child: Text('确定'), onPressed: () {
-                    this._renameImage = _controller.text;
-                    Navigator.pop(context);
-                  }),
+                  FlatButton(
+                      child: Text('确定'),
+                      onPressed: () {
+                        this._renameImage = _controller.text;
+                        Navigator.pop(context);
+                      }),
                 ],
               );
             },
@@ -217,8 +230,8 @@ class _UploadPageState extends State<UploadPage> implements UploadPageContract {
           return NetLoadingDialog(
             loading: true,
             loadingText: "上传中",
-            requestCallBack:
-                _presenter.doUploadImage(new File(this._previewPath), _renameImage),
+            requestCallBack: _presenter.doUploadImage(
+                new File(this._previewPath), _renameImage),
           );
         });
   }
@@ -235,9 +248,46 @@ class _UploadPageState extends State<UploadPage> implements UploadPageContract {
     Toast.show(errorMsg ?? '', context);
   }
 
+  setClipData([bool needShowTip = true]) {
+    if (_clipUrl == null || _clipUrl == '') {
+      Toast.show('暂无可获取图片', context);
+      return;
+    }
+    String cliptext;
+    switch (_selectButton) {
+      case MARKDOWN:
+        {
+          cliptext = '![]($_clipUrl)';
+        }
+        break;
+      case HTML:
+        {
+          cliptext = '<img src="$_clipUrl">';
+        }
+        break;
+      case URL:
+        {
+          cliptext = _clipUrl;
+        }
+        break;
+      default:
+        {
+          //statements;
+          cliptext = _clipUrl;
+        }
+        break;
+    }
+    Clipboard.setData(ClipboardData(text: cliptext));
+    if (needShowTip) {
+      Toast.show('已复制到剪切板', context);
+    }
+  }
+
   @override
   uploadSuccess(String imageUrl) async {
     await _presenter.doSaveUploadedImage(imageUrl);
-    Toast.show('上传成功：图片链接为：$imageUrl', context);
+    this._clipUrl = imageUrl;
+    setClipData(false);
+    Toast.show('上传成功：已复制到剪切板，图片链接为：$imageUrl', context);
   }
 }
