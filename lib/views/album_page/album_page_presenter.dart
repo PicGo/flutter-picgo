@@ -1,12 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_picgo/model/uploaded.dart';
 import 'package:flutter_picgo/resources/table_name_keys.dart';
 import 'package:flutter_picgo/utils/sql.dart';
 
 abstract class AlbumPageContract {
   void loadUploadedImages(List<Uploaded> uploadeds);
-
   void loadError();
+
+  void deleteSuccess(Uploaded uploaded);
+  void deleteError(String msg);
 }
 
 class AlbumPagePresenter {
@@ -18,7 +19,6 @@ class AlbumPagePresenter {
     try {
       var sql = Sql.setTable(TABLE_NAME_UPLOADED);
       var result = await sql.get();
-      debugPrint(result.toString());
       List<Uploaded> uploadeds = result.map((v) {
         return Uploaded.fromMap(v);
       }).toList();
@@ -28,4 +28,20 @@ class AlbumPagePresenter {
       _view.loadError();
     }
   }
+
+  doDeleteImage(Uploaded uploaded) async {
+    try {
+      var sql = Sql.setTable(TABLE_NAME_UPLOADED);
+      var result = await sql.rawDelete('id = ?', [uploaded.id]);
+      if (result > 0) {
+        _view.deleteSuccess(uploaded);
+        return;
+      } 
+      _view.deleteError('删除出错，请重试');
+    } catch (e) {
+      print(e);
+      _view.deleteError('删除出错，请重试');
+    }
+  }
+
 }

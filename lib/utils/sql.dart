@@ -24,6 +24,11 @@ class Sql extends BaseModel {
     return await this.db.rawInsert('INSERT INTO $tableName$valueNames', arguments);
   }
 
+  Future<int> rawDelete(String wheres, [List<dynamic> arguments]) async {
+    return await this.db
+    .rawDelete('DELETE FROM $tableName WHERE $wheres', arguments);
+  }
+
   String getTableName() {
     return tableName;
   }
