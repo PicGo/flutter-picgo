@@ -23,7 +23,7 @@ if (flutterVersionName == null) {
 
 //Get Key Sign Info
 def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('../keystore/key.properties')
+def keystorePropertiesFile = rootProject.file('keystore/key.properties')
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
