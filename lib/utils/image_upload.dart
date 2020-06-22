@@ -48,5 +48,6 @@ class ImageUpload {
     if (pbsettingRow != null && pbsettingRow.length > 0) {
       return pbsettingRow.first["config"];
     }
+    return null;
   }
 }
