@@ -8,11 +8,11 @@
 
 PicGo: 一个用于快速上传图片并获取图片URL链接的**手机版**工具
 
-先支持以下图床
+现支持以下图床
 
-- GitHub[开发中]
+- GitHub
 
 # 致谢
 
-[PicGo](https://github.com/Molunerfinn/PicGo)
-[Flutter-Go](https://github.com/alibaba/flutter-go)
+- [PicGo](https://github.com/Molunerfinn/PicGo)
+- [Flutter-Go](https://github.com/alibaba/flutter-go)
