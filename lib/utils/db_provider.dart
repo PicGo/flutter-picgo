@@ -39,11 +39,35 @@ class DbProvider {
     try {
       db = await openDatabase(
         path,
-        version: 1,
+        version: 2,
         onCreate: (db, version) async {
           // 创建pb_setting表
+          _initPb(db);
+          // 创建uploaded表
           await db.execute('''
-          CREATE TABLE pb_setting (
+          CREATE TABLE $TABLE_NAME_UPLOADED (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            path varchar(255) NOT NULL,
+            type varchar(20) NOT NULL,
+            info varchar(255) NOT NULL
+          )''');
+        },
+        onUpgrade: (db, oldVersion, newVersion) {
+          _initPb(db);
+          _upgradeDbV1ToV2(db);
+        },
+      );
+    } catch (e) {
+      debugPrint('DataBase init Error >>>>>> $e');
+    }
+  }
+
+  /// 初始化图床设置表
+  _initPb(Database db) async {
+    await db.execute('DROP TABLE IF EXISTS $TABLE_NAME_PBSETTING');
+    // 创建pb_setting表
+    await db.execute('''
+          CREATE TABLE $TABLE_NAME_PBSETTING (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             type varchar(20) NOT NULL UNIQUE,
             path varchar(20) NOT NULL UNIQUE,
@@ -51,23 +75,14 @@ class DbProvider {
             config varchar(255) DEFAULT NULL,
             visible INTEGER DEFAULT 1
           )''');
-          await db.execute('''
-          CREATE TABLE uploaded (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            path varchar(255) NOT NULL,
-            type varchar(20) NOT NULL
-          )''');
-          await db.transaction((txn) async {
-            await txn.rawInsert(
-                'INSERT INTO pb_setting VALUES (1, "github", "/setting/pb/github", "Github图床", NULL, 1)');
-          });
-        },
-        onUpgrade: (db, oldVersion, newVersion) {
-          
-        },
-      );
-    } catch (e) {
-      debugPrint('DataBase init Error >>>>>> $e');
-    }
+    await db.transaction((txn) async {
+      await txn.rawInsert(
+          'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("github", "/setting/pb/github", "Github图床", NULL, 1)');
+    });
+  }
+
+  /// db版本升级
+  _upgradeDbV1ToV2(Database db) async {
+    await db.execute('ALTER TABLE $TABLE_NAME_UPLOADED ADD COLUMN info varchar(255)');
   }
 }
