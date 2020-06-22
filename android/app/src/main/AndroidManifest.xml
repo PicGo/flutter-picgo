@@ -10,7 +10,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="flutter-picgo"
+        android:label="Flutter-PicGo"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
