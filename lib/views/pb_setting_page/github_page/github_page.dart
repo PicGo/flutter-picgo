@@ -52,15 +52,19 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
     return Scaffold(
       appBar: AppBar(
         title: Text('Github图床'),
-        actions: <Widget>[
+        actions: <Widget>[ 
           _configSuccess
-              ? IconButton( // 开启仓库
+              ? IconButton(
+                  // 开启仓库
                   icon: Icon(IconData(0xe6ab, fontFamily: 'iconfont')),
                   onPressed: () {
-                    Application.router.navigateTo(context, Routes.settingPbGitubRepo, transition: TransitionType.cupertino);
+                    Application.router.navigateTo(context,
+                        Routes.settingPbGitubRepo.replaceFirst(':path', '/'),
+                        transition: TransitionType.cupertino);
                   },
                 )
-              : IconButton( //连接测试
+              : IconButton(
+                  //连接测试
                   icon: Icon(IconData(0xe62a, fontFamily: 'iconfont')),
                   onPressed: () {
                     _testConfig();

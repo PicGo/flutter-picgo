@@ -17,48 +17,57 @@ var appHandler = new Handler(
     int index = 0;
     try {
       index = int.parse(indexStr);
-    } catch (e) {
-    }
+    } catch (e) {}
     return AppPage(selectedIndex: index);
   },
 );
 
 // 404页面
 var notfoundHandler = new Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) => PageNotFound(),
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) =>
+      PageNotFound(),
 );
 
 // 相册页面
 var albumHandler = new Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) => AlbumPage(),
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) =>
+      AlbumPage(),
 );
 
 // 设置页面
 var settingHandler = new Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) => SettingPage(),
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) =>
+      SettingPage(),
 );
 
 // 上传页面
 var uploadHandler = new Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) => UploadPage(),
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) =>
+      UploadPage(),
 );
 
 // 图床设置页面
 var pbsettingHandler = new Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) => PBSettingPage(),
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) =>
+      PBSettingPage(),
 );
 
 // Github图床设置页面
 var pbsettingGithubHandler = new Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) => GithubPage(),
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) =>
+      GithubPage(),
 );
 
 // Github仓库列表页面
 var pbsettingGithubRepohandler = new Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) => GithubRepoPage(path: params["path"][0] ?? '/'),
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    var path = params["path"]?.first;
+    return GithubRepoPage(path: (path == null || path == '') ? '/' : path);
+  },
 );
 
 // picgo设置页面
 var picgosettinghandler = new Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) => PicGoSettingPage(),
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) =>
+      PicGoSettingPage(),
 );

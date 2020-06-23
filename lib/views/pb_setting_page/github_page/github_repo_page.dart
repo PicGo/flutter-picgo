@@ -22,6 +22,9 @@ class _GithubRepoPageState extends State<GithubRepoPage> {
       appBar: AppBar(
         title: Text('仓库内容'),
       ),
+      body: Center(
+        child: Text(this.path),
+      ),
     );
   }
 
