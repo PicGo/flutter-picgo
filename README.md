@@ -20,6 +20,14 @@ PicGo: 一个用于快速上传图片并获取图片URL链接的**手机版**工
 
 ![](https://github.static.si-yee.com/picgo/1592895235750.jpg)
 
+# 下载安装
+
+点击此处下载[应用](https://github.com/hackycy/flutter-picgo/releases)。
+
+Android版直接下载apk安装包即可。
+
+iOS版本暂未上架。
+
 # 致谢
 
 - [PicGo](https://github.com/Molunerfinn/PicGo)
