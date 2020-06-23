@@ -1,7 +1,10 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picgo/components/loading.dart';
 import 'package:flutter_picgo/model/github_config.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
+import 'package:flutter_picgo/routers/application.dart';
+import 'package:flutter_picgo/routers/routers.dart';
 import 'package:flutter_picgo/utils/shared_preferences.dart';
 import 'package:flutter_picgo/views/pb_setting_page/github_page/github_page_presenter.dart';
 import 'package:toast/toast.dart';
@@ -13,10 +16,9 @@ class GithubPage extends StatefulWidget {
 
 class _GithubPageState extends State<GithubPage> implements GithubPageContract {
   GithubConfig _config;
+  bool _configSuccess = false;
 
   GithubPagePresenter _presenter;
-
-  NetLoadingDialog _dialog;
 
   TextEditingController _repositoryNameController,
       _branchNameController,
@@ -51,12 +53,19 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
       appBar: AppBar(
         title: Text('Github图床'),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(IconData(0xe62a, fontFamily: 'iconfont')),
-            onPressed: () {
-              _testConfig();
-            },
-          ),
+          _configSuccess
+              ? IconButton( // 开启仓库
+                  icon: Icon(IconData(0xe6ab, fontFamily: 'iconfont')),
+                  onPressed: () {
+                    Application.router.navigateTo(context, Routes.settingPbGitubRepo, transition: TransitionType.cupertino);
+                  },
+                )
+              : IconButton( //连接测试
+                  icon: Icon(IconData(0xe62a, fontFamily: 'iconfont')),
+                  onPressed: () {
+                    _testConfig();
+                  },
+                ),
         ],
       ),
       body: Padding(
@@ -225,6 +234,9 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
 
   @override
   testConfigSuccess() {
+    setState(() {
+      this._configSuccess = true;
+    });
     Toast.show("测试成功", context,
         duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
   }
