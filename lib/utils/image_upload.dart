@@ -74,4 +74,11 @@ class ImageUpload {
     var result = await sql.rawDelete('id = ?', [item.id]);
     return result;
   }
+
+  /// 获取已上传项的信息
+  static Future<String> getUploadedItemInfo(int id) async {
+    var sql = Sql.setTable(TABLE_NAME_UPLOADED);
+    return (await sql.getBySql('id = ?', [id]))?.first["info"];
+  }
+
 }

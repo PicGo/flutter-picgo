@@ -12,12 +12,32 @@ import 'dart:convert';
 import 'package:path/path.dart' as path;
 import 'package:flutter_picgo/utils/strategy/image_upload_strategy.dart';
 
-class GithubImageUpload extends ImageUploadStrategy {
+class GithubImageUpload implements ImageUploadStrategy {
   static const UPLOAD_COMMIT_MESSAGE = "Upload by Flutter-PicGo";
   static const DELETE_COMMIT_MESSAGE = "Delete by Flutter-PicGo";
 
   @override
   Future<Uploaded> delete(Uploaded uploaded) async {
+    String infoStr = await ImageUpload.getUploadedItemInfo(uploaded.id);
+    print(infoStr);
+    GithubUploadedInfo info;
+    try {
+      info = GithubUploadedInfo.fromJson(json.decode(infoStr));
+    } catch (e) {}
+    if (info != null) {
+      String realUrl = path.joinAll([
+        'repos',
+        info.ownerrepo,
+        'contents',
+        info.path
+      ]);
+      await GithubNetUtils.delete(realUrl, {
+        "message": DELETE_COMMIT_MESSAGE,
+        "sha": info.sha,
+        "branch": info.branch
+      });
+    }
+    // 最后再删除本地项
     await ImageUpload.deleteUploadedItem(uploaded);
     return uploaded;
   }
@@ -47,19 +67,22 @@ class GithubImageUpload extends ImageUploadStrategy {
         });
         String imagePath = result["content"]["path"];
         String downloadUrl = result["content"]["download_url"];
+        String sha = result["content"]["sha"];
         String imageUrl =
             config.customDomain == null || config.customDomain == ''
                 ? downloadUrl
                 : '${path.joinAll([config.customDomain, imagePath])}';
-        var uploadedItem =
-            Uploaded(-1, imageUrl, PBTypeKeys.github, info: imagePath);
+        var uploadedItem = Uploaded(-1, imageUrl, PBTypeKeys.github,
+            info: json.encode(GithubUploadedInfo(
+                path: imagePath, sha: sha, branch: config.branchName, ownerrepo: config.repositoryName)));
         await ImageUpload.saveUploadedItem(uploadedItem);
         return uploadedItem;
       } else {
         throw GithubError(error: '读取配置文件错误！请重试');
       }
     } on DioError catch (e) {
-      if (e.type == DioErrorType.RESPONSE && e.error.toString().indexOf('422') > 0) {
+      if (e.type == DioErrorType.RESPONSE &&
+          e.error.toString().indexOf('422') > 0) {
         throw GithubError(error: '文件已存在！');
       } else {
         throw e;
@@ -85,5 +108,30 @@ class GithubError implements Exception {
       msg += '\n${error.stackTrace}';
     }
     return msg;
+  }
+}
+
+class GithubUploadedInfo {
+  String sha;
+  String branch;
+  String path;
+  String ownerrepo;
+
+  GithubUploadedInfo({this.sha, this.branch, this.path, this.ownerrepo});
+
+  GithubUploadedInfo.fromJson(Map<String, dynamic> json) {
+    sha = json['sha'];
+    branch = json['branch'];
+    path = json['path'];
+    ownerrepo = json['ownerrepo'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['sha'] = this.sha;
+    data['branch'] = this.branch;
+    data['path'] = this.path;
+    data['ownerrepo'] = this.ownerrepo;
+    return data;
   }
 }

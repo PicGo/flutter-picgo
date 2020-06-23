@@ -1,10 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_picgo/resources/table_name_keys.dart';
 import 'package:flutter_picgo/utils/image_upload.dart';
-import 'package:flutter_picgo/utils/shared_preferences.dart';
-import 'package:flutter_picgo/utils/sql.dart';
 import 'package:flutter_picgo/utils/strategy/github_image_upload.dart';
 
 abstract class UploadPageContract {

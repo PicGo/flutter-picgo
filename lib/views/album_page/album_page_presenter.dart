@@ -1,6 +1,9 @@
 import 'package:flutter_picgo/model/uploaded.dart';
+import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/resources/table_name_keys.dart';
+import 'package:flutter_picgo/utils/image_upload.dart';
 import 'package:flutter_picgo/utils/sql.dart';
+import 'package:flutter_picgo/utils/strategy/github_image_upload.dart';
 
 abstract class AlbumPageContract {
   void loadUploadedImages(List<Uploaded> uploadeds);
@@ -31,16 +34,18 @@ class AlbumPagePresenter {
 
   doDeleteImage(Uploaded uploaded) async {
     try {
-      var sql = Sql.setTable(TABLE_NAME_UPLOADED);
-      var result = await sql.rawDelete('id = ?', [uploaded.id]);
-      if (result > 0) {
+      ImageUpload uploader;
+      if (uploaded.type == PBTypeKeys.github) {
+        uploader = ImageUpload(GithubImageUpload());
+      }
+      Uploaded up = await uploader.delete(uploaded);
+      if (up != null) {
         _view.deleteSuccess(uploaded);
-        return;
-      } 
-      _view.deleteError('删除出错，请重试');
+      } else {
+        _view.deleteError('删除出错，请重试');
+      }
     } catch (e) {
-      print(e);
-      _view.deleteError('删除出错，请重试');
+      _view.deleteError('删除出错，请重试 Error >>> $e');
     }
   }
 

@@ -67,6 +67,20 @@ class GithubNetUtils {
     return response.data;
   }
 
+  static Future delete(String url, Map<String, dynamic> data) async {
+    dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (RequestOptions options) async {
+        var token = await oAuth();
+        options.headers["Authorization"] = 'Token $token';
+      },
+    ));
+    if (!inProduction) {
+      dio.interceptors.add(LogInterceptor());
+    }
+    Response response = await dio.delete(url, data: data);
+    return response.data;
+  }
+
   /// 获取配置中的Token
   static Future oAuth() async {
     try {
