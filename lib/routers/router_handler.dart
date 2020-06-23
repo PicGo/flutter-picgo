@@ -55,7 +55,7 @@ var pbsettingGithubHandler = new Handler(
 
 // Github仓库列表页面
 var pbsettingGithubRepohandler = new Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) => GithubRepoPage(),
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) => GithubRepoPage(path: params["path"][0] ?? '/'),
 );
 
 // picgo设置页面
