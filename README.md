@@ -2,8 +2,11 @@
   <img src="https://raw.githubusercontent.com/hackycy/flutter-picgo/master/docs/design/squareLogo144.png" alt="">
   <h1>Flutter-PicGo</h1>
   <blockquote>图片上传+管理新体验 </blockquote>
+  <img src="https://img.shields.io/github/license/hackycy/flutter-picgo" alt="">
+  <img src="https://img.shields.io/github/repo-size/hackycy/flutter-picgo" alt="">
+  <img src="https://img.shields.io/github/v/release/hackycy/flutter-picgo" alt="">
+  <img src="https://img.shields.io/github/downloads/hackycy/flutter-picgo/total" alt="">
 </div>
-![](https://img.shields.io/github/license/hackycy/flutter-picgo) ![](https://img.shields.io/github/repo-size/hackycy/flutter-picgo) ![](https://img.shields.io/github/v/release/hackycy/flutter-picgo) ![](https://img.shields.io/github/downloads/hackycy/flutter-picgo/total)
 
 # 应用概述
 
