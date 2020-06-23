@@ -1,14 +1,11 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_picgo/model/github_config.dart';
 import 'package:flutter_picgo/resources/table_name_keys.dart';
-import 'package:flutter_picgo/utils/encrypt.dart';
-import 'package:flutter_picgo/utils/github_net.dart';
+import 'package:flutter_picgo/utils/image_upload.dart';
 import 'package:flutter_picgo/utils/shared_preferences.dart';
 import 'package:flutter_picgo/utils/sql.dart';
-import 'package:path/path.dart' as path;
+import 'package:flutter_picgo/utils/strategy/github_image_upload.dart';
 
 abstract class UploadPageContract {
   loadCurrentPB(String pbname);
@@ -23,14 +20,10 @@ class UploadPagePresenter {
   /// 读取当前默认图床
   doLoadCurrentPB() async {
     try {
-      var sp = await SpUtil.getInstance();
-      String pbType = sp.getDefaultPB();
-      var sql = Sql.setTable(TABLE_NAME_PBSETTING);
-      var pbsettingRow = (await sql.getBySql('type = ?', [pbType]))?.first;
-      if (pbsettingRow != null &&
-          pbsettingRow["name"] != null &&
-          pbsettingRow["name"] != '') {
-        _view.loadCurrentPB(pbsettingRow["name"]);
+      String pbType = await ImageUpload.getDefaultPB();
+      String name = await ImageUpload.getPBName(pbType);
+      if (name != null) {
+        _view.loadCurrentPB(name);
       }
     } catch (e) {}
   }
@@ -39,55 +32,23 @@ class UploadPagePresenter {
   doUploadImage(File file, String renameImage) async {
     // 读取配置
     try {
-      var sp = await SpUtil.getInstance();
-      String pbType = sp.getDefaultPB();
-      var sql = Sql.setTable(TABLE_NAME_PBSETTING);
-      var pbsettingRow = (await sql.getBySql('type = ?', [pbType]))?.first;
-      if (pbsettingRow != null &&
-          pbsettingRow["config"] != null &&
-          pbsettingRow["config"] != '') {
-        GithubConfig config =
-            GithubConfig.fromJson(json.decode(pbsettingRow["config"]));
-        String realUrl = path.joinAll([
-          'repos',
-          config.repositoryName,
-          'contents',
-          config.storagePath,
-          renameImage
-        ]);
-        var result = await GithubNetUtils.put(realUrl, {
-          "message": "Upload by Flutter-PicGo",
-          "content": await EncryptUtils.image2Base64(file.path),
-          "branch": config.branchName
-        });
-        String imagePath = result["content"]["path"];
-        String downloadUrl = result["content"]["download_url"];
-        String imageUrl =
-            config.customDomain == null || config.customDomain == ''
-                ? downloadUrl
-                : '${path.joinAll([config.customDomain, imagePath])}';
-        debugPrint(imageUrl);
-        _view.uploadSuccess(imageUrl);
-      } else {
-        _view.uploadFaild('读取配置错误，请重试!');
+      String pbType = await ImageUpload.getDefaultPB();
+      if (pbType == 'github') {
+        var uploader = ImageUpload(GithubImageUpload());
+        var uploadedItem = await uploader.upload(file, renameImage);
+        if (uploadedItem != null) {
+          _view.uploadSuccess(uploadedItem.path);
+        } else {
+          _view.uploadFaild('上传失败！请重试');
+        }
       }
     } on DioError catch (e) {
-      debugPrint(e.message);
+      debugPrint(e.toString());
       _view.uploadFaild('${e.message}');
     } catch (e) {
-      _view.uploadFaild('未知异常');
+      debugPrint(e.toString());
+      _view.uploadFaild('$e');
     }
   }
 
-  /// 保存已上传列表
-  doSaveUploadedImage(String imageUrl) async {
-    try {
-      var sp = await SpUtil.getInstance();
-      String pbType = sp.getDefaultPB();
-      var sql = Sql.setTable(TABLE_NAME_UPLOADED);
-      await sql.rawInsert('(type, path) VALUES(?, ?)', [pbType, imageUrl]);
-    } catch (e) {
-      print(e);
-    }
-  }
 }
