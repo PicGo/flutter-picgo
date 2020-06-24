@@ -62,7 +62,7 @@ var pbsettingGithubHandler = new Handler(
 var pbsettingGithubRepohandler = new Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     var path = params["path"]?.first;
-    return GithubRepoPage(path: (path == null || path == '') ? '/' : path);
+    return GithubRepoPage(path: (path == null || path == '') ? '/' : Uri.decodeComponent(path));
   },
 );
 
