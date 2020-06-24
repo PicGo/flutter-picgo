@@ -4,6 +4,7 @@ import 'package:flutter_picgo/components/loading.dart';
 import 'package:flutter_picgo/utils/shared_preferences.dart';
 import 'package:flutter_picgo/views/upload_page/upload_page_presenter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:toast/toast.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/services.dart';
@@ -168,6 +169,28 @@ class _UploadPageState extends State<UploadPage> implements UploadPageContract {
 
   /// 获取图片
   _getImage() async {
+    // 检测权限
+    var status = await Permission.photos.request();
+    if (status == PermissionStatus.denied) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('警告'),
+              content: Text('无法获取照片，请检查是否给予对应权限'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('去设置'),
+                  onPressed: () {
+                    openAppSettings();
+                  },
+                ),
+              ],
+            );
+          });
+      return;
+    }
+    // 获取图片
     try {
       final pickedFile = await picker.getImage(source: ImageSource.gallery);
       if (pickedFile != null) {
@@ -216,8 +239,7 @@ class _UploadPageState extends State<UploadPage> implements UploadPageContract {
         });
       }
     } catch (e) {
-      debugPrint(e);
-      Toast.show("请给予权限", context);
+      print(e);
     }
   }
 
