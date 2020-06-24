@@ -26,7 +26,7 @@ jobs:
       - run: flutter pub get
       # - run: flutter test
       - run: flutter build apk --release
-      - name: Release apk
+      - name: artifacts apk
         uses: ncipollo/release-action@v1.5.0
         with:
           artifacts: "build/app/outputs/apk/release/*.apk"
