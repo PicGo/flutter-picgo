@@ -5,7 +5,7 @@ import 'package:flutter_picgo/model/github_config.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/routers/application.dart';
 import 'package:flutter_picgo/routers/routers.dart';
-import 'package:flutter_picgo/utils/shared_preferences.dart';
+import 'package:flutter_picgo/utils/image_upload.dart';
 import 'package:flutter_picgo/views/pb_setting_page/github_page/github_page_presenter.dart';
 import 'package:toast/toast.dart';
 
@@ -59,7 +59,7 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
                   icon: Icon(IconData(0xe6ab, fontFamily: 'iconfont')),
                   onPressed: () {
                     Application.router.navigateTo(context,
-                        Routes.settingPbGitubRepo.replaceFirst(':path', '/'),
+                        '${Routes.settingPbGitubRepo}?path=${Uri.encodeComponent("/")}',
                         transition: TransitionType.cupertino);
                   },
                 )
@@ -207,13 +207,8 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
 
   void _setDefaultPB() async {
     if (_formKey.currentState.validate()) {
-      var sp = await SpUtil.getInstance();
-      if (sp.getDefaultPB() == PBTypeKeys.github) {
-        Toast.show('已设为默认图床', context);
-      } else {
-        sp.setDefaultPB('github');
-        Toast.show('设置成功', context);
-      }
+      await ImageUpload.setDefaultPB(PBTypeKeys.github);
+      Toast.show('设置成功', context);
     }
   }
 
