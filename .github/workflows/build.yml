@@ -13,8 +13,8 @@ on:
 
 # 这个工作流程需要执行的任务
 jobs:
-  build:
-    name: build
+  process:
+    name: all process
     runs-on: ubuntu-latest
     # 这个任务的步骤
     steps:
@@ -32,7 +32,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
