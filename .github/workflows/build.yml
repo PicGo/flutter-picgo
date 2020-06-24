@@ -6,13 +6,15 @@ name: Build and Release apk
 
 # 工作流程触发的时机，这里是当一个版本标签推送到仓库时触发
 on:
-  release:
-    types: [published]
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*'
 
 # 这个工作流程需要执行的任务
 jobs:
-  process:
-    name: all process
+  build:
+    name: build
     runs-on: ubuntu-latest
     # 这个任务的步骤
     steps:
@@ -26,9 +28,20 @@ jobs:
       - run: flutter pub get
       # - run: flutter test
       - run: flutter build apk --release
-      - name: artifacts apk
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Artifacts Apk
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: "./build/app/outputs/apk/release/*.apk"
