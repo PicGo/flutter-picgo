@@ -24,7 +24,7 @@ jobs:
         with:
           channel: 'stable' # or: 'dev' or 'beta'
       - run: flutter pub get
-      - run: flutter test
+      # - run: flutter test
       - run: flutter build apk --release
       - name: Release apk
         uses: ncipollo/release-action@v1.5.0
