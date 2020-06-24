@@ -6,6 +6,7 @@ import 'package:flutter_picgo/routers/routers.dart';
 import 'package:flutter_picgo/views/pb_setting_page/github_page/github_repo_page_presenter.dart';
 import 'package:path/path.dart' as pathlib;
 import 'package:flutter/services.dart';
+import 'package:toast/toast.dart';
 
 class GithubRepoPage extends StatefulWidget {
   final String path;
@@ -106,6 +107,7 @@ class _GithubRepoPageState extends State<GithubRepoPage>
                     } else {
                       Clipboard.setData(
                           ClipboardData(text: contents[index].downloadUrl));
+                      Toast.show('已获取下载链接到剪切板', context);
                     }
                   },
                 ),
