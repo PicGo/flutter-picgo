@@ -1,13 +1,13 @@
 # main.yml
 # https://github.com/marketplace/actions/flutter-action
-# https://github.com/marketplace/actions/upload-a-release-asset
 # 工作流程的名字
 name: Build and Release apk
 
 # 工作流程触发的时机，这里是当一个版本标签推送到仓库时触发
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - v*
 
 # 这个工作流程需要执行的任务
 jobs:
@@ -27,8 +27,7 @@ jobs:
       # - run: flutter test
       - run: flutter build apk --release
       - name: artifacts apk
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        uses: ncipollo/release-action@v1.5.0
         with:
-          asset_path: "./build/app/outputs/apk/release/*.apk"
+          artifacts: "build/app/outputs/apk/release/*.apk"
+          token: ${{ secrets.TOKEN }}
