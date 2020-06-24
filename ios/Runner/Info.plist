@@ -22,10 +22,8 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSCameraUsageDescription</key>
-	<string>用于拍照获取照片上传到图床时访问相机</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>用于从相册选取照片上传到图床</string>
+	<string>图片上传功能需要访问您的相册，请允许</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
