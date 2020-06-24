@@ -52,7 +52,7 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
     return Scaffold(
       appBar: AppBar(
         title: Text('Github图床'),
-        actions: <Widget>[ 
+        actions: <Widget>[
           _configSuccess
               ? IconButton(
                   // 开启仓库
@@ -171,6 +171,15 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
                 ],
               ),
             ),
+            Center(
+              child: Text(
+                '请先保存后再进行连接测试',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.grey[400]
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -235,6 +244,7 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
   testConfigSuccess() {
     setState(() {
       this._configSuccess = true;
+      _presenter.doLoadConfig();
     });
     Toast.show("测试成功", context,
         duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
