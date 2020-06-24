@@ -6,3 +6,6 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 // Nothing To Do
+void main() {
+  print('Unit Test');
+}
