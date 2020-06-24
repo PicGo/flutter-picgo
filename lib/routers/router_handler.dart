@@ -63,7 +63,6 @@ var pbsettingGithubRepohandler = new Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     var path = params["path"]?.first;
     var prePath = params["prePath"]?.first;
-    print(prePath);
     return GithubRepoPage(
       path: (path == null || path == '') ? '/' : Uri.decodeComponent(path),
       prePath: (prePath == null || prePath == '') ? '' : Uri.decodeComponent(prePath),

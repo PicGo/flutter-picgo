@@ -30,7 +30,6 @@ class GithubRepoPagePresenter {
       }
       String realUrl = pathutil
           .joinAll(['repos', config.repositoryName, 'contents', prePath ?? '', path == '/' ? '' : path]);
-      print(realUrl);
       List result = await GithubNetUtils.get(realUrl, params: {"ref": config.branchName});
       var data = result.map((e){
         return GithubContent.fromJson(e);
