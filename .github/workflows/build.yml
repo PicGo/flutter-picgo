@@ -1,5 +1,5 @@
 # main.yml
-
+# https://github.com/marketplace/actions/flutter-action
 # 工作流程的名字
 name: Build and Release apk
 
@@ -16,26 +16,16 @@ jobs:
     runs-on: ubuntu-latest
     # 这个任务的步骤
     steps:
-      # 拉取项目代码
-      - uses: actions/checkout@v2
-      # 建立 java 环境
-      - name: Setup Java JDK
-        uses: actions/setup-java@v1.3.0
+      - uses: actions/checkout@v1
+      - uses: actions/setup-java@v1
         with:
-          java-version: "12.x"
-      # 建立 Flutter 环境
-      - name: Flutter action
-        uses: subosito/flutter-action@v1.1.1
+          java-version: '12.x'
+      - uses: subosito/flutter-action@v1
         with:
-          channel: "stable"
-          flutter-version: "1.17.x"
-      # 下载项目依赖
+          channel: 'stable' # or: 'dev' or 'beta'
       - run: flutter pub get
-      # 执行测试
-      # - run: flutter test
-      # 打包 APK
+      - run: flutter test
       - run: flutter build apk --release
-      # 发布到 Release
       - name: Release apk
         uses: ncipollo/release-action@v1.5.0
         with:
