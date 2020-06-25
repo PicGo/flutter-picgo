@@ -205,11 +205,11 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
   void _saveConfig() {
     if (_formKey.currentState.validate()) {
       var config = GithubConfig(
-          repositoryName: _repositoryNameController.text,
-          branchName: _branchNameController.text,
-          token: _tokenController.text,
-          storagePath: _storagePathController.text,
-          customDomain: _customDomainController.text);
+          repositoryName: _repositoryNameController.text.trim(),
+          branchName: _branchNameController.text.trim(),
+          token: _tokenController.text.trim(),
+          storagePath: _storagePathController.text.trim(),
+          customDomain: _customDomainController.text.trim());
       _presenter.doSaveConfig(config);
     }
   }

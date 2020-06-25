@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_picgo/api/github_api.dart';
 import 'package:flutter_picgo/model/github_config.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/resources/table_name_keys.dart';
 import 'package:flutter_picgo/utils/github_net.dart';
+import 'package:flutter_picgo/utils/image_upload.dart';
 import 'package:flutter_picgo/utils/sql.dart';
+import 'package:flutter_picgo/utils/strings.dart';
 
 abstract class GithubPageContract {
   loadConfig(GithubConfig config);
@@ -24,14 +27,10 @@ class GithubPagePresenter {
 
   doLoadConfig() async {
     try {
-      var sql = Sql.setTable(TABLE_NAME_PBSETTING);
-      var pbsettingRow =
-          (await sql.getBySql('type = ?', [PBTypeKeys.github]))?.first;
-      if (pbsettingRow != null &&
-          pbsettingRow["config"] != null &&
-          pbsettingRow["config"] != '') {
-        GithubConfig config =
-            GithubConfig.fromJson(json.decode(pbsettingRow["config"]));
+      var configStr = await ImageUpload.getPBConfig(PBTypeKeys.github);
+      debugPrint(configStr);
+      if (!isBlank(configStr)) {
+        GithubConfig config = GithubConfig.fromJson(json.decode(configStr));
         _view.loadConfig(config);
       }
     } catch (e) {
