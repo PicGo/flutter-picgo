@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_picgo/utils/image_upload.dart';
-import 'package:flutter_picgo/utils/strategy/github_image_upload.dart';
 import 'package:flutter_picgo/utils/strategy/upload_strategy_factory.dart';
 
 abstract class UploadPageContract {

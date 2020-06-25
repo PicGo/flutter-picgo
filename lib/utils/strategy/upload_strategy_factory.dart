@@ -1,5 +1,5 @@
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
-import 'package:flutter_picgo/utils/strategy/github_image_upload.dart';
+import 'package:flutter_picgo/utils/strategy/impl/github_image_upload.dart';
 import 'package:flutter_picgo/utils/strategy/image_upload_strategy.dart';
 import 'package:flutter_picgo/utils/strings.dart';
 

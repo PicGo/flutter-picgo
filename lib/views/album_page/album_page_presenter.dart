@@ -3,7 +3,7 @@ import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/resources/table_name_keys.dart';
 import 'package:flutter_picgo/utils/image_upload.dart';
 import 'package:flutter_picgo/utils/sql.dart';
-import 'package:flutter_picgo/utils/strategy/github_image_upload.dart';
+import 'package:flutter_picgo/utils/strategy/upload_strategy_factory.dart';
 
 abstract class AlbumPageContract {
   void loadUploadedImages(List<Uploaded> uploadeds);
@@ -34,10 +34,7 @@ class AlbumPagePresenter {
 
   doDeleteImage(Uploaded uploaded) async {
     try {
-      ImageUploadUtils uploader;
-      if (uploaded.type == PBTypeKeys.github) {
-        uploader = ImageUploadUtils(GithubImageUpload());
-      }
+      ImageUploadUtils uploader = ImageUploadUtils(UploadStrategyFactory.getUploadStrategy(uploaded.type));
       Uploaded up = await uploader.delete(uploaded);
       if (up != null) {
         _view.deleteSuccess(uploaded);
