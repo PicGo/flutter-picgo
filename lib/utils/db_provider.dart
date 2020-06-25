@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/resources/table_name_keys.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -76,13 +77,18 @@ class DbProvider {
             visible INTEGER DEFAULT 1
           )''');
     await db.transaction((txn) async {
+      // github图床
       await txn.rawInsert(
-          'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("github", "/setting/pb/github", "Github图床", NULL, 1)');
+          'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.github}", "/setting/pb/github", "Github图床", NULL, 1)');
+      // SM MS图床
+      await txn.rawInsert(
+          'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.github}", "/setting/pb/smms", "SM.MS", NULL, 1)');
     });
   }
 
   /// db版本升级
   _upgradeDbV1ToV2(Database db) async {
-    await db.execute('ALTER TABLE $TABLE_NAME_UPLOADED ADD COLUMN info varchar(255)');
+    await db.execute(
+        'ALTER TABLE $TABLE_NAME_UPLOADED ADD COLUMN info varchar(255)');
   }
 }
