@@ -11,6 +11,7 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
   bool isUploadedRename = false;
   bool isTimestampRename = false;
   bool isUploadedTip = false;
+  bool isForceDelete = false;
 
   @override
   void initState() {
@@ -23,6 +24,8 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
             u?.getBool(SharedPreferencesKeys.settingIsTimestampRename) ?? false;
         this.isUploadedTip =
             u?.getBool(SharedPreferencesKeys.settingIsUploadedTip) ?? false;
+        this.isUploadedTip =
+            u?.getBool(SharedPreferencesKeys.settingIsForceDelete) ?? false;
       });
     });
   }
@@ -76,6 +79,20 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
                         SharedPreferencesKeys.settingIsUploadedTip, value);
                     setState(() {
                       this.isUploadedTip = value;
+                      this._showTip(context);
+                    });
+                  },
+                ),
+              ),
+              ListTile(
+                title: Text('仅删除本地图片'),
+                trailing: CupertinoSwitch(
+                  value: this.isForceDelete,
+                  onChanged: (value) {
+                    this._save(
+                        SharedPreferencesKeys.settingIsForceDelete, value);
+                    setState(() {
+                      this.isForceDelete = value;
                       this._showTip(context);
                     });
                   },
