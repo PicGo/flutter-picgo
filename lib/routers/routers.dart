@@ -10,9 +10,14 @@ class Routes {
   static const String setting = '/setting';
   static const String upload = '/upload';
   static const String settingPb = '/setting/pb';
+  static const String settingPicgo = '/setting/picgo';
+  // --------- github ------------------
   static const String settingPbGithub = '/setting/pb/github';
   static const String settingPbGitubRepo = '/setting/pb/github/repo';
-  static const String settingPicgo = '/setting/picgo';
+  // -----------------------------------
+  // --------- github ------------------
+  static const String settingPbSMMS = '/setting/pb/smms';
+  // -----------------------------------
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = notfoundHandler;
@@ -23,8 +28,9 @@ class Routes {
     router.define(setting, handler: settingHandler);
     router.define(settingPb, handler: pbsettingHandler);
     router.define(settingPbGithub, handler: pbsettingGithubHandler);
-    router.define(settingPbGitubRepo, handler: pbsettingGithubRepohandler);
+    router.define(settingPbGitubRepo, handler: pbsettingGithubRepoHandler);
     router.define(settingPicgo, handler: picgosettinghandler);
+    router.define(settingPbSMMS, handler: pbsettingSMMSHandler);
   }
 
 }

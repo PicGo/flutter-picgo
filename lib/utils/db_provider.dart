@@ -80,9 +80,9 @@ class DbProvider {
       // github图床
       await txn.rawInsert(
           'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.github}", "/setting/pb/github", "Github图床", NULL, 1)');
-      // SM MS图床
+      // SM.MS图床
       await txn.rawInsert(
-          'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.github}", "/setting/pb/smms", "SM.MS", NULL, 1)');
+          'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.smms}", "/setting/pb/smms", "SM.MS图床", NULL, 1)');
     });
   }
 

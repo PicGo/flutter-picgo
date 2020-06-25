@@ -5,6 +5,7 @@ import 'package:flutter_picgo/views/home.dart';
 import 'package:flutter_picgo/views/album_page/album_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/github_page/github_repo_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/pb_setting_page.dart';
+import 'package:flutter_picgo/views/pb_setting_page/smms_page/smms_page.dart';
 import 'package:flutter_picgo/views/upload_page/upload_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/github_page/github_page.dart';
 import 'package:flutter_picgo/views/picgo_setting_page/picgo_setting_page.dart';
@@ -59,16 +60,23 @@ var pbsettingGithubHandler = new Handler(
 );
 
 // Github仓库列表页面
-var pbsettingGithubRepohandler = new Handler(
+var pbsettingGithubRepoHandler = new Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     var path = params["path"]?.first;
     var prePath = params["prePath"]?.first;
     return GithubRepoPage(
       path: (path == null || path == '') ? '/' : Uri.decodeComponent(path),
-      prePath: (prePath == null || prePath == '') ? '' : Uri.decodeComponent(prePath),
+      prePath: (prePath == null || prePath == '')
+          ? ''
+          : Uri.decodeComponent(prePath),
     );
   },
 );
+
+// SM.MS设置页面
+var pbsettingSMMSHandler = new Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) =>
+        SMMSPage());
 
 // picgo设置页面
 var picgosettinghandler = new Handler(
