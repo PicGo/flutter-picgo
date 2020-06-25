@@ -6,10 +6,10 @@ import 'package:flutter_picgo/utils/sql.dart';
 import 'package:flutter_picgo/utils/strategy/image_upload_strategy.dart';
 
 /// 图像上传类
-class ImageUpload {
+class ImageUploadUtils {
   ImageUploadStrategy _strategy;
 
-  ImageUpload(this._strategy);
+  ImageUploadUtils(this._strategy);
 
   Future<Uploaded> delete(Uploaded uploaded) {
     return _strategy.delete(uploaded);

@@ -20,7 +20,7 @@ class GithubRepoPagePresenter {
 
   doLoadContents(String path, String prePath) async {
     try {
-      String configStr = await ImageUpload.getPBConfig(PBTypeKeys.github);
+      String configStr = await ImageUploadUtils.getPBConfig(PBTypeKeys.github);
       GithubConfig config = GithubConfig.fromJson(json.decode(configStr));
       if (isBlank(config.branchName) ||
           isBlank(config.repositoryName) ||

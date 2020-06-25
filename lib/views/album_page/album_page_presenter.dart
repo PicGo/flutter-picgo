@@ -34,9 +34,9 @@ class AlbumPagePresenter {
 
   doDeleteImage(Uploaded uploaded) async {
     try {
-      ImageUpload uploader;
+      ImageUploadUtils uploader;
       if (uploaded.type == PBTypeKeys.github) {
-        uploader = ImageUpload(GithubImageUpload());
+        uploader = ImageUploadUtils(GithubImageUpload());
       }
       Uploaded up = await uploader.delete(uploaded);
       if (up != null) {

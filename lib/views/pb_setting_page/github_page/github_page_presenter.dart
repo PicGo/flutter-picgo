@@ -27,7 +27,7 @@ class GithubPagePresenter {
 
   doLoadConfig() async {
     try {
-      var configStr = await ImageUpload.getPBConfig(PBTypeKeys.github);
+      var configStr = await ImageUploadUtils.getPBConfig(PBTypeKeys.github);
       if (!isBlank(configStr)) {
         GithubConfig config = GithubConfig.fromJson(json.decode(configStr));
         _view.loadConfig(config);

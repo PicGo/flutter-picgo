@@ -216,7 +216,7 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
 
   void _setDefaultPB() async {
     if (_formKey.currentState.validate()) {
-      await ImageUpload.setDefaultPB(PBTypeKeys.github);
+      await ImageUploadUtils.setDefaultPB(PBTypeKeys.github);
       Toast.show('设置成功', context);
     }
   }

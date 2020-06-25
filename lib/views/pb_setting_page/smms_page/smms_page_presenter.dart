@@ -27,7 +27,7 @@ class SMMSPagePresenter {
 
   doLoadConfig() async {
     try {
-      var configStr = await ImageUpload.getPBConfig(PBTypeKeys.smms);
+      var configStr = await ImageUploadUtils.getPBConfig(PBTypeKeys.smms);
       var config = SMMSConfig.fromJson(json.decode(configStr));
       _view.loadConfigSuccess(config);
     } catch (e) {
@@ -39,7 +39,7 @@ class SMMSPagePresenter {
   doSaveConfig(SMMSConfig config) async {
     try {
       var raw =
-          await ImageUpload.savePBConfig(PBTypeKeys.smms, json.encode(config));
+          await ImageUploadUtils.savePBConfig(PBTypeKeys.smms, json.encode(config));
       if (raw > 0) {
         _view.saveConfigSuccess();
       } else {

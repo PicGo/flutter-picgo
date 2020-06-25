@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_picgo/utils/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
 class PicGoSettingPage extends StatefulWidget {
   @override
@@ -50,7 +51,7 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
                         SharedPreferencesKeys.settingIsUploadedRename, value);
                     setState(() {
                       this.isUploadedRename = value;
-                      this._showTip(context);
+                      this._showTip();
                     });
                   },
                 ),
@@ -62,10 +63,9 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
                   onChanged: (value) {
                     this._save(
                         SharedPreferencesKeys.settingIsTimestampRename, value);
-                    this._showTip(context);
                     setState(() {
                       this.isTimestampRename = value;
-                      this._showTip(context);
+                      this._showTip();
                     });
                   },
                 ),
@@ -79,7 +79,7 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
                         SharedPreferencesKeys.settingIsUploadedTip, value);
                     setState(() {
                       this.isUploadedTip = value;
-                      this._showTip(context);
+                      this._showTip();
                     });
                   },
                 ),
@@ -93,7 +93,7 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
                         SharedPreferencesKeys.settingIsForceDelete, value);
                     setState(() {
                       this.isForceDelete = value;
-                      this._showTip(context);
+                      this._showTip();
                     });
                   },
                 ),
@@ -113,11 +113,8 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
     );
   }
 
-  void _showTip(BuildContext context) {
-    final snackBar = SnackBar(
-      content: Text('保存成功'),
-    );
-    Scaffold.of(context).showSnackBar(snackBar);
+  void _showTip() {
+    Toast.show('保存成功', context);
   }
 
   void _save(String key, bool value) async {

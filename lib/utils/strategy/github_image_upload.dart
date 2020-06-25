@@ -18,7 +18,7 @@ class GithubImageUpload implements ImageUploadStrategy {
 
   @override
   Future<Uploaded> delete(Uploaded uploaded) async {
-    String infoStr = await ImageUpload.getUploadedItemInfo(uploaded.id);
+    String infoStr = await ImageUploadUtils.getUploadedItemInfo(uploaded.id);
     print(infoStr);
     GithubUploadedInfo info;
     try {
@@ -38,7 +38,7 @@ class GithubImageUpload implements ImageUploadStrategy {
       });
     }
     // 最后再删除本地项
-    await ImageUpload.deleteUploadedItem(uploaded);
+    await ImageUploadUtils.deleteUploadedItem(uploaded);
     return uploaded;
   }
 
@@ -75,7 +75,7 @@ class GithubImageUpload implements ImageUploadStrategy {
         var uploadedItem = Uploaded(-1, imageUrl, PBTypeKeys.github,
             info: json.encode(GithubUploadedInfo(
                 path: imagePath, sha: sha, branch: config.branchName, ownerrepo: config.repositoryName)));
-        await ImageUpload.saveUploadedItem(uploadedItem);
+        await ImageUploadUtils.saveUploadedItem(uploadedItem);
         return uploadedItem;
       } else {
         throw GithubError(error: '读取配置文件错误！请重试');

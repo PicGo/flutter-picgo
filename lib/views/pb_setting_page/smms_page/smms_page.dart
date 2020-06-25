@@ -122,7 +122,7 @@ class _SMMSPageState extends State<SMMSPage> implements SMMSPageContract {
 
   _setDefaultPB() {
     if (_formKey.currentState.validate()) {
-      ImageUpload.setDefaultPB(PBTypeKeys.smms);
+      ImageUploadUtils.setDefaultPB(PBTypeKeys.smms);
       Toast.show('设置成功', context);
     }
   }

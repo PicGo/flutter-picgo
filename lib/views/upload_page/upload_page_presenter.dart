@@ -17,8 +17,8 @@ class UploadPagePresenter {
   /// 读取当前默认图床
   doLoadCurrentPB() async {
     try {
-      String pbType = await ImageUpload.getDefaultPB();
-      String name = await ImageUpload.getPBName(pbType);
+      String pbType = await ImageUploadUtils.getDefaultPB();
+      String name = await ImageUploadUtils.getPBName(pbType);
       if (name != null) {
         _view.loadCurrentPB(name);
       }
@@ -29,9 +29,9 @@ class UploadPagePresenter {
   doUploadImage(File file, String renameImage) async {
     // 读取配置
     try {
-      String pbType = await ImageUpload.getDefaultPB();
+      String pbType = await ImageUploadUtils.getDefaultPB();
       if (pbType == 'github') {
-        var uploader = ImageUpload(GithubImageUpload());
+        var uploader = ImageUploadUtils(GithubImageUpload());
         var uploadedItem = await uploader.upload(file, renameImage);
         if (uploadedItem != null) {
           _view.uploadSuccess(uploadedItem.path);
