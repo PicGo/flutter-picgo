@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_picgo/utils/image_upload.dart';
 import 'package:flutter_picgo/utils/strategy/github_image_upload.dart';
+import 'package:flutter_picgo/utils/strategy/upload_strategy_factory.dart';
 
 abstract class UploadPageContract {
   loadCurrentPB(String pbname);
@@ -30,14 +31,13 @@ class UploadPagePresenter {
     // 读取配置
     try {
       String pbType = await ImageUploadUtils.getDefaultPB();
-      if (pbType == 'github') {
-        var uploader = ImageUploadUtils(GithubImageUpload());
-        var uploadedItem = await uploader.upload(file, renameImage);
-        if (uploadedItem != null) {
-          _view.uploadSuccess(uploadedItem.path);
-        } else {
-          _view.uploadFaild('上传失败！请重试');
-        }
+      var uploader =
+          ImageUploadUtils(UploadStrategyFactory.getUploadStrategy(pbType));
+      var uploadedItem = await uploader.upload(file, renameImage);
+      if (uploadedItem != null) {
+        _view.uploadSuccess(uploadedItem.path);
+      } else {
+        _view.uploadFaild('上传失败！请重试');
       }
     } on DioError catch (e) {
       debugPrint(e.toString());
@@ -47,5 +47,4 @@ class UploadPagePresenter {
       _view.uploadFaild('$e');
     }
   }
-
 }
