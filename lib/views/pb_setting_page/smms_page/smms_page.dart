@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_picgo/components/loading.dart';
 import 'package:flutter_picgo/model/smms_config.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/utils/image_upload.dart';
@@ -11,7 +12,6 @@ class SMMSPage extends StatefulWidget {
 }
 
 class _SMMSPageState extends State<SMMSPage> implements SMMSPageContract {
-
   TextEditingController _tokenController;
 
   SMMSConfig _config;
@@ -36,6 +36,15 @@ class _SMMSPageState extends State<SMMSPage> implements SMMSPageContract {
       appBar: AppBar(
         title: Text('SM.MS图床'),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            //连接测试
+            icon: Icon(IconData(0xe62a, fontFamily: 'iconfont')),
+            onPressed: () {
+              _testConfig();
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(10.0),
@@ -118,6 +127,18 @@ class _SMMSPageState extends State<SMMSPage> implements SMMSPageContract {
     }
   }
 
+  _testConfig() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return NetLoadingDialog(
+              loading: true,
+              requestCallBack: _presenter.doTestConfig(),
+              loadingText: "测试连接中...",
+              outsideDismiss: false);
+        });
+  }
+
   @override
   loadConfigFail(String msg) {
     Toast.show(msg, context);
@@ -138,5 +159,15 @@ class _SMMSPageState extends State<SMMSPage> implements SMMSPageContract {
   @override
   saveConfigSuccess() {
     Toast.show('保存成功', context);
+  }
+
+  @override
+  testConfigFail(String msg) {
+    Toast.show(msg, context);
+  }
+
+  @override
+  testConfigSuccess(String username) {
+    Toast.show('测试连接成功，您的SM.MS用户名为$username', context);
   }
 }
