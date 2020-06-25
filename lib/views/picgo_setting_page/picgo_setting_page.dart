@@ -25,7 +25,7 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
             u?.getBool(SharedPreferencesKeys.settingIsTimestampRename) ?? false;
         this.isUploadedTip =
             u?.getBool(SharedPreferencesKeys.settingIsUploadedTip) ?? false;
-        this.isUploadedTip =
+        this.isForceDelete =
             u?.getBool(SharedPreferencesKeys.settingIsForceDelete) ?? false;
       });
     });
@@ -51,7 +51,6 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
                         SharedPreferencesKeys.settingIsUploadedRename, value);
                     setState(() {
                       this.isUploadedRename = value;
-                      this._showTip();
                     });
                   },
                 ),
@@ -65,7 +64,6 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
                         SharedPreferencesKeys.settingIsTimestampRename, value);
                     setState(() {
                       this.isTimestampRename = value;
-                      this._showTip();
                     });
                   },
                 ),
@@ -79,7 +77,6 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
                         SharedPreferencesKeys.settingIsUploadedTip, value);
                     setState(() {
                       this.isUploadedTip = value;
-                      this._showTip();
                     });
                   },
                 ),
@@ -93,7 +90,6 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
                         SharedPreferencesKeys.settingIsForceDelete, value);
                     setState(() {
                       this.isForceDelete = value;
-                      this._showTip();
                     });
                   },
                 ),
@@ -113,12 +109,9 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
     );
   }
 
-  void _showTip() {
-    Toast.show('保存成功', context);
-  }
-
-  void _save(String key, bool value) async {
+  _save(String key, bool value) async {
     var instance = await SpUtil.getInstance();
     instance.putBool(key, value);
+    Toast.show('保存成功', context);
   }
 }
