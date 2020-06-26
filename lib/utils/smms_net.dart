@@ -10,8 +10,8 @@ import 'package:flutter_picgo/utils/sql.dart';
 const bool inProduction = const bool.fromEnvironment("dart.vm.product");
 
 Map<String, dynamic> optHeader = {
-  'accept-language': 'zh-cn',
-  'content-type': 'application/json'
+  // 'accept-language': 'zh-cn',
+  // 'content-type': 'application/json'
 };
 
 var dio = new Dio(BaseOptions(
@@ -43,6 +43,17 @@ class SMMSNetUtils {
   }
 
   static Future post(String url, Map<String, dynamic> data) async {
+    dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (RequestOptions options) async {
+        var token = await oAuth();
+        options.headers["Authorization"] = '$token';
+      },
+    ));
+    Response response = await dio.post(url, data: data);
+    return response.data;
+  }
+
+  static Future postForm(String url, FormData data) async {
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (RequestOptions options) async {
         var token = await oAuth();

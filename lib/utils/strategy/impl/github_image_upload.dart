@@ -19,7 +19,6 @@ class GithubImageUpload implements ImageUploadStrategy {
   @override
   Future<Uploaded> delete(Uploaded uploaded) async {
     String infoStr = await ImageUploadUtils.getUploadedItemInfo(uploaded.id);
-    print(infoStr);
     GithubUploadedInfo info;
     try {
       info = GithubUploadedInfo.fromJson(json.decode(infoStr));

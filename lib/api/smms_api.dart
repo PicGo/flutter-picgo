@@ -4,4 +4,8 @@ class SMMSApi {
 
   static const String GET_PROFILE = 'profile';
 
+  static const String UPLOAD = 'upload';
+
+  static const String DELETE = 'delete';
+
 }
