@@ -1,11 +1,46 @@
-class SMMSApi {
+import 'dart:convert';
 
+import 'package:dio/dio.dart';
+import 'package:flutter_picgo/model/smms_config.dart';
+import 'package:flutter_picgo/resources/pb_type_keys.dart';
+import 'package:flutter_picgo/utils/image_upload.dart';
+import 'package:flutter_picgo/utils/net.dart';
+import 'package:flutter_picgo/utils/strings.dart';
+
+class SMMSApi {
   static const String BASE_URL = 'https://sm.ms/api/v2/';
 
-  static const String GET_PROFILE = 'profile';
+  static Future getProfile() async {
+    var op = await oAuth();
+    Response res = await NetUtils.getInstance().post(BASE_URL + 'profile', options: op);
+    return res.data;
+  }
 
-  static const String UPLOAD = 'upload';
+  static Future upload(FormData formData) async {
+    var op = await oAuth();
+    Response res = await NetUtils.getInstance().post(BASE_URL + 'upload', data: formData, options: op);
+    return res.data;
+  }
 
-  static const String DELETE = 'delete';
+  static Future delete(String hash) async {
+    var op = await oAuth();
+    Response res = await NetUtils.getInstance().post(BASE_URL + 'delete/' + hash ?? '', options: op);
+    return res.data;
+  }
 
+  /// 获取配置中的Token
+  static Future<Options> oAuth() async {
+    try {
+      String configStr = await ImageUploadUtils.getPBConfig(PBTypeKeys.smms);
+      if (!isBlank(configStr)) {
+        SMMSConfig config = SMMSConfig.fromJson(json.decode(configStr));
+        if (config != null && !isBlank(config.token)) {
+          return Options(headers: {"Authorization": '${config.token}'});
+        }
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
 }

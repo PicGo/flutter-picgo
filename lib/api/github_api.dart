@@ -44,7 +44,7 @@ class GithubApi {
       String configStr = await ImageUploadUtils.getPBConfig(PBTypeKeys.github);
       if (!isBlank(configStr)) {
         GithubConfig config = GithubConfig.fromJson(json.decode(configStr));
-        if (config != null && config.token != null && config.token != '') {
+        if (config != null && !isBlank(config.token)) {
           return Options(headers: {"Authorization": 'Token ${config.token}'});
         }
       }

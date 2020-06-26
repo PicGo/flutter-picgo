@@ -4,7 +4,6 @@ import 'package:flutter_picgo/api/smms_api.dart';
 import 'package:flutter_picgo/model/smms_config.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/utils/image_upload.dart';
-import 'package:flutter_picgo/utils/smms_net.dart';
 
 abstract class SMMSPageContract {
   loadConfigSuccess(SMMSConfig config);
@@ -53,7 +52,7 @@ class SMMSPagePresenter {
 
   doTestConfig() async {
     try {
-      var result = json.decode((await SMMSNetUtils.post(SMMSApi.GET_PROFILE, null)));
+      var result = json.decode((await SMMSApi.getProfile()));
       if (result["success"]) {
         _view.testConfigSuccess(result["data"]["username"]);
       } else {
