@@ -36,8 +36,6 @@ class GithubImageUpload implements ImageUploadStrategy {
         "branch": info.branch
       });
     }
-    // 最后再删除本地项
-    await ImageUploadUtils.deleteUploadedItem(uploaded);
     return uploaded;
   }
 

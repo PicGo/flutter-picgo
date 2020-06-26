@@ -11,8 +11,23 @@ class ImageUploadUtils {
 
   ImageUploadUtils(this._strategy);
 
-  Future<Uploaded> delete(Uploaded uploaded) {
-    return _strategy.delete(uploaded);
+  Future<Uploaded> delete(Uploaded uploaded) async {
+    var sp = await SpUtil.getInstance();
+    var isForceDelete = sp.getBool(SharedPreferencesKeys.settingIsForceDelete) ?? false;
+    // 关闭仅关闭本地图片，则需要根据对应策略来删除图片
+    if (!isForceDelete) {
+      var upTmp = await _strategy.delete(uploaded);
+      if (upTmp == null) {
+        throw Exception('delete remote error');
+      }
+    }
+    // 删除本地项
+    var raw = await deleteUploadedItem(uploaded);
+    if (raw > 0) {
+      return uploaded;
+    } else {
+      throw Exception('delete local error');
+    }
   }
 
   Future<Uploaded> upload(File file, String renameImage) {

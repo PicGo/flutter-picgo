@@ -36,14 +36,12 @@ class SMMSImageUpload implements ImageUploadStrategy {
       var result = await SMMSNetUtils.get(realUrl);
       var resultmap = json.decode(result);
       if (resultmap["success"]) {
-        // 最后再删除本地项
-        await ImageUploadUtils.deleteUploadedItem(uploaded);
         return uploaded;
       } else {
         throw new SMMSError(error: resultmap['message']);
       }
     }
-    return null;
+    return uploaded;
   }
 }
 
