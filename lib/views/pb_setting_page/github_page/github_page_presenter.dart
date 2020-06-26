@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_picgo/api/github_api.dart';
 import 'package:flutter_picgo/model/github_config.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/resources/table_name_keys.dart';
-import 'package:flutter_picgo/utils/github_net.dart';
 import 'package:flutter_picgo/utils/image_upload.dart';
 import 'package:flutter_picgo/utils/sql.dart';
 import 'package:flutter_picgo/utils/strings.dart';
@@ -57,7 +55,7 @@ class GithubPagePresenter {
 
   doTestConfig() async {
     try {
-      await GithubNetUtils.get(GithubApi.BASE_URL);
+      await GithubApi.testToken();
       _view.testConfigSuccess();
     } on DioError catch (e) {
       _view.showError('$e');

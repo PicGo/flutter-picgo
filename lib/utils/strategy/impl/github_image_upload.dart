@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_picgo/api/github_api.dart';
 import 'package:flutter_picgo/model/github_config.dart';
 import 'package:flutter_picgo/model/uploaded.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/resources/table_name_keys.dart';
 import 'package:flutter_picgo/utils/encrypt.dart';
-import 'package:flutter_picgo/utils/github_net.dart';
 import 'package:flutter_picgo/utils/image_upload.dart';
 import 'package:flutter_picgo/utils/sql.dart';
 import 'dart:io';
@@ -30,7 +30,7 @@ class GithubImageUpload implements ImageUploadStrategy {
         'contents',
         info.path
       ]);
-      await GithubNetUtils.delete(realUrl, {
+      await GithubApi.deleteContent(realUrl, {
         "message": DELETE_COMMIT_MESSAGE,
         "sha": info.sha,
         "branch": info.branch
@@ -57,7 +57,7 @@ class GithubImageUpload implements ImageUploadStrategy {
           config.storagePath,
           renameImage
         ]);
-        var result = await GithubNetUtils.put(realUrl, {
+        var result = await GithubApi.putContent(realUrl, {
           "message": UPLOAD_COMMIT_MESSAGE,
           "content": await EncryptUtils.image2Base64(file.path),
           "branch": config.branchName
