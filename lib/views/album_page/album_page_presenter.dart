@@ -1,5 +1,4 @@
 import 'package:flutter_picgo/model/uploaded.dart';
-import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/resources/table_name_keys.dart';
 import 'package:flutter_picgo/utils/image_upload.dart';
 import 'package:flutter_picgo/utils/sql.dart';
