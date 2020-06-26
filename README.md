@@ -14,8 +14,6 @@ Flutter-PicGo: 一个用于快速上传图片并获取图片URL链接的**手机
 
 Flutter-PicGo 本体支持如下图床：
 
-现支持以下图床
-
 - GitHub
 - SM.MS
 
