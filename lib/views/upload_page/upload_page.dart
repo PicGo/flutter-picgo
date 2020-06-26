@@ -84,7 +84,7 @@ class _UploadPageState extends State<UploadPage> implements UploadPageContract {
           ),
           Container(
             child: Center(
-              child: Text('链接格式'),
+              child: Text('上传后点击按钮可获取的对应链接格式到剪切板'),
             ),
           ),
           SizedBox(height: 10),

@@ -23,7 +23,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>这使我们能够访问您的相册为您提供图片上传服务</string>
+	<string>允许Flutter-PicGo访问您的相册，用于上传照片、预览用此应用上传的照片。</string>
 	<key>NSContactsUsageDescription</key>
 	<string>Contacts access needed for a better experience.</string>
 	<key>NSCalendarsUsageDescription</key>
