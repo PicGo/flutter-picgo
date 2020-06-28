@@ -24,7 +24,7 @@ class SMMSApi {
 
   static Future delete(String hash) async {
     var op = await oAuth();
-    Response res = await NetUtils.getInstance().post(BASE_URL + 'delete/' + hash ?? '', options: op);
+    Response res = await NetUtils.getInstance().get(BASE_URL + 'delete/' + hash ?? '', options: op);
     return res.data;
   }
 
