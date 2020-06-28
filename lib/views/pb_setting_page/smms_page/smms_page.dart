@@ -128,15 +128,17 @@ class _SMMSPageState extends State<SMMSPage> implements SMMSPageContract {
   }
 
   _testConfig() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return NetLoadingDialog(
-              loading: true,
-              requestCallBack: _presenter.doTestConfig(),
-              loadingText: "测试连接中...",
-              outsideDismiss: false);
-        });
+    if (_formKey.currentState.validate()) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return NetLoadingDialog(
+                loading: true,
+                requestCallBack: _presenter.doTestConfig(),
+                loadingText: "测试连接中...",
+                outsideDismiss: false);
+          });
+    }
   }
 
   @override
