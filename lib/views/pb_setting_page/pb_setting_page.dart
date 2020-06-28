@@ -32,6 +32,12 @@ class _PBSettingPageState extends State<PBSettingPage>
       appBar: AppBar(
         title: Text('图床设置'),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(IconData(0xe617, fontFamily: 'iconfont')),
+            onPressed: null,
+          ),
+        ],
       ),
       body: this._settings == null
           ? Center(
