@@ -3,6 +3,7 @@
   <h1>Flutter-PicGo</h1>
   <blockquote>图片上传+管理新体验 </blockquote>
   <img src="https://img.shields.io/github/license/hackycy/flutter-picgo" alt="">
+  <img src="https://img.shields.io/github/workflow/status/hackycy/flutter-picgo/Build and Release apk" alt="">
   <img src="https://img.shields.io/github/repo-size/hackycy/flutter-picgo" alt="">
   <img src="https://img.shields.io/github/v/release/hackycy/flutter-picgo" alt="">
   <img src="https://img.shields.io/github/downloads/hackycy/flutter-picgo/total" alt="">
