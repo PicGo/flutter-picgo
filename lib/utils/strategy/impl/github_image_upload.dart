@@ -47,26 +47,26 @@ class GithubImageUpload implements ImageUploadStrategy {
             GithubConfig.fromJson(json.decode(configStr));
         String realUrl = path.joinAll([
           'repos',
-          config.repositoryName,
+          config.repo,
           'contents',
-          config.storagePath,
+          config.path,
           renameImage
         ]);
         var result = await GithubApi.putContent(realUrl, {
           "message": UPLOAD_COMMIT_MESSAGE,
           "content": await EncryptUtils.image2Base64(file.path),
-          "branch": config.branchName
+          "branch": config.branch
         });
         String imagePath = result["content"]["path"];
         String downloadUrl = result["content"]["download_url"];
         String sha = result["content"]["sha"];
         String imageUrl =
-            config.customDomain == null || config.customDomain == ''
+            isBlank(config.customUrl)
                 ? downloadUrl
-                : '${path.joinAll([config.customDomain, imagePath])}';
+                : '${path.joinAll([config.customUrl, imagePath])}';
         var uploadedItem = Uploaded(-1, imageUrl, PBTypeKeys.github,
             info: json.encode(GithubUploadedInfo(
-                path: imagePath, sha: sha, branch: config.branchName, ownerrepo: config.repositoryName)));
+                path: imagePath, sha: sha, branch: config.branch, ownerrepo: config.repo)));
         await ImageUploadUtils.saveUploadedItem(uploadedItem);
         return uploadedItem;
       } else {

@@ -1,32 +1,27 @@
 class GithubConfig {
-  String repositoryName;
-  String branchName;
+  String branch;
+  String customUrl;
+  String path;
+  String repo;
   String token;
-  String storagePath;
-  String customDomain;
 
-  GithubConfig(
-      {this.repositoryName,
-      this.branchName,
-      this.token,
-      this.storagePath,
-      this.customDomain});
+  GithubConfig({this.branch, this.customUrl, this.path, this.repo, this.token});
 
   GithubConfig.fromJson(Map<String, dynamic> json) {
-    repositoryName = json['repositoryName'];
-    branchName = json['branchName'];
+    branch = json['branch'];
+    customUrl = json['customUrl'];
+    path = json['path'];
+    repo = json['repo'];
     token = json['token'];
-    storagePath = json['storagePath'];
-    customDomain = json['customDomain'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['repositoryName'] = this.repositoryName;
-    data['branchName'] = this.branchName;
+    data['branch'] = this.branch;
+    data['customUrl'] = this.customUrl;
+    data['path'] = this.path;
+    data['repo'] = this.repo;
     data['token'] = this.token;
-    data['storagePath'] = this.storagePath;
-    data['customDomain'] = this.customDomain;
     return data;
   }
 }

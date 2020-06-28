@@ -41,14 +41,14 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
   @override
   Widget build(BuildContext context) {
     _repositoryNameController =
-        TextEditingController(text: _config?.repositoryName ?? '');
+        TextEditingController(text: _config?.repo ?? '');
     _branchNameController =
-        TextEditingController(text: _config?.branchName ?? '');
+        TextEditingController(text: _config?.branch ?? '');
     _tokenController = TextEditingController(text: _config?.token ?? '');
     _storagePathController =
-        TextEditingController(text: _config?.storagePath ?? '');
+        TextEditingController(text: _config?.path ?? '');
     _customDomainController =
-        TextEditingController(text: _config?.customDomain ?? '');
+        TextEditingController(text: _config?.customUrl ?? '');
     return Scaffold(
       appBar: AppBar(
         title: Text('Github图床'),
@@ -205,11 +205,11 @@ class _GithubPageState extends State<GithubPage> implements GithubPageContract {
   void _saveConfig() {
     if (_formKey.currentState.validate()) {
       var config = GithubConfig(
-          repositoryName: _repositoryNameController.text.trim(),
-          branchName: _branchNameController.text.trim(),
+          repo: _repositoryNameController.text.trim(),
+          branch: _branchNameController.text.trim(),
           token: _tokenController.text.trim(),
-          storagePath: _storagePathController.text.trim(),
-          customDomain: _customDomainController.text.trim());
+          path: _storagePathController.text.trim(),
+          customUrl: _customDomainController.text.trim());
       _presenter.doSaveConfig(config);
     }
   }

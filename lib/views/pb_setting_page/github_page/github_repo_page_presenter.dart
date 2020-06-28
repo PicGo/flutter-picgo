@@ -22,21 +22,21 @@ class GithubRepoPagePresenter {
     try {
       String configStr = await ImageUploadUtils.getPBConfig(PBTypeKeys.github);
       GithubConfig config = GithubConfig.fromJson(json.decode(configStr));
-      if (isBlank(config.branchName) ||
-          isBlank(config.repositoryName) ||
+      if (isBlank(config.branch) ||
+          isBlank(config.repo) ||
           isBlank(config.token)) {
         _view.loadError('读取配置错误！');
         return;
       }
       String realUrl = pathutil.joinAll([
         'repos',
-        config.repositoryName,
+        config.repo,
         'contents',
         prePath ?? '',
         path == '/' ? '' : path
       ]);
       List result =
-          await GithubApi.getContents(realUrl, {"ref": config.branchName});
+          await GithubApi.getContents(realUrl, {"ref": config.branch});
       var data = result.map((e) {
         return GithubContent.fromJson(e);
       }).toList();
