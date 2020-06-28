@@ -39,9 +39,7 @@ class GithubPagePresenter {
     if (config != null) {
       try {
         String jsondata = json.encode(config);
-        var sql = Sql.setTable(TABLE_NAME_PBSETTING);
-        int raw = await sql.rawUpdate(
-            'config = ? WHERE type = ?', [jsondata, PBTypeKeys.github]);
+        int raw = await ImageUploadUtils.savePBConfig(PBTypeKeys.github, jsondata);
         if (raw == 1) {
           _view.saveConfigSuccess();
         } else {
