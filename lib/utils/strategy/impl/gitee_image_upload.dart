@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter_picgo/api/gitee_api.dart';
 import 'package:flutter_picgo/model/gitee_config.dart';
 import 'package:flutter_picgo/model/uploaded.dart';
@@ -41,7 +42,8 @@ class GiteeImageUpload implements ImageUploadStrategy {
 
   @override
   Future<Uploaded> upload(File file, String renameImage) async {
-    String configStr = await ImageUploadUtils.getPBConfig(PBTypeKeys.gitee);
+    try {
+      String configStr = await ImageUploadUtils.getPBConfig(PBTypeKeys.gitee);
     if (isBlank(configStr)) {
       throw GiteeError(error: '读取配置文件错误！请重试');
     }
@@ -74,6 +76,14 @@ class GiteeImageUpload implements ImageUploadStrategy {
             ownerrepo: '${config.owner}/${config.repo}')));
     await ImageUploadUtils.saveUploadedItem(uploadedItem);
     return uploadedItem;
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.RESPONSE &&
+          e.error.toString().indexOf('400') > 0) {
+        throw GiteeError(error: '文件已存在！');
+      } else {
+        throw e;
+      }
+    } 
   }
 }
 
