@@ -4,6 +4,7 @@ import 'package:flutter_picgo/api/smms_api.dart';
 import 'package:flutter_picgo/model/smms_config.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/utils/image_upload.dart';
+import 'package:flutter_picgo/utils/strings.dart';
 
 abstract class SMMSPageContract {
   loadConfigSuccess(SMMSConfig config);
@@ -27,18 +28,19 @@ class SMMSPagePresenter {
   doLoadConfig() async {
     try {
       var configStr = await ImageUploadUtils.getPBConfig(PBTypeKeys.smms);
-      var config = SMMSConfig.fromJson(json.decode(configStr));
-      _view.loadConfigSuccess(config);
+      if (!isBlank(configStr)) {
+        var config = SMMSConfig.fromJson(json.decode(configStr));
+        _view.loadConfigSuccess(config);
+      }
     } catch (e) {
-      debugPrint(e);
       _view.loadConfigFail('$e');
     }
   }
 
   doSaveConfig(SMMSConfig config) async {
     try {
-      var raw =
-          await ImageUploadUtils.savePBConfig(PBTypeKeys.smms, json.encode(config));
+      var raw = await ImageUploadUtils.savePBConfig(
+          PBTypeKeys.smms, json.encode(config));
       if (raw > 0) {
         _view.saveConfigSuccess();
       } else {
