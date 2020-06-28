@@ -5,7 +5,6 @@ import 'package:flutter_picgo/model/uploaded.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/utils/image_upload.dart';
 import 'dart:io';
-import 'package:path/path.dart' as path;
 import 'package:flutter_picgo/utils/strategy/image_upload_strategy.dart';
 import 'package:flutter_picgo/utils/strings.dart';
 
