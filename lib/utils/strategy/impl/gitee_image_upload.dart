@@ -61,7 +61,6 @@ class GiteeImageUpload implements ImageUploadStrategy {
       "content": await EncryptUtils.image2Base64(file.path),
       "branch": config.branch
     });
-    print(result);
     String imagePath = result["content"]["path"];
     String downloadUrl = result["content"]["download_url"];
     String sha = result["content"]["sha"];
