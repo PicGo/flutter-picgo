@@ -43,89 +43,117 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
         },
       ),
       body: RefreshIndicator(
-        onRefresh: _onRefresh,
-        child: GridView.builder(
-          padding: EdgeInsets.all(2),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, //每行三列
-              // crossAxisSpacing: 2,
-              // mainAxisSpacing: 2,
-              childAspectRatio: 1.0 //显示区域宽高相等
-              ),
-          itemCount: _uploadeds?.length ?? 0,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              onTap: () {
-                handleTap(index);
-              },
-              onLongPress: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('确定删除吗'),
-                        content: Text('删除后无法恢复'),
-                        actions: <Widget>[
-                          FlatButton(
-                            child: Text('确定'),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              showDialog(
-                                  context: context, builder: (context) {
-                                    return NetLoadingDialog(
-                                      outsideDismiss: false,
-                                      loading: true,
-                                      loadingText: "删除中...",
-                                      requestCallBack: _presenter.doDeleteImage(_uploadeds[index]),
-                                    );
-                                  });
-                            },
-                          ),
-                        ],
-                      );
-                    });
-              },
-              child: Container(
-                height: 150,
-                child: Card(
-                  clipBehavior: Clip.antiAlias,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadiusDirectional.circular(8)),
-                  child: CachedNetworkImage(
-                    imageUrl: _uploadeds[index].path,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Center(
-                      child: Container(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(),
+          onRefresh: _onRefresh,
+          child: _uploadeds.length > 0 ? albumView() : emptyView()),
+    );
+  }
+
+  Widget albumView() {
+    return GridView.builder(
+      padding: EdgeInsets.all(2),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, //每行三列
+          // crossAxisSpacing: 2,
+          // mainAxisSpacing: 2,
+          childAspectRatio: 1.0 //显示区域宽高相等
+          ),
+      itemCount: _uploadeds?.length ?? 0,
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          onTap: () {
+            handleTap(index);
+          },
+          onLongPress: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('确定删除吗'),
+                    content: Text('删除后无法恢复'),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text('确定'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return NetLoadingDialog(
+                                  outsideDismiss: false,
+                                  loading: true,
+                                  loadingText: "删除中...",
+                                  requestCallBack: _presenter
+                                      .doDeleteImage(_uploadeds[index]),
+                                );
+                              });
+                        },
                       ),
-                    ),
-                    errorWidget: (context, url, error) {
-                      return Container(
-                        color: Colors.grey,
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(Icons.error),
-                              SizedBox(height: 2),
-                              Text(
-                                '加载失败',
-                                style: TextStyle(fontSize: 12),
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    },
+                    ],
+                  );
+                });
+          },
+          child: Container(
+            height: 150,
+            child: Card(
+              clipBehavior: Clip.antiAlias,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadiusDirectional.circular(8)),
+              child: CachedNetworkImage(
+                imageUrl: _uploadeds[index].path,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => Center(
+                  child: Container(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(),
                   ),
                 ),
+                errorWidget: (context, url, error) {
+                  return Container(
+                    color: Colors.grey,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(Icons.error),
+                          SizedBox(height: 2),
+                          Text(
+                            '加载失败',
+                            style: TextStyle(fontSize: 12),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
-            );
-          },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget emptyView() {
+    return ListView(
+      children: <Widget>[
+        SizedBox(height: 100),
+        Center(
+          child: Container(
+            width: 200,
+            height: 200,
+            child: Image.asset('assets/images/icon_empty_album.png',
+                fit: BoxFit.fill),
+          ),
         ),
-      ),
+        SizedBox(height: 10),
+        Center(
+          child: Text(
+            '相册暂无任何照片，快点击右下角按钮去上传吧',
+            style: TextStyle(color: Colors.grey),
+          ),
+        )
+      ],
     );
   }
 
