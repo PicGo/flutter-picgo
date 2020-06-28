@@ -22,7 +22,7 @@ Flutter-PicGo 本体支持如下图床：
 
 # 应用截图
 
-![](https://github.static.si-yee.com/picgo/1592895235750.jpg)
+![](https://github.static.si-yee.com/image_picker_82452E23-BE11-4712-BFBA-8E93038DB410-3851-00000340B21CCF62.png)
 
 # 下载安装
 
