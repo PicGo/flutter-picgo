@@ -17,6 +17,8 @@ Flutter-PicGo 本体支持如下图床：
 - GitHub
 - SM.MS
 
+> 开发进度可以查看 Projects，会同步更新开发进度
+
 # 应用截图
 
 ![](https://github.static.si-yee.com/picgo/1592895235750.jpg)
