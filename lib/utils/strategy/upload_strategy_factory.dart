@@ -1,4 +1,5 @@
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
+import 'package:flutter_picgo/utils/strategy/impl/gitee_image_upload.dart';
 import 'package:flutter_picgo/utils/strategy/impl/github_image_upload.dart';
 import 'package:flutter_picgo/utils/strategy/image_upload_strategy.dart';
 import 'package:flutter_picgo/utils/strategy/impl/smms_image_upload.dart';
@@ -14,6 +15,8 @@ class UploadStrategyFactory {
       return GithubImageUpload();
     } else if (type == PBTypeKeys.smms) {
       return SMMSImageUpload();
+    } else if (type == PBTypeKeys.gitee) {
+      return GiteeImageUpload();
     }
     return null;
   }

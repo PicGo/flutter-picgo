@@ -4,4 +4,6 @@ class PBTypeKeys {
 
   static const smms = 'smms';
 
+  static const gitee = 'gitee';
+
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_picgo/views/home.dart';
 import 'package:flutter_picgo/views/album_page/album_page.dart';
+import 'package:flutter_picgo/views/pb_setting_page/gitee_page/gitee_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/github_page/github_repo_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/pb_setting_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/smms_page/smms_page.dart';
@@ -77,6 +78,11 @@ var pbsettingGithubRepoHandler = new Handler(
 var pbsettingSMMSHandler = new Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) =>
         SMMSPage());
+
+// Gitee设置页面
+var pbsettingGiteeHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) => GiteePage(),
+);
 
 // picgo设置页面
 var picgosettinghandler = new Handler(

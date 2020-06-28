@@ -15,8 +15,11 @@ class Routes {
   static const String settingPbGithub = '/setting/pb/github';
   static const String settingPbGitubRepo = '/setting/pb/github/repo';
   // -----------------------------------
-  // --------- github ------------------
+  // --------- smms ------------------
   static const String settingPbSMMS = '/setting/pb/smms';
+  // -----------------------------------
+  // --------- gitee ------------------
+  static const String settingPbGitee = '/setting/pb/gitee';
   // -----------------------------------
 
   static void configureRoutes(Router router) {
@@ -31,6 +34,7 @@ class Routes {
     router.define(settingPbGitubRepo, handler: pbsettingGithubRepoHandler);
     router.define(settingPicgo, handler: picgosettinghandler);
     router.define(settingPbSMMS, handler: pbsettingSMMSHandler);
+    router.define(settingPbGitee, handler: pbsettingGiteeHandler);
   }
 
 }

@@ -3,10 +3,9 @@ import 'package:flutter_picgo/api/github_api.dart';
 import 'package:flutter_picgo/model/github_config.dart';
 import 'package:flutter_picgo/model/uploaded.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
-import 'package:flutter_picgo/resources/table_name_keys.dart';
 import 'package:flutter_picgo/utils/encrypt.dart';
 import 'package:flutter_picgo/utils/image_upload.dart';
-import 'package:flutter_picgo/utils/sql.dart';
+import 'package:flutter_picgo/utils/strings.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:path/path.dart' as path;
@@ -42,14 +41,10 @@ class GithubImageUpload implements ImageUploadStrategy {
   @override
   Future<Uploaded> upload(File file, String renameImage) async {
     try {
-      var sql = Sql.setTable(TABLE_NAME_PBSETTING);
-      var pbsettingRow =
-          (await sql.getBySql('type = ?', [PBTypeKeys.github]))?.first;
-      if (pbsettingRow != null &&
-          pbsettingRow["config"] != null &&
-          pbsettingRow["config"] != '') {
+      String configStr = await ImageUploadUtils.getPBConfig(PBTypeKeys.github);
+      if (!isBlank(configStr)) {
         GithubConfig config =
-            GithubConfig.fromJson(json.decode(pbsettingRow["config"]));
+            GithubConfig.fromJson(json.decode(configStr));
         String realUrl = path.joinAll([
           'repos',
           config.repositoryName,
