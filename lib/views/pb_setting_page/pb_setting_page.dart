@@ -53,6 +53,7 @@ class _PBSettingPageState extends State<PBSettingPage>
                         FlatButton(
                           child: Text('已了解，去扫描'),
                           onPressed: () {
+                            Navigator.pop(context);
                             _scanCode();
                           },
                         )
