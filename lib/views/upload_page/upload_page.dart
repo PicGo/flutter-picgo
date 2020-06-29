@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_picgo/components/loading.dart';
+import 'package:flutter_picgo/utils/permission.dart';
 import 'package:flutter_picgo/utils/shared_preferences.dart';
 import 'package:flutter_picgo/views/upload_page/upload_page_presenter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,7 +14,9 @@ class UploadPage extends StatefulWidget {
   _UploadPageState createState() => _UploadPageState();
 }
 
-class _UploadPageState extends State<UploadPage> implements UploadPageContract {
+class _UploadPageState extends State<UploadPage>
+    with WidgetsBindingObserver
+    implements UploadPageContract {
   String _title = '';
   String _previewPath = '';
   String _renameImage;
@@ -21,6 +24,7 @@ class _UploadPageState extends State<UploadPage> implements UploadPageContract {
   TextEditingController _controller;
   int _selectButton = 1;
 
+  // 按钮id
   static const MARKDOWN = 1;
   static const HTML = 2;
   static const URL = 3;
@@ -35,6 +39,7 @@ class _UploadPageState extends State<UploadPage> implements UploadPageContract {
   @override
   void initState() {
     super.initState();
+    // 加载当前图床的名称
     _presenter.doLoadCurrentPB();
   }
 
@@ -45,149 +50,143 @@ class _UploadPageState extends State<UploadPage> implements UploadPageContract {
         title: Text(this._title),
         centerTitle: true,
       ),
-      body: ListView(
-        children: <Widget>[
-          Container(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            margin: EdgeInsets.all(10.0),
-            height: 250.0,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Theme.of(context).accentColor,
-              ),
-            ),
-            child: Stack(
-              children: <Widget>[
-                SizedBox.expand(
-                  child: this._previewPath == ''
-                      ? Center()
-                      : Image.file(new File(this._previewPath),
-                          fit: BoxFit.cover),
-                ),
-                SizedBox.expand(
-                  child: IconButton(
-                    icon: Icon(
-                      IconData(0xe639, fontFamily: 'iconfont'),
-                      size: 50,
-                      color: Theme.of(context).accentColor,
-                    ),
-                    highlightColor: Colors.transparent,
-                    splashColor: Colors.transparent,
-                    tooltip: "上传",
-                    onPressed: () {
-                      _getImage();
-                    },
-                  ),
-                ),
-              ],
+      body: uploadView(context),
+    );
+  }
+
+  Widget uploadView(BuildContext context) {
+    return ListView(
+      children: <Widget>[
+        Container(
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          margin: EdgeInsets.all(10.0),
+          height: 250.0,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).accentColor,
             ),
           ),
-          Container(
-            child: Center(
-              child: Text('上传后点击按钮可获取的对应链接格式到剪切板'),
-            ),
-          ),
-          SizedBox(height: 10),
-          Row(
+          child: Stack(
             children: <Widget>[
-              SizedBox(width: 10),
-              Expanded(
-                child: RaisedButton(
-                  color: this._selectButton == MARKDOWN
-                      ? Theme.of(context).accentColor
-                      : Colors.white,
-                  textColor: this._selectButton == MARKDOWN
-                      ? Colors.white
-                      : Colors.black,
-                  child: Text('Markdown'),
+              SizedBox.expand(
+                child: this._previewPath == ''
+                    ? Center()
+                    : Image.file(new File(this._previewPath),
+                        fit: BoxFit.cover),
+              ),
+              SizedBox.expand(
+                child: IconButton(
+                  icon: Icon(
+                    IconData(0xe639, fontFamily: 'iconfont'),
+                    size: 50,
+                    color: Theme.of(context).accentColor,
+                  ),
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  tooltip: "上传",
                   onPressed: () {
-                    setState(() {
-                      this._selectButton = MARKDOWN;
-                      setClipData();
-                    });
+                    _getImage();
                   },
                 ),
               ),
-              Expanded(
-                child: RaisedButton(
-                  color: this._selectButton == HTML
-                      ? Theme.of(context).accentColor
-                      : Colors.white,
-                  textColor:
-                      this._selectButton == HTML ? Colors.white : Colors.black,
-                  child: Text('HTML'),
-                  onPressed: () {
-                    setState(() {
-                      this._selectButton = HTML;
-                      setClipData();
-                    });
-                  },
-                ),
-              ),
-              Expanded(
-                child: RaisedButton(
-                  color: this._selectButton == URL
-                      ? Theme.of(context).accentColor
-                      : Colors.white,
-                  textColor:
-                      this._selectButton == URL ? Colors.white : Colors.black,
-                  child: Text('URL'),
-                  onPressed: () {
-                    setState(() {
-                      this._selectButton = URL;
-                      setClipData();
-                    });
-                  },
-                ),
-              ),
-              SizedBox(width: 10),
             ],
           ),
-          SizedBox(height: 10),
-          Container(
-            height: 40,
-            child: Padding(
-              padding: EdgeInsets.only(left: 10, right: 10),
+        ),
+        Container(
+          child: Center(
+            child: Text('图片预览'),
+          ),
+        ),
+        SizedBox(height: 10),
+        Row(
+          children: <Widget>[
+            SizedBox(width: 10),
+            Expanded(
               child: RaisedButton(
-                color: Theme.of(context).accentColor,
-                textColor: Colors.white,
-                child: Text('上传'),
+                color: this._selectButton == MARKDOWN
+                    ? Theme.of(context).accentColor
+                    : Colors.white,
+                textColor: this._selectButton == MARKDOWN
+                    ? Colors.white
+                    : Colors.black,
+                child: Text('Markdown'),
                 onPressed: () {
-                  if (this._previewPath == null || this._previewPath == '') {
-                    _getImage();
-                    return;
-                  }
-                  _uploadImage();
+                  setState(() {
+                    this._selectButton = MARKDOWN;
+                    setClipData();
+                  });
                 },
               ),
             ),
-          )
-        ],
-      ),
+            Expanded(
+              child: RaisedButton(
+                color: this._selectButton == HTML
+                    ? Theme.of(context).accentColor
+                    : Colors.white,
+                textColor:
+                    this._selectButton == HTML ? Colors.white : Colors.black,
+                child: Text('HTML'),
+                onPressed: () {
+                  setState(() {
+                    this._selectButton = HTML;
+                    setClipData();
+                  });
+                },
+              ),
+            ),
+            Expanded(
+              child: RaisedButton(
+                color: this._selectButton == URL
+                    ? Theme.of(context).accentColor
+                    : Colors.white,
+                textColor:
+                    this._selectButton == URL ? Colors.white : Colors.black,
+                child: Text('URL'),
+                onPressed: () {
+                  setState(() {
+                    this._selectButton = URL;
+                    setClipData();
+                  });
+                },
+              ),
+            ),
+            SizedBox(width: 10),
+          ],
+        ),
+        SizedBox(height: 10),
+        Container(
+          child: Center(
+            child: Text('点击上传后可获取的对应选中的链接格式到剪切板，可点击切换', maxLines: 2),
+          ),
+        ),
+        SizedBox(height: 10),
+        Container(
+          height: 40,
+          child: Padding(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            child: RaisedButton(
+              color: Theme.of(context).accentColor,
+              textColor: Colors.white,
+              child: Text('上传'),
+              onPressed: () {
+                if (this._previewPath == null || this._previewPath == '') {
+                  _getImage();
+                  return;
+                }
+                _uploadImage();
+              },
+            ),
+          ),
+        )
+      ],
     );
   }
 
   /// 获取图片
   _getImage() async {
-    // 检测权限
-    var status = await Permission.photos.request();
+    var status = await PermissionUtils.requestPhotos();
     if (status == PermissionStatus.denied) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text('警告'),
-              content: Text('无法获取照片，请检查是否给予对应权限'),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('去设置'),
-                  onPressed: () {
-                    openAppSettings();
-                  },
-                ),
-              ],
-            );
-          });
+      PermissionUtils.showPermissionDialog(context);
       return;
     }
     // 获取图片
