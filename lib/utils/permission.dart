@@ -8,13 +8,18 @@ class PermissionUtils {
     return status;
   }
 
-  static showPermissionDialog(BuildContext context) {
+  static Future requestCemera() async {
+    var status = await Permission.camera.request();
+    return status;
+  }
+
+  static showPermissionDialog(BuildContext context, {text: '无法正常访问，因为没有权限'}) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text('警告'),
-            content: Text('无法正常访问照片，因为没有权限'),
+            content: Text(text),
             actions: <Widget>[
               FlatButton(
                 child: Text('去设置'),

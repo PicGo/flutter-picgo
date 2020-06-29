@@ -1,8 +1,11 @@
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picgo/model/pb_setting.dart';
 import 'package:flutter_picgo/routers/application.dart';
+import 'package:flutter_picgo/utils/permission.dart';
 import 'package:flutter_picgo/views/pb_setting_page/pb_setting_presenter.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class PBSettingPage extends StatefulWidget {
   @override
@@ -35,7 +38,9 @@ class _PBSettingPageState extends State<PBSettingPage>
         actions: <Widget>[
           IconButton(
             icon: Icon(IconData(0xe685, fontFamily: 'iconfont')),
-            onPressed: () {},
+            onPressed: () {
+              _scanCode();
+            },
           ),
         ],
       ),
@@ -66,6 +71,19 @@ class _PBSettingPageState extends State<PBSettingPage>
               },
             ),
     );
+  }
+
+  _scanCode() async {
+    var status = await PermissionUtils.requestCemera();
+    if (status == PermissionStatus.granted) {
+      var result = await BarcodeScanner.scan();
+      print(result.type); // The result type (barcode, cancelled, failed)
+      print(result.rawContent); // The barcode content
+      print(result.format); // The barcode format (as enum)
+      print(result.formatNote); //
+    } else {
+      PermissionUtils.showPermissionDialog(context);
+    }
   }
 
   @override
