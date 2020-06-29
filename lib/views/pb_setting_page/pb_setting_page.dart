@@ -40,8 +40,25 @@ class _PBSettingPageState extends State<PBSettingPage>
         actions: <Widget>[
           IconButton(
             icon: Icon(IconData(0xe685, fontFamily: 'iconfont')),
-            onPressed: () {
-              _scanCode();
+            onPressed: () async {
+              await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text('关于使用二维码扫描说明'),
+                      content: Text('该功能是为了方便使用了PicGo PC端的用户。\n\n' +
+                          '在PC端已经配置好的用户可以将PicGo的配置文件转换成二维码。\n\n' +
+                          '然后使用Flutter-PicGo直接扫描即可进行配置转换。'),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('已了解，去扫描'),
+                          onPressed: () {
+                            _scanCode();
+                          },
+                        )
+                      ],
+                    );
+                  });
             },
           ),
         ],
