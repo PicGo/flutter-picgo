@@ -21,6 +21,11 @@ Flutter-PicGo 本体支持如下图床：
 
 > 开发进度可以查看 Projects，会同步更新开发进度
 
+# 特色功能
+
+- 长按相册列表项可同步删除图床下的图片，也可配置仅删除本地列表
+- 支持扫描二维码将PicGo配置文件转换成Flutter-PicGo的配置
+
 # 应用截图
 
 ![](https://github.static.si-yee.com/image_picker_82452E23-BE11-4712-BFBA-8E93038DB410-3851-00000340B21CCF62.png)
