@@ -13,7 +13,8 @@ class ImageUploadUtils {
 
   Future<Uploaded> delete(Uploaded uploaded) async {
     var sp = await SpUtil.getInstance();
-    var isForceDelete = sp.getBool(SharedPreferencesKeys.settingIsForceDelete) ?? false;
+    var isForceDelete =
+        sp.getBool(SharedPreferencesKeys.settingIsForceDelete) ?? false;
     // 关闭仅关闭本地图片，则需要根据对应策略来删除图片
     if (!isForceDelete) {
       var upTmp = await _strategy.delete(uploaded);
@@ -95,5 +96,4 @@ class ImageUploadUtils {
     var sql = Sql.setTable(TABLE_NAME_UPLOADED);
     return (await sql.getBySql('id = ?', [id]))?.first["info"];
   }
-
 }
