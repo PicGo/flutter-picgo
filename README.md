@@ -34,7 +34,9 @@ Flutter-PicGo 本体支持如下图床：
 
 点击此处下载[应用](https://github.com/hackycy/flutter-picgo/releases)。
 
-Android版直接下载apk安装包即可。
+Android版直接下载apk安装包或扫码
+
+![](https://www.pgyer.com/app/qrcode/flutter-picgo)
 
 iOS版本暂未上架。
 
