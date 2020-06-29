@@ -1,11 +1,13 @@
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_picgo/components/loading.dart';
 import 'package:flutter_picgo/model/pb_setting.dart';
 import 'package:flutter_picgo/routers/application.dart';
 import 'package:flutter_picgo/utils/permission.dart';
 import 'package:flutter_picgo/views/pb_setting_page/pb_setting_presenter.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:toast/toast.dart';
 
 class PBSettingPage extends StatefulWidget {
   @override
@@ -73,14 +75,23 @@ class _PBSettingPageState extends State<PBSettingPage>
     );
   }
 
+  /// 扫描二维码
   _scanCode() async {
     var status = await PermissionUtils.requestCemera();
     if (status == PermissionStatus.granted) {
       var result = await BarcodeScanner.scan();
-      print(result.type); // The result type (barcode, cancelled, failed)
-      print(result.rawContent); // The barcode content
-      print(result.format); // The barcode format (as enum)
-      print(result.formatNote); //
+      if (result.type == ResultType.Barcode) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return NetLoadingDialog(
+                loading: true,
+                outsideDismiss: false,
+                loadingText: '转换中...',
+                requestCallBack: _presenter.doTransferJson(result.rawContent),
+              );
+            });
+      }
     } else {
       PermissionUtils.showPermissionDialog(context);
     }
@@ -98,5 +109,15 @@ class _PBSettingPageState extends State<PBSettingPage>
     setState(() {
       this._settings = settings;
     });
+  }
+
+  @override
+  void transferError(String e) {
+    Toast.show(e, context, duration: Toast.LENGTH_LONG);
+  }
+
+  @override
+  void transferSuccess() {
+    Toast.show('配置已转换', context);
   }
 }
