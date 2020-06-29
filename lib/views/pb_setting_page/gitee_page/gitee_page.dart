@@ -117,12 +117,12 @@ class _GiteePageState extends State<GiteePage> implements GiteePageContract {
                       hintText: "例如 master",
                     ),
                     keyboardType: TextInputType.text,
-                    validator: (value) {
-                      if (value == null || value == '') {
-                        return '分支名不能为空';
-                      }
-                      return null;
-                    },
+                    // validator: (value) {
+                    //   if (value == null || value == '') {
+                    //     return '分支名不能为空';
+                    //   }
+                    //   return null;
+                    // },
                   ),
                   SizedBox(height: 5),
                   TextFormField(
