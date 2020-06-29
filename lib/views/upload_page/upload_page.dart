@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_picgo/components/loading.dart';
 import 'package:flutter_picgo/utils/permission.dart';
 import 'package:flutter_picgo/utils/shared_preferences.dart';
+import 'package:flutter_picgo/utils/strings.dart';
 import 'package:flutter_picgo/views/upload_page/upload_page_presenter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -94,7 +95,13 @@ class _UploadPageState extends State<UploadPage>
         ),
         Container(
           child: Center(
-            child: Text('图片预览'),
+            child: Text(
+              '图片预览 - ${isBlank(this._previewPath) ? "暂未选择图片" : this._renameImage}',
+              maxLines: 1,
+              textWidthBasis: TextWidthBasis.parent,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
         SizedBox(height: 10),
