@@ -34,8 +34,8 @@ class _PBSettingPageState extends State<PBSettingPage>
         centerTitle: true,
         actions: <Widget>[
           IconButton(
-            icon: Icon(IconData(0xe617, fontFamily: 'iconfont')),
-            onPressed: null,
+            icon: Icon(IconData(0xe685, fontFamily: 'iconfont')),
+            onPressed: () {},
           ),
         ],
       ),
@@ -47,9 +47,7 @@ class _PBSettingPageState extends State<PBSettingPage>
                   this._errorTip ?? '暂无图床数据',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold
-                  ),
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
             )

@@ -5,7 +5,9 @@ import 'package:flutter_picgo/components/loading.dart';
 import 'package:flutter_picgo/model/uploaded.dart';
 import 'package:flutter_picgo/routers/application.dart';
 import 'package:flutter_picgo/routers/routers.dart';
+import 'package:flutter_picgo/utils/permission.dart';
 import 'package:flutter_picgo/views/album_page/album_page_presenter.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter/services.dart';
 
@@ -37,7 +39,12 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(IconData(0xe639, fontFamily: 'iconfont')),
-        onPressed: () {
+        onPressed: () async {
+          var status = await PermissionUtils.requestPhotos();
+          if (status == PermissionStatus.denied) {
+            PermissionUtils.showPermissionDialog(context);
+            return;
+          }
           Application.router.navigateTo(context, Routes.upload,
               transition: TransitionType.cupertino);
         },
