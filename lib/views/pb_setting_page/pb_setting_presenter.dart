@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_picgo/model/gitee_config.dart';
 import 'package:flutter_picgo/model/github_config.dart';
 import 'package:flutter_picgo/model/pb_setting.dart';
 import 'package:flutter_picgo/model/smms_config.dart';
@@ -51,6 +52,12 @@ class PBSettingPagePresenter {
       if (map[PBTypeKeys.smms] != null) {
         var smmsConfig = json.encode(SMMSConfig.fromJson(map[PBTypeKeys.smms]));
         await ImageUploadUtils.savePBConfig(PBTypeKeys.smms, smmsConfig);
+      }
+
+      if (map[PBTypeKeys.gitee] != null) {
+        var giteeConfig =
+            json.encode(GiteeConfig.fromJson(map[PBTypeKeys.gitee]));
+        await ImageUploadUtils.savePBConfig(PBTypeKeys.gitee, giteeConfig);
       }
       // success
       _view.transferSuccess();

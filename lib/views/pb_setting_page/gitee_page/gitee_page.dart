@@ -44,13 +44,11 @@ class _GiteePageState extends State<GiteePage> implements GiteePageContract {
     _ownerController = TextEditingController(text: _config?.owner ?? '');
     _repositoryNameController =
         TextEditingController(text: _config?.repo ?? '');
-    _branchNameController =
-        TextEditingController(text: _config?.branch ?? '');
+    _branchNameController = TextEditingController(text: _config?.branch ?? '');
     _tokenController = TextEditingController(text: _config?.token ?? '');
-    _storagePathController =
-        TextEditingController(text: _config?.storagePath ?? '');
+    _storagePathController = TextEditingController(text: _config?.path ?? '');
     _customDomainController =
-        TextEditingController(text: _config?.customDomain ?? '');
+        TextEditingController(text: _config?.customUrl ?? '');
     return Scaffold(
       appBar: AppBar(
         title: Text('Gitee图床'),
@@ -153,7 +151,7 @@ class _GiteePageState extends State<GiteePage> implements GiteePageContract {
                     controller: _customDomainController,
                     decoration: new InputDecoration(
                         labelText: "设置自定义域名",
-                        hintText: "例如 https://www.baidu.com/"),
+                        hintText: "例如 https://www.baidu.com/ , 不建议配置"),
                     keyboardType: TextInputType.url,
                   )
                 ],
@@ -224,8 +222,8 @@ class _GiteePageState extends State<GiteePage> implements GiteePageContract {
           repo: _repositoryNameController.text.trim(),
           branch: _branchNameController.text.trim(),
           token: _tokenController.text.trim(),
-          storagePath: _storagePathController.text.trim(),
-          customDomain: _customDomainController.text.trim());
+          path: _storagePathController.text.trim(),
+          customUrl: _customDomainController.text.trim());
       _presenter.doSaveConfig(config);
     }
   }

@@ -25,12 +25,8 @@ class GiteeImageUpload implements ImageUploadStrategy {
       info = GiteeUploadedInfo.fromJson(json.decode(infoStr));
     } catch (e) {}
     if (info != null) {
-      String realUrl = path.joinAll([
-        'repos',
-        info.ownerrepo,
-        'contents',
-        info.path
-      ]);
+      String realUrl =
+          path.joinAll(['repos', info.ownerrepo, 'contents', info.path]);
       await GiteeApi.deleteFile(realUrl, {
         "message": DELETE_COMMIT_MESSAGE,
         "sha": info.sha,
@@ -44,37 +40,37 @@ class GiteeImageUpload implements ImageUploadStrategy {
   Future<Uploaded> upload(File file, String renameImage) async {
     try {
       String configStr = await ImageUploadUtils.getPBConfig(PBTypeKeys.gitee);
-    if (isBlank(configStr)) {
-      throw GiteeError(error: '读取配置文件错误！请重试');
-    }
-    GiteeConfig config = GiteeConfig.fromJson(json.decode(configStr));
-    String realUrl = path.joinAll([
-      'repos',
-      config.owner,
-      config.repo,
-      'contents',
-      config.storagePath,
-      renameImage
-    ]);
-    var result = await GiteeApi.createFile(realUrl, {
-      "message": UPLOAD_COMMIT_MESSAGE,
-      "content": await EncryptUtils.image2Base64(file.path),
-      "branch": config.branch
-    });
-    String imagePath = result["content"]["path"];
-    String downloadUrl = result["content"]["download_url"];
-    String sha = result["content"]["sha"];
-    String imageUrl = config.customDomain == null || config.customDomain == ''
-        ? downloadUrl
-        : '${path.joinAll([config.customDomain, imagePath])}';
-    var uploadedItem = Uploaded(-1, imageUrl, PBTypeKeys.gitee,
-        info: json.encode(GiteeUploadedInfo(
-            path: imagePath,
-            sha: sha,
-            branch: config.branch,
-            ownerrepo: '${config.owner}/${config.repo}')));
-    await ImageUploadUtils.saveUploadedItem(uploadedItem);
-    return uploadedItem;
+      if (isBlank(configStr)) {
+        throw GiteeError(error: '读取配置文件错误！请重试');
+      }
+      GiteeConfig config = GiteeConfig.fromJson(json.decode(configStr));
+      String realUrl = path.joinAll([
+        'repos',
+        config.owner,
+        config.repo,
+        'contents',
+        config.path,
+        renameImage
+      ]);
+      var result = await GiteeApi.createFile(realUrl, {
+        "message": UPLOAD_COMMIT_MESSAGE,
+        "content": await EncryptUtils.image2Base64(file.path),
+        "branch": config.branch
+      });
+      String imagePath = result["content"]["path"];
+      String downloadUrl = result["content"]["download_url"];
+      String sha = result["content"]["sha"];
+      String imageUrl = config.customUrl == null || config.customUrl == ''
+          ? downloadUrl
+          : '${path.joinAll([config.customUrl, imagePath])}';
+      var uploadedItem = Uploaded(-1, imageUrl, PBTypeKeys.gitee,
+          info: json.encode(GiteeUploadedInfo(
+              path: imagePath,
+              sha: sha,
+              branch: config.branch,
+              ownerrepo: '${config.owner}/${config.repo}')));
+      await ImageUploadUtils.saveUploadedItem(uploadedItem);
+      return uploadedItem;
     } on DioError catch (e) {
       if (e.type == DioErrorType.RESPONSE &&
           e.error.toString().indexOf('400') > 0) {
@@ -82,7 +78,7 @@ class GiteeImageUpload implements ImageUploadStrategy {
       } else {
         throw e;
       }
-    } 
+    }
   }
 }
 
