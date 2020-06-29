@@ -37,7 +37,7 @@
 	<key>NSMotionUsageDescription</key>
 	<string>Motion access needed for a better experience.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>如果不允许，你将无法访问系统相册进行为你的图床照片上传以及获取上传后的照片链接～</string>
+	<string>如果不允许，你将无法访问系统相册进行选择照片上传至图床以及获取上传后的照片链接～</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Speech access needed for a better experience.</string>
 	<key>UILaunchStoryboardName</key>
