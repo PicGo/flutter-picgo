@@ -38,7 +38,11 @@ Android版直接下载apk安装包或扫码
 
 ![](https://github.static.si-yee.com/picgo/QRCode_258.png)
 
-iOS版本暂未上架。
+iOS版本请扫描二维码下载或点击链接![](https://apps.apple.com/cn/app/flutter-picgo/id1519714305)。
+
+![](https://github.static.si-yee.com/picgo/appstore.png)
+
+> 感谢[Trevor-Lan](https://github.com/Trevor-Lan)提供的苹果开发者账户
 
 # 致谢
 
