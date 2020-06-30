@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_picgo/views/home.dart';
 import 'package:flutter_picgo/views/album_page/album_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/gitee_page/gitee_page.dart';
+import 'package:flutter_picgo/views/pb_setting_page/gitee_page/gitee_repo_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/github_page/github_repo_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/pb_setting_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/smms_page/smms_page.dart';
@@ -81,7 +82,22 @@ var pbsettingSMMSHandler = new Handler(
 
 // Gitee设置页面
 var pbsettingGiteeHandler = new Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) => GiteePage(),
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) =>
+      GiteePage(),
+);
+
+// Gitee仓库列表页面
+var pbsettingGiteeRepoHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    var path = params["path"]?.first;
+    var prePath = params["prePath"]?.first;
+    return GiteeRepoPage(
+      path: (path == null || path == '') ? '/' : Uri.decodeComponent(path),
+      prePath: (prePath == null || prePath == '')
+          ? ''
+          : Uri.decodeComponent(prePath),
+    );
+  },
 );
 
 // picgo设置页面

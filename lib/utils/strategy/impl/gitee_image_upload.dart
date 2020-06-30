@@ -52,11 +52,14 @@ class GiteeImageUpload implements ImageUploadStrategy {
         config.path,
         renameImage
       ]);
-      var result = await GiteeApi.createFile(realUrl, {
+      Map<String, dynamic> mapData = {
         "message": UPLOAD_COMMIT_MESSAGE,
-        "content": await EncryptUtils.image2Base64(file.path),
-        "branch": config.branch
-      });
+        "content": await EncryptUtils.image2Base64(file.path)
+      };
+      if (!isBlank(config.branch)) {
+        mapData["branch"] = config.branch;
+      }
+      var result = await GiteeApi.createFile(realUrl, mapData);
       String imagePath = result["content"]["path"];
       String downloadUrl = result["content"]["download_url"];
       String sha = result["content"]["sha"];

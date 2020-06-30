@@ -2,7 +2,6 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter_picgo/routers/router_handler.dart';
 
 class Routes {
-
   // 路由Map
   static const String root = '/';
   static const String album = '/album';
@@ -20,6 +19,7 @@ class Routes {
   // -----------------------------------
   // --------- gitee ------------------
   static const String settingPbGitee = '/setting/pb/gitee';
+  static const String settingPbGiteeRepo = '/setting/pb/gitee/repo';
   // -----------------------------------
 
   static void configureRoutes(Router router) {
@@ -35,6 +35,6 @@ class Routes {
     router.define(settingPicgo, handler: picgosettinghandler);
     router.define(settingPbSMMS, handler: pbsettingSMMSHandler);
     router.define(settingPbGitee, handler: pbsettingGiteeHandler);
+    router.define(settingPbGiteeRepo, handler: pbsettingGiteeRepoHandler);
   }
-
 }

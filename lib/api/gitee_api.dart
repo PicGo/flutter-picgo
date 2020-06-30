@@ -26,9 +26,16 @@ class GiteeApi {
     };
     realMap.addAll(map);
     var data = FormData.fromMap(realMap);
-    Response res = await NetUtils.getInstance().post(BASE_URL + url, data: data);
+    Response res =
+        await NetUtils.getInstance().post(BASE_URL + url, data: data);
     map.clear();
     map = null;
+    return res.data;
+  }
+
+  static Future getContents(String url, Map<String, dynamic> params) async {
+    Response res = await NetUtils.getInstance()
+        .get(BASE_URL + url, queryParameters: params);
     return res.data;
   }
 
@@ -37,7 +44,8 @@ class GiteeApi {
       KEY_ACCESS_TOKEN: await oAuth(),
     };
     realQuery.addAll(query);
-    Response res =await NetUtils.getInstance().delete(BASE_URL + url, queryParameters: realQuery);
+    Response res = await NetUtils.getInstance()
+        .delete(BASE_URL + url, queryParameters: realQuery);
     return res.data;
   }
 

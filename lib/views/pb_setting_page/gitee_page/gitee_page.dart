@@ -59,7 +59,7 @@ class _GiteePageState extends State<GiteePage> implements GiteePageContract {
                   icon: Icon(IconData(0xe6ab, fontFamily: 'iconfont')),
                   onPressed: () {
                     Application.router.navigateTo(context,
-                        '${Routes.settingPbGitubRepo}?path=${Uri.encodeComponent("/")}',
+                        '${Routes.settingPbGiteeRepo}?path=${Uri.encodeComponent("/")}',
                         transition: TransitionType.cupertino);
                   },
                 )
