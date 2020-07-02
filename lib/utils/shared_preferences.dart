@@ -45,7 +45,8 @@ class SpUtil {
 
   /// 获取当前默认图床，默认为github
   String getDefaultPB() {
-    return getString(SharedPreferencesKeys.settingDefaultPB) ?? PBTypeKeys.github;
+    return getString(SharedPreferencesKeys.settingDefaultPB) ??
+        PBTypeKeys.github;
   }
 
   // 判断是否存在数据
@@ -127,5 +128,4 @@ class SpUtil {
     if (_beforeCheck()) return null;
     return _spf.clear();
   }
-
 }
