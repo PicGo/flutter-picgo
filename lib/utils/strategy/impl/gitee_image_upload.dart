@@ -27,11 +27,14 @@ class GiteeImageUpload implements ImageUploadStrategy {
     if (info != null) {
       String realUrl =
           path.joinAll(['repos', info.ownerrepo, 'contents', info.path]);
-      await GiteeApi.deleteFile(realUrl, {
+      Map<String, dynamic> mapData = {
         "message": DELETE_COMMIT_MESSAGE,
         "sha": info.sha,
-        "branch": info.branch
-      });
+      };
+      if (!isBlank(info.branch)) {
+        mapData["branch"] = info.branch;
+      }
+      await GiteeApi.deleteFile(realUrl, mapData);
     }
     return uploaded;
   }
