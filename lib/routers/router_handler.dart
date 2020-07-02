@@ -8,6 +8,7 @@ import 'package:flutter_picgo/views/pb_setting_page/gitee_page/gitee_repo_page.d
 import 'package:flutter_picgo/views/pb_setting_page/github_page/github_repo_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/pb_setting_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/smms_page/smms_page.dart';
+import 'package:flutter_picgo/views/picgo_setting_page/theme_setting_page.dart';
 import 'package:flutter_picgo/views/upload_page/upload_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/github_page/github_page.dart';
 import 'package:flutter_picgo/views/picgo_setting_page/picgo_setting_page.dart';
@@ -101,7 +102,11 @@ var pbsettingGiteeRepoHandler = new Handler(
 );
 
 // picgo设置页面
-var picgosettinghandler = new Handler(
+var picgosettingHandler = new Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) =>
       PicGoSettingPage(),
+);
+
+var picggsettingThemeHandler = new Handler(
+  handlerFunc: (context, parameters) => ThemeSettingPage(),
 );

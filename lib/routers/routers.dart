@@ -10,6 +10,7 @@ class Routes {
   static const String upload = '/upload';
   static const String settingPb = '/setting/pb';
   static const String settingPicgo = '/setting/picgo';
+  static const String settingPicgoTheme = '/setting/picgo/theme';
   // --------- github ------------------
   static const String settingPbGithub = '/setting/pb/github';
   static const String settingPbGitubRepo = '/setting/pb/github/repo';
@@ -32,9 +33,10 @@ class Routes {
     router.define(settingPb, handler: pbsettingHandler);
     router.define(settingPbGithub, handler: pbsettingGithubHandler);
     router.define(settingPbGitubRepo, handler: pbsettingGithubRepoHandler);
-    router.define(settingPicgo, handler: picgosettinghandler);
+    router.define(settingPicgo, handler: picgosettingHandler);
     router.define(settingPbSMMS, handler: pbsettingSMMSHandler);
     router.define(settingPbGitee, handler: pbsettingGiteeHandler);
     router.define(settingPbGiteeRepo, handler: pbsettingGiteeRepoHandler);
+    router.define(settingPicgoTheme, handler: picggsettingThemeHandler);
   }
 }

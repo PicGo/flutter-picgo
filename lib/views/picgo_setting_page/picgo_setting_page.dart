@@ -1,5 +1,8 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_picgo/routers/application.dart';
+import 'package:flutter_picgo/routers/routers.dart';
 import 'package:flutter_picgo/utils/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
@@ -93,6 +96,14 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
                     });
                   },
                 ),
+              ),
+              ListTile(
+                title: Text('主题设置'),
+                onTap: () {
+                  Application.router.navigateTo(
+                      context, Routes.settingPicgoTheme,
+                      transition: TransitionType.cupertino);
+                },
               ),
               ListTile(
                 title: Text('设置显示图床'),
