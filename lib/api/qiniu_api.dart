@@ -1,8 +1,15 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_picgo/utils/net.dart';
 
 class QiniuApi {
-  static const String BASE_URL = '';
+  static const String BASE_URL = 'http://upload.qiniup.com/';
+
+  static Future upload(FormData data) async {
+    Response res = await NetUtils.getInstance().post(BASE_URL, data: data);
+    return res.data;
+  }
 
   /// 上传凭证算法
   /// https://developer.qiniu.com/kodo/manual/1208/upload-token
