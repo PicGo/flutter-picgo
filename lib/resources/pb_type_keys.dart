@@ -6,4 +6,6 @@ class PBTypeKeys {
 
   static const gitee = 'gitee';
 
+  static const qiniu = 'qiniu';
+
 }

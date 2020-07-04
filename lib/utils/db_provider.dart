@@ -40,7 +40,7 @@ class DbProvider {
     try {
       db = await openDatabase(
         path,
-        version: 3,
+        version: 4,
         onCreate: (db, version) async {
           // 创建pb_setting表
           _initPb(db);
@@ -78,14 +78,13 @@ class DbProvider {
           )''');
     await db.transaction((txn) async {
       // github图床
-      await txn.rawInsert(
-          'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.github}", "/setting/pb/github", "Github图床", NULL, 1)');
+      await txn.rawInsert('INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.github}", "/setting/pb/github", "Github图床", NULL, 1)');
       // SM.MS图床
-      await txn.rawInsert(
-          'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.smms}", "/setting/pb/smms", "SM.MS图床", NULL, 1)');
+      await txn.rawInsert('INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.smms}", "/setting/pb/smms", "SM.MS图床", NULL, 1)');
       // Gitee图床
-      await txn.rawInsert(
-          'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.gitee}", "/setting/pb/gitee", "Gitee图床", NULL, 1)');
+      await txn.rawInsert('INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.gitee}", "/setting/pb/gitee", "Gitee图床", NULL, 1)');
+      // Qiniu图床
+      await txn.rawInsert('INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.qiniu}", "/setting/pb/qiniu", "七牛图床", NULL, 1)');
     });
   }
 

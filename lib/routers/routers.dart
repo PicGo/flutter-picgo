@@ -22,6 +22,9 @@ class Routes {
   static const String settingPbGitee = '/setting/pb/gitee';
   static const String settingPbGiteeRepo = '/setting/pb/gitee/repo';
   // -----------------------------------
+  // --------- qiniu -------------------
+  static const String settingPbQiniu = '/setting/pb/qiniu';
+  // -----------------------------------
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = notfoundHandler;
@@ -38,5 +41,6 @@ class Routes {
     router.define(settingPbGitee, handler: pbsettingGiteeHandler);
     router.define(settingPbGiteeRepo, handler: pbsettingGiteeRepoHandler);
     router.define(settingPicgoTheme, handler: picggsettingThemeHandler);
+    router.define(settingPbQiniu, handler: pbsettingQiniuHandler);
   }
 }
