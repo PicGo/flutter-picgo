@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picgo/model/config.dart';
+import 'package:flutter_picgo/utils/image_upload.dart';
+import 'package:flutter_picgo/utils/strings.dart';
 
 abstract class ConfigPageState<T extends StatefulWidget> extends State<T> {
   List<TextEditingController> controllers = [];
@@ -28,6 +30,7 @@ abstract class ConfigPageState<T extends StatefulWidget> extends State<T> {
                     child: Text('保存'),
                     onPressed: () {
                       //_saveConfig();
+                      save();
                     },
                   ),
                 ),
@@ -39,6 +42,7 @@ abstract class ConfigPageState<T extends StatefulWidget> extends State<T> {
                     child: Text('设为默认图床'),
                     onPressed: () {
                       //_setDefaultPB();
+                      _setDefaultPB();
                     },
                   ),
                 ),
@@ -98,4 +102,13 @@ abstract class ConfigPageState<T extends StatefulWidget> extends State<T> {
   }
 
   List<Config> get configs;
+  String get pbType;
+  void save();
+
+  /// 配置默认图床
+  _setDefaultPB() {
+    if (!isBlank(pbType)) {
+      ImageUploadUtils.setDefaultPB(pbType);
+    }
+  }
 }
