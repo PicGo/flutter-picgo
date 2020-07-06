@@ -7,6 +7,7 @@ import 'package:flutter_picgo/utils/image_upload.dart';
 import 'package:flutter_picgo/utils/strings.dart';
 import 'package:toast/toast.dart';
 
+/// 图床设置页面基类，使用该类则需要遵循规则，可自动将数据转化成配置页面，自动生成输入框等以及保存方法
 abstract class BasePBSettingPageState<T extends StatefulWidget>
     extends State<T> {
   Map<String, TextEditingController> controllers = {};
