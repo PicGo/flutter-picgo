@@ -89,7 +89,7 @@ class QiniuImageUpload extends ImageUploadStrategy {
           });
       var uploadedItem = Uploaded(
           -1,
-          '${path.join(config.url, result["key"])}${config.options}',
+          '${path.join(config.url, result["key"])}${config.options ?? ''}',
           PBTypeKeys.qiniu,
           info: json.encode(QiniuUploadedInfo(
               hash: result["hash"],
