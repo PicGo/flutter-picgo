@@ -4,7 +4,8 @@ import 'package:flutter_picgo/model/config.dart';
 import 'package:flutter_picgo/utils/image_upload.dart';
 import 'package:flutter_picgo/utils/strings.dart';
 
-abstract class ConfigPageState<T extends StatefulWidget> extends State<T> {
+abstract class BasePBSettingPageState<T extends StatefulWidget>
+    extends State<T> {
   List<TextEditingController> controllers = [];
   final _formKey = GlobalKey<FormState>();
 
