@@ -28,9 +28,6 @@ class _QiniuPageState extends BasePBSettingPageState<QiniuPage>
   String get pbType => PBTypeKeys.qiniu;
 
   @override
-  void save() {}
-
-  @override
   AppBar get appbar => AppBar(
         title: Text('七牛图床'),
         centerTitle: true,
@@ -72,9 +69,10 @@ class _QiniuPageState extends BasePBSettingPageState<QiniuPage>
             needValidate: true,
             value: value);
       } else if (key == 'options') {
-        config = Config(label: '设定网址后缀', placeholder: '例如?imageslim');
+        config =
+            Config(label: '设定网址后缀', placeholder: '例如?imageslim', value: value);
       } else if (key == 'path') {
-        config = Config(label: '指定存储路径', placeholder: '例如img/');
+        config = Config(label: '指定存储路径', placeholder: '例如img/', value: value);
       }
       config.name = key;
       configs.add(config);

@@ -1,12 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picgo/model/config.dart';
 import 'package:flutter_picgo/utils/image_upload.dart';
 import 'package:flutter_picgo/utils/strings.dart';
+import 'package:toast/toast.dart';
 
 abstract class BasePBSettingPageState<T extends StatefulWidget>
     extends State<T> {
-  List<TextEditingController> controllers = [];
+  Map<String, TextEditingController> controllers = {};
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -83,11 +86,14 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
       key: _formKey,
       child: Column(
         children: configs.asMap().keys.map((i) {
+          if (isBlank(configs[i].name)) {
+            throw ArgumentError('name must be not null');
+          }
           // new TextEditingController
           TextEditingController controller =
               TextEditingController(text: configs[i].value ?? '');
           // add
-          controllers.add(controller);
+          controllers[configs[i].name] = controller;
           // text TextFormField
           return Column(
             children: <Widget>[
@@ -126,10 +132,36 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
     }
   }
 
+  /// 子类自定义AppBar，不实现则默认为空实现AppBar()
   AppBar get appbar;
+
+  /// 当前图床类型
   String get pbType;
+
+  /// 表单验证
   bool get validate => _formKey.currentState.validate();
-  void save();
+
+  /// 保存配置
+  save() async {
+    if (isBlank(pbType)) {
+      return;
+    }
+    try {
+      Map<String, dynamic> configMap = {};
+      controllers.forEach((key, value) {
+        configMap[key] = value.text.trim();
+      });
+      String configStr = json.encode(configMap);
+      int row = await ImageUploadUtils.savePBConfig(pbType, configStr);
+      if (row > 0) {
+        Toast.show('保存成功', context);
+      } else {
+        Toast.show('保存失败', context);
+      }
+    } catch (e) {
+      Toast.show('$e', context, duration: Toast.LENGTH_LONG);
+    }
+  }
 
   /// 配置默认图床
   _setDefaultPB() {

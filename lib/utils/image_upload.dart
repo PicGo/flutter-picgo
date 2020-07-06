@@ -53,8 +53,8 @@ class ImageUploadUtils {
   /// 保存图床配置
   static Future<int> savePBConfig(String type, String config) async {
     var sql = Sql.setTable(TABLE_NAME_PBSETTING);
-    int raw = await sql.rawUpdate('config = ? WHERE type = ?', [config, type]);
-    return raw;
+    int row = await sql.rawUpdate('config = ? WHERE type = ?', [config, type]);
+    return row;
   }
 
   /// 获取当前图床配置
