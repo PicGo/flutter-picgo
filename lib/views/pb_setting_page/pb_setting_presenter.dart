@@ -1,12 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_picgo/model/gitee_config.dart';
-import 'package:flutter_picgo/model/github_config.dart';
 import 'package:flutter_picgo/model/pb_setting.dart';
-import 'package:flutter_picgo/model/qiniu_config.dart';
-import 'package:flutter_picgo/model/smms_config.dart';
-import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/utils/image_upload.dart';
 import 'package:flutter_picgo/utils/sql.dart';
 
