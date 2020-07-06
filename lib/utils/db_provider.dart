@@ -86,7 +86,7 @@ class DbProvider {
       await txn.rawInsert('INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.qiniu}", "/setting/pb/qiniu", "七牛图床", NULL, 1)');
       // copy data
       if (isExists) {
-        await txn.execute('INSERT INTO $TABLE_NAME_PBSETTING SELECT config FROM ${TABLE_NAME_PBSETTING + "_backup"} WHERE $TABLE_NAME_PBSETTING.type = ${TABLE_NAME_PBSETTING + "_backup"}.type');
+        await txn.execute('INSERT INTO $TABLE_NAME_PBSETTING(config) SELECT config FROM ${TABLE_NAME_PBSETTING + "_backup"} WHERE $TABLE_NAME_PBSETTING.type = ${TABLE_NAME_PBSETTING + "_backup"}.type');
       }
     });
   }
