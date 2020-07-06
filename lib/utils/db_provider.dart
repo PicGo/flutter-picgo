@@ -21,16 +21,10 @@ class DbProvider {
     return targetList;
   }
 
-  /// 检查数据库中, 表是否完整, 在部份android中, 会出现表丢失的情况
-  Future checkTableIsRight() async {
-    List<String> expectTables = [TABLE_NAME_UPLOADED, TABLE_NAME_PBSETTING];
+  /// 检查数据库中, 表是否存在
+  Future checkTableIsRight(String expectTables) async {
     List<String> tables = await getTables();
-    for (int i = 0; i < expectTables.length; i++) {
-      if (!tables.contains(expectTables[i])) {
-        return false;
-      }
-    }
-    return true;
+    return tables.contains(expectTables);
   }
 
   /// 初始化数据库
@@ -65,7 +59,12 @@ class DbProvider {
 
   /// 初始化图床设置表
   _initPb(Database db) async {
-    await db.execute('DROP TABLE IF EXISTS $TABLE_NAME_PBSETTING');
+    // await db.execute('DROP TABLE IF EXISTS $TABLE_NAME_PBSETTING');
+    bool isExists = await checkTableIsRight(TABLE_NAME_PBSETTING);
+    // backup data
+    if (isExists) {
+      await db.execute('ALTER TABLE $TABLE_NAME_PBSETTING RENAME TO ${TABLE_NAME_PBSETTING + "_backup"}');
+    }
     // 创建pb_setting表
     await db.execute('''
           CREATE TABLE $TABLE_NAME_PBSETTING (
@@ -85,6 +84,10 @@ class DbProvider {
       await txn.rawInsert('INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.gitee}", "/setting/pb/gitee", "Gitee图床", NULL, 1)');
       // Qiniu图床
       await txn.rawInsert('INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.qiniu}", "/setting/pb/qiniu", "七牛图床", NULL, 1)');
+      // copy data
+      if (isExists) {
+        await txn.execute('INSERT INTO $TABLE_NAME_PBSETTING SELECT config FROM ${TABLE_NAME_PBSETTING + "_backup"} WHERE $TABLE_NAME_PBSETTING.type = ${TABLE_NAME_PBSETTING + "_backup"}.type');
+      }
     });
   }
 
