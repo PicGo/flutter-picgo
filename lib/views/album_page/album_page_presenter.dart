@@ -33,7 +33,8 @@ class AlbumPagePresenter {
 
   doDeleteImage(Uploaded uploaded) async {
     try {
-      ImageUploadUtils uploader = ImageUploadUtils(UploadStrategyFactory.getUploadStrategy(uploaded.type));
+      ImageUploadUtils uploader = ImageUploadUtils(
+          UploadStrategyFactory.getUploadStrategy(uploaded.type));
       Uploaded up = await uploader.delete(uploaded);
       if (up != null) {
         _view.deleteSuccess(uploaded);
@@ -41,8 +42,8 @@ class AlbumPagePresenter {
         _view.deleteError('删除出错，请重试');
       }
     } catch (e) {
+      print(e);
       _view.deleteError('删除出错，请重试 Error >>> $e');
     }
   }
-
 }

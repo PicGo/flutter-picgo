@@ -9,6 +9,20 @@ main() {
         'CRd7Wa4PuSGvs4ArToPTLBMCigGGUY3sk3F8oc8W',
         'f2Jkrlyea5s8h8gLEToa9-k895GNM-BlmQ2RfxwU',
         policy);
-    print(token);
+    print('UpToken : $token');
+  });
+
+  test('测试AuthToken生成', () {
+    var token = QiniuApi.generateAuthToken(
+        'post',
+        '/move/bmV3ZG9jczpmaW5kX21hbi50eHQ=/bmV3ZG9jczpmaW5kLm1hbi50eHQ=',
+        null,
+        'rs.qiniu.com',
+        null,
+        null,
+        'MY_ACCESS_KEY',
+        'MY_SECRET_KEY');
+    print('Access Token : $token');
+    expect(token, 'MY_ACCESS_KEY:1uLvuZM6l6oCzZFqkJ6oI4oFMVQ=');
   });
 }

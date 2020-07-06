@@ -14,13 +14,52 @@ import 'package:flutter_picgo/utils/strings.dart';
 class QiniuImageUpload extends ImageUploadStrategy {
   @override
   Future<Uploaded> delete(Uploaded uploaded) async {
-    String infoStr = await ImageUploadUtils.getUploadedItemInfo(uploaded.id);
-    QiniuuploadedInfo info;
     try {
-      info = QiniuuploadedInfo.fromJson(json.decode(infoStr));
-    } catch (e) {}
-    if (info != null) {}
-    return uploaded;
+      String infoStr = await ImageUploadUtils.getUploadedItemInfo(uploaded.id);
+      QiniuUploadedInfo info;
+      try {
+        info = QiniuUploadedInfo.fromJson(json.decode(infoStr));
+      } catch (e) {}
+      if (info != null) {
+        String encodedEntryURI = QiniuApi.urlSafeBase64Encode(
+            utf8.encode('${info.bucket}:${info.key}'));
+        String url = 'https://rs.qbox.me/delete/$encodedEntryURI';
+        var uri = Uri.parse(url);
+        var token = QiniuApi.generateAuthToken(
+            'POST',
+            uri.path,
+            uri.query,
+            uri.host,
+            'application/x-www-form-urlencoded',
+            null,
+            info.accessKey,
+            info.secretKey);
+        var result = await QiniuApi.delete(url, token);
+        if (isBlank(result.toString())) {
+          return uploaded;
+        } else {
+          throw new QiniuError(error: result['error'].toString());
+        }
+      }
+      return uploaded;
+    } on DioError catch (e) {
+      print(e.response.data);
+      if (e.type == DioErrorType.RESPONSE &&
+          e.error.toString().indexOf('400') > 0) {
+        throw QiniuError(error: '400 请求报文格式错误');
+      } else if (e.type == DioErrorType.RESPONSE &&
+          e.error.toString().indexOf('401') > 0) {
+        throw QiniuError(error: '401 管理凭证无效');
+      } else if (e.type == DioErrorType.RESPONSE &&
+          e.error.toString().indexOf('599') > 0) {
+        throw QiniuError(error: '599 服务端操作失败');
+      } else if (e.type == DioErrorType.RESPONSE &&
+          e.error.toString().indexOf('612') > 0) {
+        throw QiniuError(error: '612 待删除资源不存在');
+      } else {
+        throw e;
+      }
+    }
   }
 
   @override
@@ -52,8 +91,12 @@ class QiniuImageUpload extends ImageUploadStrategy {
           -1,
           '${path.join(config.url, result["key"])}${config.options}',
           PBTypeKeys.qiniu,
-          info: json.encode(
-              QiniuuploadedInfo(hash: result["hash"], key: result["key"])));
+          info: json.encode(QiniuUploadedInfo(
+              hash: result["hash"],
+              key: result["key"],
+              accessKey: config.accessKey,
+              secretKey: config.secretKey,
+              bucket: config.bucket)));
       await ImageUploadUtils.saveUploadedItem(uploadedItem);
       return uploadedItem;
     } on DioError catch (e) {
@@ -77,7 +120,7 @@ class QiniuImageUpload extends ImageUploadStrategy {
   }
 }
 
-/// SMMSError describes the error info  when request failed.
+/// QiniuError describes the error info  when request failed.
 class QiniuError implements Exception {
   QiniuError({
     this.error,
@@ -97,21 +140,31 @@ class QiniuError implements Exception {
   }
 }
 
-class QiniuuploadedInfo {
+class QiniuUploadedInfo {
   String hash;
   String key;
+  String accessKey;
+  String secretKey;
+  String bucket;
 
-  QiniuuploadedInfo({this.hash, this.key});
+  QiniuUploadedInfo(
+      {this.hash, this.key, this.accessKey, this.secretKey, this.bucket});
 
-  QiniuuploadedInfo.fromJson(Map<String, dynamic> json) {
+  QiniuUploadedInfo.fromJson(Map<String, dynamic> json) {
     hash = json['hash'];
     key = json['key'];
+    accessKey = json['accessKey'];
+    secretKey = json['secretKey'];
+    bucket = json['bucket'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['hash'] = this.hash;
     data['key'] = this.key;
+    data['accessKey'] = this.accessKey;
+    data['secretKey'] = this.secretKey;
+    data['bucket'] = this.bucket;
     return data;
   }
 }

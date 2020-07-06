@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_picgo/utils/net.dart';
+import 'package:flutter_picgo/utils/strings.dart';
 
 class QiniuApi {
   /// 上传
@@ -9,6 +10,19 @@ class QiniuApi {
       String area, FormData data, Map<String, dynamic> headers) async {
     Response res = await NetUtils.getInstance()
         .post(getHost(area), data: data, options: Options(headers: headers));
+    return res.data;
+  }
+
+  /// 删除
+  static Future delete(url, String accessToken) async {
+    Response res = await NetUtils.getInstance().post(url,
+        data: '',
+        options: Options(
+          headers: {
+            "Authorization": 'Qiniu $accessToken',
+          },
+          contentType: 'application/x-www-form-urlencoded',
+        ));
     return res.data;
   }
 
@@ -24,6 +38,36 @@ class QiniuApi {
     // 对签名进行URL安全的Base64编码：
     var encodeSign = urlSafeBase64Encode(digest.bytes);
     return '$accessKey:$encodeSign:$encodePutPolicy';
+  }
+
+  /// 生成管理凭证
+  /// https://developer.qiniu.com/kodo/manual/1201/access-token
+  static String generateAuthToken(
+      String method,
+      String path,
+      String query,
+      String host,
+      String contentType,
+      String body,
+      String accessKey,
+      String secretKey) {
+    var signStr = '${method.toUpperCase()} $path';
+    if (!isBlank(query)) {
+      signStr += '?$query';
+    }
+    signStr += '\nHost: $host';
+    if (!isBlank(contentType)) {
+      signStr += '\nContent-Type: $contentType';
+    }
+    signStr += '\n\n';
+    if (contentType != 'application/octet-stream') {
+      signStr += body ?? '';
+    }
+    // 使用SecertKey对上一步生成的原始字符串计算HMAC-SHA1签名：
+    var hmacsha1 = Hmac(sha1, utf8.encode(secretKey));
+    var sign = hmacsha1.convert(utf8.encode(signStr));
+    var encodedSign = urlSafeBase64Encode(sign.bytes);
+    return '$accessKey:$encodedSign';
   }
 
   /// 生成putPolicy
