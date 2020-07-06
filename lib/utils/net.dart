@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 
+const bool inProduction = const bool.fromEnvironment("dart.vm.product");
+
 class NetUtils {
   Dio _dio;
   static NetUtils _instance;
@@ -7,6 +9,9 @@ class NetUtils {
   NetUtils._internal() {
     _dio = new Dio(BaseOptions(
         connectTimeout: 30000, receiveTimeout: 30000, sendTimeout: 30000));
+    if (!inProduction) {
+      dio.interceptors.add(LogInterceptor());
+    }
   }
 
   Dio get dio => _dio;
