@@ -99,16 +99,7 @@ class _PBSettingPageState extends State<PBSettingPage>
     if (status == PermissionStatus.granted) {
       var result = await BarcodeScanner.scan();
       if (result.type == ResultType.Barcode) {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return NetLoadingDialog(
-                loading: true,
-                outsideDismiss: false,
-                loadingText: '转换中...',
-                requestCallBack: _presenter.doTransferJson(result.rawContent),
-              );
-            });
+        _presenter.doTransferJson(result.rawContent);
       }
     } else {
       PermissionUtils.showPermissionDialog(context);

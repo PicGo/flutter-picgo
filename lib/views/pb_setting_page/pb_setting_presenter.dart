@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_picgo/model/gitee_config.dart';
 import 'package:flutter_picgo/model/github_config.dart';
 import 'package:flutter_picgo/model/pb_setting.dart';
+import 'package:flutter_picgo/model/qiniu_config.dart';
 import 'package:flutter_picgo/model/smms_config.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/utils/image_upload.dart';
@@ -41,24 +42,11 @@ class PBSettingPagePresenter {
   /// transfer picgo json config to flutter-picgo
   doTransferJson(String jsonStr) async {
     try {
-      var map = json.decode(jsonStr);
-      // decode github
-      if (map[PBTypeKeys.github] != null) {
-        var githubConfig =
-            json.encode(GithubConfig.fromJson(map[PBTypeKeys.github]));
-        await ImageUploadUtils.savePBConfig(PBTypeKeys.github, githubConfig);
-      }
-      // decode smms
-      if (map[PBTypeKeys.smms] != null) {
-        var smmsConfig = json.encode(SMMSConfig.fromJson(map[PBTypeKeys.smms]));
-        await ImageUploadUtils.savePBConfig(PBTypeKeys.smms, smmsConfig);
-      }
-
-      if (map[PBTypeKeys.gitee] != null) {
-        var giteeConfig =
-            json.encode(GiteeConfig.fromJson(map[PBTypeKeys.gitee]));
-        await ImageUploadUtils.savePBConfig(PBTypeKeys.gitee, giteeConfig);
-      }
+      Map<String, dynamic> map = json.decode(jsonStr);
+      map.forEach((key, value) async {
+        var config = json.encode(value);
+        await ImageUploadUtils.savePBConfig(key, config);
+      });
       // success
       _view.transferSuccess();
     } catch (e) {
