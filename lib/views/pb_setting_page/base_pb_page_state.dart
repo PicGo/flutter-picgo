@@ -165,9 +165,10 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
   }
 
   /// 配置默认图床
-  _setDefaultPB() {
+  _setDefaultPB() async {
     if (!isBlank(pbType)) {
-      ImageUploadUtils.setDefaultPB(pbType);
+      await ImageUploadUtils.setDefaultPB(pbType);
+      Toast.show('设置成功', context);
     }
   }
 }
