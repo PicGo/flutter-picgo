@@ -5,12 +5,19 @@ import 'package:flutter_picgo/resources/theme_colors.dart';
 import 'package:flutter_picgo/routers/application.dart';
 import 'package:flutter_picgo/routers/routers.dart';
 import 'package:flutter_picgo/utils/db_provider.dart';
+import 'package:flutter_picgo/utils/local_notification.dart';
 import 'package:provider/provider.dart';
 
-void main() async {
+Future<void> main() async {
+  /// needed if you intend to initialize in the `main` function
   WidgetsFlutterBinding.ensureInitialized();
   final provider = DbProvider();
   await provider.init();
+
+  /// notification initialization
+  LocalNotificationUtil.getInstance().initialization();
+
+  /// run App
   runApp(App());
 }
 

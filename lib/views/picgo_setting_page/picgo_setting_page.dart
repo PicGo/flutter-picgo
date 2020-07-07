@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_picgo/routers/application.dart';
 import 'package:flutter_picgo/routers/routers.dart';
+import 'package:flutter_picgo/utils/local_notification.dart';
 import 'package:flutter_picgo/utils/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
@@ -75,7 +76,12 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
                 title: Text('开启上传提示'),
                 trailing: CupertinoSwitch(
                   value: this.isUploadedTip,
-                  onChanged: (value) {
+                  onChanged: (value) async {
+                    if (value) {
+                      /// Local Notification 请求权限
+                      await LocalNotificationUtil.getInstance()
+                          .requestPermissions();
+                    }
                     this._save(
                         SharedPreferencesKeys.settingIsUploadedTip, value);
                     setState(() {

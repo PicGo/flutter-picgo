@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_picgo/components/loading.dart';
+import 'package:flutter_picgo/utils/local_notification.dart';
 import 'package:flutter_picgo/utils/permission.dart';
 import 'package:flutter_picgo/utils/shared_preferences.dart';
 import 'package:flutter_picgo/utils/strings.dart';
@@ -25,6 +26,9 @@ class _UploadPageState extends State<UploadPage>
   TextEditingController _controller;
   int _selectButton = 1;
 
+  // 通知提示
+  bool needNotify = false;
+
   // 按钮id
   static const MARKDOWN = 1;
   static const HTML = 2;
@@ -35,6 +39,10 @@ class _UploadPageState extends State<UploadPage>
 
   _UploadPageState() {
     _presenter = UploadPagePresenter(this);
+    SpUtil.getInstance().then((sp) {
+      this.needNotify =
+          sp.getBool(SharedPreferencesKeys.settingIsUploadedTip) ?? false;
+    });
   }
 
   @override
@@ -273,9 +281,13 @@ class _UploadPageState extends State<UploadPage>
 
   @override
   uploadFaild(String errorMsg) {
+    if (needNotify) {
+      _showNotification(0, '上传失败：$errorMsg');
+    }
     Toast.show(errorMsg ?? '', context);
   }
 
+  /// 设置剪切板
   setClipData([bool needShowTip = true]) {
     if (_clipUrl == null || _clipUrl == '') {
       Toast.show('暂无可获取图片', context);
@@ -313,8 +325,21 @@ class _UploadPageState extends State<UploadPage>
 
   @override
   uploadSuccess(String imageUrl) async {
+    if (needNotify) {
+      await _showNotification(1, '上传成功：图片链接已复制到剪切板，原链接：$imageUrl');
+    }
     this._clipUrl = imageUrl;
     setClipData(false);
     Toast.show('上传成功：已复制到剪切板，图片链接为：$imageUrl', context);
+  }
+
+  Future<void> _showNotification(int id, String body) async {
+    LocalNotificationUtil.getInstance().show(
+        id,
+        '上传提示',
+        body,
+        LocalNotificationUtil.createNotificationDetails(
+            LocalNotificationUtil.uploadAndroidChannel(),
+            LocalNotificationUtil.normalIOSNotificationDetails()));
   }
 }
