@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/resources/table_name_keys.dart';
 import 'package:sqflite/sqflite.dart';
@@ -49,21 +49,33 @@ class DbProvider {
         },
         onUpgrade: (db, oldVersion, newVersion) {
           _initPb(db);
-          _upgradeDbV1ToV2(db);
+
+          /// v1 to v2
+          if (oldVersion == 1) {
+            _upgradeDbV1ToV2(db);
+          }
         },
       );
     } catch (e) {
-      debugPrint('DataBase init Error >>>>>> $e');
+      print('DataBase init Error >>>>>> $e');
+      var file = File(path);
+      file.deleteSync();
     }
   }
 
   /// 初始化图床设置表
   _initPb(Database db) async {
-    // await db.execute('DROP TABLE IF EXISTS $TABLE_NAME_PBSETTING');
-    bool isExists = await checkTableIsRight(TABLE_NAME_PBSETTING);
-    // backup data
+    List tables = await db
+        .rawQuery('SELECT name FROM sqlite_master WHERE type = "table"');
+    bool isExists = false;
+    tables.forEach((item) {
+      if (item['name'] == TABLE_NAME_PBSETTING) {
+        isExists = true;
+      }
+    });
     if (isExists) {
-      await db.execute('ALTER TABLE $TABLE_NAME_PBSETTING RENAME TO ${TABLE_NAME_PBSETTING + "_backup"}');
+      await db.execute(
+          'ALTER TABLE $TABLE_NAME_PBSETTING RENAME TO ${TABLE_NAME_PBSETTING + "_backup"}');
     }
     // 创建pb_setting表
     await db.execute('''
@@ -75,20 +87,29 @@ class DbProvider {
             config varchar(255) DEFAULT NULL,
             visible INTEGER DEFAULT 1
           )''');
-    await db.transaction((txn) async {
-      // github图床
-      await txn.rawInsert('INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.github}", "/setting/pb/github", "Github图床", NULL, 1)');
-      // SM.MS图床
-      await txn.rawInsert('INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.smms}", "/setting/pb/smms", "SM.MS图床", NULL, 1)');
-      // Gitee图床
-      await txn.rawInsert('INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.gitee}", "/setting/pb/gitee", "Gitee图床", NULL, 1)');
-      // Qiniu图床
-      await txn.rawInsert('INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.qiniu}", "/setting/pb/qiniu", "七牛图床", NULL, 1)');
-      // copy data
-      if (isExists) {
-        await txn.execute('INSERT INTO $TABLE_NAME_PBSETTING(config) SELECT config FROM ${TABLE_NAME_PBSETTING + "_backup"} WHERE $TABLE_NAME_PBSETTING.type = ${TABLE_NAME_PBSETTING + "_backup"}.type');
-      }
-    });
+    // github图床
+    await db.rawInsert(
+        'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.github}", "/setting/pb/github", "Github图床", NULL, 1)');
+    // SM.MS图床
+    await db.rawInsert(
+        'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.smms}", "/setting/pb/smms", "SM.MS图床", NULL, 1)');
+    // Gitee图床
+    await db.rawInsert(
+        'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.gitee}", "/setting/pb/gitee", "Gitee图床", NULL, 1)');
+    // Qiniu图床
+    await db.rawInsert(
+        'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.qiniu}", "/setting/pb/qiniu", "七牛图床", NULL, 1)');
+    // copy data
+    // update authors set dynasty_index=(select id  from dynasties where dynasties .name=authors.dynasty) where dynasty in (select name from dynasties )
+    if (isExists) {
+      await db.execute('''
+          UPDATE $TABLE_NAME_PBSETTING SET config = 
+          (SELECT config FROM ${TABLE_NAME_PBSETTING + "_backup"} WHERE ${TABLE_NAME_PBSETTING + "_backup"}.type = $TABLE_NAME_PBSETTING.type)
+          ''');
+      // drop backup
+      await db
+          .execute('DROP TABLE IF EXISTS ${TABLE_NAME_PBSETTING + "_backup"}');
+    }
   }
 
   /// db版本升级
