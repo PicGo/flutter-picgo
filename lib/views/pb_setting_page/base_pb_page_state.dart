@@ -11,7 +11,7 @@ import 'package:toast/toast.dart';
 abstract class BasePBSettingPageState<T extends StatefulWidget>
     extends State<T> {
   Map<String, TextEditingController> controllers = {};
-  final _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _formKey;
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +83,7 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
         ],
       );
     }
+    _formKey = GlobalKey<FormState>();
     return Form(
       key: _formKey,
       child: Column(
@@ -140,7 +141,7 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
   String get pbType;
 
   /// 表单验证
-  bool get validate => _formKey.currentState.validate();
+  bool get validate => _formKey?.currentState?.validate() ?? true;
 
   /// 保存配置
   save() async {
