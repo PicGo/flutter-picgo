@@ -1,5 +1,4 @@
 class PBTypeKeys {
-
   static const github = 'github';
 
   static const smms = 'smms';
@@ -8,4 +7,5 @@ class PBTypeKeys {
 
   static const qiniu = 'qiniu';
 
+  static const aliyun = 'aliyun';
 }
