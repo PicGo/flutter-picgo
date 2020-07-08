@@ -96,4 +96,14 @@ class ImageUploadUtils {
     var sql = Sql.setTable(TABLE_NAME_UPLOADED);
     return (await sql.getBySql('id = ?', [id]))?.first["info"];
   }
+
+  /// 获取已上传列表
+  static Future<List<Uploaded>> getUploadeds() async {
+    var sql = Sql.setTable(TABLE_NAME_UPLOADED);
+    var result = await sql.get();
+    List<Uploaded> uploadeds = result.map((v) {
+      return Uploaded.fromMap(v);
+    }).toList();
+    return uploadeds;
+  }
 }

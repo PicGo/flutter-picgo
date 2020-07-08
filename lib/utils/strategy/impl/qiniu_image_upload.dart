@@ -62,6 +62,7 @@ class QiniuImageUpload extends ImageUploadStrategy {
     }
   }
 
+  /// 七牛云上传同个文件名会直接覆盖
   @override
   Future<Uploaded> upload(File file, String renameImage) async {
     try {

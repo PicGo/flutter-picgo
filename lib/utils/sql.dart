@@ -2,7 +2,6 @@ import './db_provider.dart';
 import '../model/base.dart';
 
 class Sql extends BaseModel {
-  
   final String tableName;
 
   Sql.setTable(this.tableName) : super(DbProvider.db);
@@ -21,12 +20,15 @@ class Sql extends BaseModel {
   }
 
   Future<int> rawInsert(String valueNames, [List<dynamic> arguments]) async {
-    return await this.db.rawInsert('INSERT INTO $tableName$valueNames', arguments);
+    return await this
+        .db
+        .rawInsert('INSERT INTO $tableName$valueNames', arguments);
   }
 
   Future<int> rawDelete(String wheres, [List<dynamic> arguments]) async {
-    return await this.db
-    .rawDelete('DELETE FROM $tableName WHERE $wheres', arguments);
+    return await this
+        .db
+        .rawDelete('DELETE FROM $tableName WHERE $wheres', arguments);
   }
 
   String getTableName() {
@@ -36,5 +38,4 @@ class Sql extends BaseModel {
   Future<int> deleteAll() async {
     return await this.db.delete(tableName);
   }
-
 }
