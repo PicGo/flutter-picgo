@@ -44,6 +44,8 @@ class _LoadingDialog extends State<NetLoadingDialog> {
     if (widget.requestCallBack != null) {
       widget.requestCallBack.then((_) {
         Navigator.pop(context);
+      }).catchError(() {
+        Navigator.pop(context);
       });
     }
   }
