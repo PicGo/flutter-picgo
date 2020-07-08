@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_picgo/views/home.dart';
 import 'package:flutter_picgo/views/album_page/album_page.dart';
+import 'package:flutter_picgo/views/pb_setting_page/aliyun_page/aliyun_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/gitee_page/gitee_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/gitee_page/gitee_repo_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/github_page/github_repo_page.dart';
@@ -104,7 +105,13 @@ var pbsettingGiteeRepoHandler = new Handler(
 
 // 七牛图床设置页面
 var pbsettingQiniuHandler = new Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) => QiniuPage(),
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) =>
+      QiniuPage(),
+);
+
+// 阿里云OSS图床设置页面
+var pbsettingAliyunHandler = new Handler(
+  handlerFunc: (context, parameters) => AliyunPage(),
 );
 
 // picgo设置页面
@@ -117,4 +124,3 @@ var picgosettingHandler = new Handler(
 var picggsettingThemeHandler = new Handler(
   handlerFunc: (context, parameters) => ThemeSettingPage(),
 );
-

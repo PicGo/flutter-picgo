@@ -25,6 +25,9 @@ class Routes {
   // --------- qiniu -------------------
   static const String settingPbQiniu = '/setting/pb/qiniu';
   // -----------------------------------
+  // --------- qiniu -------------------
+  static const String settingPbAliyun = '/setting/pb/aliyun';
+  // -----------------------------------
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = notfoundHandler;
@@ -42,5 +45,6 @@ class Routes {
     router.define(settingPbGiteeRepo, handler: pbsettingGiteeRepoHandler);
     router.define(settingPicgoTheme, handler: picggsettingThemeHandler);
     router.define(settingPbQiniu, handler: pbsettingQiniuHandler);
+    router.define(settingPbAliyun, handler: pbsettingAliyunHandler);
   }
 }
