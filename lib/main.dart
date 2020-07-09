@@ -8,6 +8,8 @@ import 'package:flutter_picgo/utils/db_provider.dart';
 import 'package:flutter_picgo/utils/local_notification.dart';
 import 'package:provider/provider.dart';
 
+ThemeState themeState;
+
 Future<void> main() async {
   /// needed if you intend to initialize in the `main` function
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +18,9 @@ Future<void> main() async {
 
   /// notification initialization
   LocalNotificationUtil.getInstance().initialization();
+
+  /// theme initialization
+  themeState = ThemeState();
 
   /// run App
   runApp(App());
@@ -38,7 +43,7 @@ class _AppState extends State<App> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => ThemeState(),
+          create: (context) => themeState,
         ),
       ],
       child: Consumer<ThemeState>(
