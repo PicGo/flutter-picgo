@@ -13,8 +13,18 @@ import 'package:flutter_picgo/utils/strings.dart';
 
 class AliyunImageUpload implements ImageUploadStrategy {
   @override
-  Future<Uploaded> delete(Uploaded uploaded) {
-    throw UnimplementedError();
+  Future<Uploaded> delete(Uploaded uploaded) async {
+    String infoStr = await ImageUploadUtils.getUploadedItemInfo(uploaded.id);
+    AliyunUploadedInfo info;
+    try {
+      info = AliyunUploadedInfo.fromJson(json.decode(infoStr));
+    } catch (e) {}
+    if (info != null) {
+      String auth = AliyunApi.buildSignature(info.accessKeyId,
+          info.accessKeySecret, 'delete', info.bucket, info.object);
+      await AliyunApi.deleteObject(info.bucket, info.area, info.object, auth);
+    }
+    return uploaded;
   }
 
   @override

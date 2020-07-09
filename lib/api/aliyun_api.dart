@@ -18,6 +18,17 @@ class AliyunApi {
     return res.headers;
   }
 
+  static deleteObject(
+      String bucket, String aera, String object, String auth) async {
+    Response res = await NetUtils.getInstance()
+        .delete('https://$bucket.$aera.aliyuncs.com/$object',
+            options: Options(headers: {
+              'Authorization': auth,
+              'Date': HttpDate.format(new DateTime.now()),
+            }));
+    return res.headers;
+  }
+
   /// Content-MD5的计算
   static String generateContentMD5(String content) {
     // 先计算MD5加密的二进制数组
