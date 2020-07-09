@@ -2,11 +2,21 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:crypto/crypto.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_picgo/utils/net.dart';
 import 'package:flutter_picgo/utils/strings.dart';
 
 class AliyunApi {
   // 还需要拼接buckername 例如zjyzy.oss-cn-shenzhen.aliyuncs.com
-  // static const BASE_URL = 'oss-cn-shenzhen.aliyuncs.com';
+  static const BASE_URL = 'aliyuncs.com';
+
+  static postObject(String bucket, String aera, FormData data) async {
+    Response res = await NetUtils.getInstance().post(
+      'https://$bucket.$aera.aliyuncs.com',
+      data: data,
+    );
+    return res.headers;
+  }
 
   /// Content-MD5的计算
   static String generateContentMD5(String content) {
@@ -26,6 +36,31 @@ class AliyunApi {
     } else {
       return '/$bucketName/$objectName';
     }
+  }
+
+  /// form policy
+  static String buildEncodePolicy(String objectName) {
+    var policyText = {
+      "expiration":
+          "2030-01-01T00:00:00.000Z", // 设置Policy的失效时间，如果超过失效时间，就无法通过此Policy上传文件
+      "conditions": [
+        {
+          "key": objectName,
+        } // 设置上传文件的大小限制，如果超过限制，文件上传到OSS会报错
+      ]
+    };
+    var encodePolicy = base64.encode(utf8.encode(json.encode(policyText)));
+    return encodePolicy;
+  }
+
+  /// Form Authorization
+  static String buildPostSignature(
+      String accessKeyId, String accessKeySecret, String encodePolicy) {
+    // 使用SecertKey对上一步生成的原始字符串计算HMAC-SHA1签名：
+    var hmacsha1 = Hmac(sha1, utf8.encode(accessKeySecret));
+    var sign = hmacsha1.convert(utf8.encode(encodePolicy));
+    var encodeSign = base64.encode(sign.bytes);
+    return encodeSign;
   }
 
   /// Authorization
