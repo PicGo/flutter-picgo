@@ -10,7 +10,8 @@ class NetUtils {
     _dio = new Dio(BaseOptions(
         connectTimeout: 30000, receiveTimeout: 30000, sendTimeout: 30000));
     if (!inProduction) {
-      dio.interceptors.add(LogInterceptor());
+      dio.interceptors
+          .add(LogInterceptor(requestBody: true, responseBody: true));
     }
   }
 
