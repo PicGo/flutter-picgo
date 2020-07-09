@@ -15,10 +15,11 @@ Flutter-PicGo: 一个用于快速上传图片并获取图片URL链接的**手机
 
 Flutter-PicGo 本体支持如下图床：
 
-- GitHub [v1.0]
-- SM.MS [v1.1]
-- Gitee [v1.2]
-- 七牛云 [v1.3]
+- GitHub [v1.0+]
+- SM.MS [v1.1+]
+- Gitee [v1.2+]
+- 七牛云 [v1.3+]
+- 阿里云OSS [v1.4+]
 
 > 开发进度可以查看 Projects，会同步更新开发进度
 
