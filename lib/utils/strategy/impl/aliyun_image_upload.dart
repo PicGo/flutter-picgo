@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_picgo/api/aliyun_api.dart';
 import 'package:flutter_picgo/model/aliyun_config.dart';
 import 'package:flutter_picgo/model/uploaded.dart';
@@ -29,7 +30,7 @@ class AliyunImageUpload implements ImageUploadStrategy {
   @override
   Future<Uploaded> upload(File file, String renameImage) async {
     String configStr = await ImageUploadUtils.getPBConfig(PBTypeKeys.aliyun);
-    print(configStr);
+    debugPrint(configStr);
     if (isBlank(configStr)) {
       throw AliyunError(error: '读取配置文件错误！请重试');
     }

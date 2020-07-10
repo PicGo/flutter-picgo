@@ -42,7 +42,7 @@ class QiniuImageUpload extends ImageUploadStrategy {
       }
       return uploaded;
     } on DioError catch (e) {
-      print(e.response.data);
+      debugPrint(e.response.data);
       if (e.type == DioErrorType.RESPONSE &&
           e.error.toString().indexOf('400') > 0) {
         throw QiniuError(error: '400 请求报文格式错误');
