@@ -29,9 +29,9 @@ class LocalNotificationUtil {
     // Note: permissions aren't requested here just to demonstrate that can be done later using the `requestPermissions()` method
     // of the `IOSFlutterLocalNotificationsPlugin` class
     var initializationSettingsIOS = IOSInitializationSettings(
-        requestAlertPermission: true,
-        requestBadgePermission: true,
-        requestSoundPermission: true,
+        requestAlertPermission: false, //初始化不请求权限
+        requestBadgePermission: false,
+        requestSoundPermission: false,
         onDidReceiveLocalNotification: null);
     var initializationSettings = InitializationSettings(
         initializationSettingsAndroid, initializationSettingsIOS);
