@@ -28,9 +28,8 @@ class SMMSImageUpload implements ImageUploadStrategy {
 
   @override
   Future<Uploaded> delete(Uploaded uploaded) async {
-    String hash = await ImageUploadUtils.getUploadedItemInfo(uploaded.id);
-    if (!isBlank(hash)) {
-      var result = await SMMSApi.delete(hash);
+    if (!isBlank(uploaded.info)) {
+      var result = await SMMSApi.delete(uploaded.info);
       var resultmap = json.decode(result);
       if (resultmap["success"]) {
         return uploaded;

@@ -19,10 +19,9 @@ class GiteeImageUpload implements ImageUploadStrategy {
 
   @override
   Future<Uploaded> delete(Uploaded uploaded) async {
-    String infoStr = await ImageUploadUtils.getUploadedItemInfo(uploaded.id);
     GiteeUploadedInfo info;
     try {
-      info = GiteeUploadedInfo.fromJson(json.decode(infoStr));
+      info = GiteeUploadedInfo.fromJson(json.decode(uploaded.info));
     } catch (e) {}
     if (info != null) {
       String realUrl =

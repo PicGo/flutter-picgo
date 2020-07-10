@@ -17,18 +17,13 @@ class GithubImageUpload implements ImageUploadStrategy {
 
   @override
   Future<Uploaded> delete(Uploaded uploaded) async {
-    String infoStr = await ImageUploadUtils.getUploadedItemInfo(uploaded.id);
     GithubUploadedInfo info;
     try {
-      info = GithubUploadedInfo.fromJson(json.decode(infoStr));
+      info = GithubUploadedInfo.fromJson(json.decode(uploaded.info));
     } catch (e) {}
     if (info != null) {
-      String realUrl = path.joinAll([
-        'repos',
-        info.ownerrepo,
-        'contents',
-        info.path
-      ]);
+      String realUrl =
+          path.joinAll(['repos', info.ownerrepo, 'contents', info.path]);
       await GithubApi.deleteContent(realUrl, {
         "message": DELETE_COMMIT_MESSAGE,
         "sha": info.sha,
@@ -43,15 +38,9 @@ class GithubImageUpload implements ImageUploadStrategy {
     try {
       String configStr = await ImageUploadUtils.getPBConfig(PBTypeKeys.github);
       if (!isBlank(configStr)) {
-        GithubConfig config =
-            GithubConfig.fromJson(json.decode(configStr));
-        String realUrl = path.joinAll([
-          'repos',
-          config.repo,
-          'contents',
-          config.path,
-          renameImage
-        ]);
+        GithubConfig config = GithubConfig.fromJson(json.decode(configStr));
+        String realUrl = path.joinAll(
+            ['repos', config.repo, 'contents', config.path, renameImage]);
         var result = await GithubApi.putContent(realUrl, {
           "message": UPLOAD_COMMIT_MESSAGE,
           "content": await EncryptUtils.image2Base64(file.path),
@@ -60,13 +49,15 @@ class GithubImageUpload implements ImageUploadStrategy {
         String imagePath = result["content"]["path"];
         String downloadUrl = result["content"]["download_url"];
         String sha = result["content"]["sha"];
-        String imageUrl =
-            isBlank(config.customUrl)
-                ? downloadUrl
-                : '${path.joinAll([config.customUrl, imagePath])}';
+        String imageUrl = isBlank(config.customUrl)
+            ? downloadUrl
+            : '${path.joinAll([config.customUrl, imagePath])}';
         var uploadedItem = Uploaded(-1, imageUrl, PBTypeKeys.github,
             info: json.encode(GithubUploadedInfo(
-                path: imagePath, sha: sha, branch: config.branch, ownerrepo: config.repo)));
+                path: imagePath,
+                sha: sha,
+                branch: config.branch,
+                ownerrepo: config.repo)));
         await ImageUploadUtils.saveUploadedItem(uploadedItem);
         return uploadedItem;
       } else {

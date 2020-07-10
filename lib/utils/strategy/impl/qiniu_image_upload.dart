@@ -15,10 +15,9 @@ class QiniuImageUpload extends ImageUploadStrategy {
   @override
   Future<Uploaded> delete(Uploaded uploaded) async {
     try {
-      String infoStr = await ImageUploadUtils.getUploadedItemInfo(uploaded.id);
       QiniuUploadedInfo info;
       try {
-        info = QiniuUploadedInfo.fromJson(json.decode(infoStr));
+        info = QiniuUploadedInfo.fromJson(json.decode(uploaded.info));
       } catch (e) {}
       if (info != null) {
         String encodedEntryURI = QiniuApi.urlSafeBase64Encode(
