@@ -1,7 +1,7 @@
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_picgo/components/loading.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_picgo/model/pb_setting.dart';
 import 'package:flutter_picgo/routers/application.dart';
 import 'package:flutter_picgo/utils/permission.dart';
@@ -90,6 +90,13 @@ class _PBSettingPageState extends State<PBSettingPage>
                 );
               },
             ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(IconData(0xe62c, fontFamily: 'iconfont')),
+        tooltip: '导出配置',
+        onPressed: () {
+          _presenter.doExportConfig();
+        },
+      ),
     );
   }
 
@@ -128,5 +135,16 @@ class _PBSettingPageState extends State<PBSettingPage>
   @override
   void transferSuccess() {
     Toast.show('配置已转换', context);
+  }
+
+  @override
+  void exportConfigSuccess(String config) {
+    Clipboard.setData(ClipboardData(text: config));
+    Toast.show('已将配置导出至剪切板', context);
+  }
+
+  @override
+  void exportConfigError(String message) {
+    Toast.show('导出失败 : $message', context);
   }
 }

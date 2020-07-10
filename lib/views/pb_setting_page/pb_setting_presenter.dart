@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_picgo/model/pb_setting.dart';
+import 'package:flutter_picgo/resources/table_name_keys.dart';
 import 'package:flutter_picgo/utils/image_upload.dart';
 import 'package:flutter_picgo/utils/sql.dart';
+import 'package:flutter_picgo/utils/strings.dart';
 
 abstract class PBSettingPageContract {
   void loadPb(List<PBSetting> settings);
@@ -13,6 +15,10 @@ abstract class PBSettingPageContract {
   void transferError(String e);
 
   void transferSuccess();
+
+  void exportConfigSuccess(String config);
+
+  void exportConfigError(String message);
 }
 
 class PBSettingPagePresenter {
@@ -46,6 +52,24 @@ class PBSettingPagePresenter {
       _view.transferSuccess();
     } catch (e) {
       _view.transferError('转换失败，请确认配置无误');
+    }
+  }
+
+  /// 导出所有配置
+  doExportConfig() async {
+    try {
+      var sql = Sql.setTable(TABLE_NAME_PBSETTING);
+      var list = await sql.get();
+      Map<String, dynamic> map = {};
+      list.forEach((element) {
+        var pbItem = PBSetting.fromMap(element);
+        if (!isBlank(pbItem.config)) {
+          map[pbItem.type] = json.decode(pbItem.config);
+        }
+      });
+      _view.exportConfigSuccess(json.encode(map));
+    } catch (e) {
+      _view.exportConfigError('$e');
     }
   }
 }
