@@ -34,7 +34,7 @@ class DbProvider {
     try {
       db = await openDatabase(
         path,
-        version: 5,
+        version: 6,
         onCreate: (db, version) async {
           // 创建pb_setting表
           _initPb(db);
