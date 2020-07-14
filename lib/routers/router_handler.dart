@@ -10,6 +10,7 @@ import 'package:flutter_picgo/views/pb_setting_page/github_page/github_repo_page
 import 'package:flutter_picgo/views/pb_setting_page/pb_setting_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/qiniu_page/qiniu_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/smms_page/smms_page.dart';
+import 'package:flutter_picgo/views/pb_setting_page/tcyun_page/tcyun_page.dart';
 import 'package:flutter_picgo/views/picgo_setting_page/theme_setting_page.dart';
 import 'package:flutter_picgo/views/upload_page/upload_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/github_page/github_page.dart';
@@ -112,6 +113,11 @@ var pbsettingQiniuHandler = new Handler(
 // 阿里云OSS图床设置页面
 var pbsettingAliyunHandler = new Handler(
   handlerFunc: (context, parameters) => AliyunPage(),
+);
+
+// 腾讯云COS图床设置页面
+var pbsettingtcyunHandler = new Handler(
+  handlerFunc: (context, parameters) => TcyunPage(),
 );
 
 // picgo设置页面

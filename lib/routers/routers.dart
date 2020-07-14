@@ -25,8 +25,11 @@ class Routes {
   // --------- qiniu -------------------
   static const String settingPbQiniu = '/setting/pb/qiniu';
   // -----------------------------------
-  // --------- qiniu -------------------
+  // --------- aliyun -------------------
   static const String settingPbAliyun = '/setting/pb/aliyun';
+  // -----------------------------------
+  // --------- aliyun -------------------
+  static const String settingPbTcyun = '/setting/pb/tcyun';
   // -----------------------------------
 
   static void configureRoutes(Router router) {
