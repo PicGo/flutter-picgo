@@ -7,7 +7,7 @@ about: Something isn't working as expected
 
 **仅限中文与英文**, 其他语言的提交将直接被关闭
 
-### 您当前的flutter doctor信息
+### 您当前的flutter doctor信息或设备信息
 
 ### 预期的表现
 
