@@ -116,7 +116,7 @@ var pbsettingAliyunHandler = new Handler(
 );
 
 // 腾讯云COS图床设置页面
-var pbsettingtcyunHandler = new Handler(
+var pbsettingTcyunHandler = new Handler(
   handlerFunc: (context, parameters) => TcyunPage(),
 );
 

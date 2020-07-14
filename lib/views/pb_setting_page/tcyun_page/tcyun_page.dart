@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_picgo/model/config.dart';
+import 'package:flutter_picgo/model/tcyun_config.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
+import 'package:flutter_picgo/utils/strings.dart';
 import 'package:flutter_picgo/views/pb_setting_page/base_pb_page_state.dart';
 
 class TcyunPage extends StatefulWidget {
@@ -18,6 +23,56 @@ class _TcyunPageState extends BasePBSettingPageState<TcyunPage> {
 
   @override
   onLoadConfig(String config) {
-    throw UnimplementedError();
+    List<Config> configs = [];
+    Map<String, dynamic> map;
+    if (isBlank(config)) {
+      map = TcyunConfig().toJson();
+    } else {
+      map = json.decode(config);
+    }
+    map.forEach((key, value) {
+      Config config;
+      if (key == 'secretId') {
+        config = Config(
+            label: '设定SecretId',
+            placeholder: 'SecretId',
+            needValidate: true,
+            value: value);
+      } else if (key == 'secretKey') {
+        config = Config(
+            label: '设定SecretKey',
+            placeholder: 'SecretKey',
+            needValidate: true,
+            value: value);
+      } else if (key == 'appId') {
+        config = Config(
+            label: '设定AppId',
+            placeholder: '例如1234567890',
+            needValidate: true,
+            value: value);
+      } else if (key == 'bucket') {
+        config = Config(
+            label: '设定存储空间名',
+            placeholder: 'Bucket',
+            needValidate: true,
+            value: value);
+      } else if (key == 'area') {
+        config = Config(
+            label: '确认存储区域',
+            placeholder: '例如tj',
+            needValidate: true,
+            value: value);
+      } else if (key == 'path') {
+        config = Config(label: '指定存储路径', placeholder: '例如img/', value: value);
+      } else if (key == 'customUrl') {
+        config = Config(
+            label: '设定自定义域名',
+            placeholder: '例如：http://xxx.yyy.cn',
+            value: value);
+      }
+      config.name = key;
+      configs.add(config);
+    });
+    setConfigs(configs);
   }
 }

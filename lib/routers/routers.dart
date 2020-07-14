@@ -49,5 +49,6 @@ class Routes {
     router.define(settingPicgoTheme, handler: picggsettingThemeHandler);
     router.define(settingPbQiniu, handler: pbsettingQiniuHandler);
     router.define(settingPbAliyun, handler: pbsettingAliyunHandler);
+    router.define(settingPbTcyun, handler: pbsettingTcyunHandler);
   }
 }
