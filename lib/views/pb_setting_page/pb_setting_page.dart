@@ -47,7 +47,7 @@ class _PBSettingPageState extends State<PBSettingPage>
                     return AlertDialog(
                       title: Text('关于使用二维码扫描说明'),
                       content: Text('该功能是为了方便使用了PicGo PC端的用户。\n\n' +
-                          '在PC端已经配置好的用户可以将PicGo的配置文件转换成二维码。\n\n' +
+                          '在PC端已经配置好的用户可以使用PicGo新版的生成图床配置二维码功能。\n\n' +
                           '然后使用Flutter-PicGo直接扫描即可进行配置转换。'),
                       actions: <Widget>[
                         FlatButton(
