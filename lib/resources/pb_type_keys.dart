@@ -8,4 +8,6 @@ class PBTypeKeys {
   static const qiniu = 'qiniu';
 
   static const aliyun = 'aliyun';
+
+  static const tcyun = 'tcyun';
 }
