@@ -15,4 +15,9 @@ class _TcyunPageState extends BasePBSettingPageState<TcyunPage> {
 
   @override
   String get pbType => PBTypeKeys.tcyun;
+
+  @override
+  onLoadConfig(String config) {
+    throw UnimplementedError();
+  }
 }

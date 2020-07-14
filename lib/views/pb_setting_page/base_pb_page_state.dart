@@ -14,6 +14,12 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
   GlobalKey<FormState> _formKey;
 
   @override
+  void initState() {
+    super.initState();
+    loadConfig();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appbar ?? AppBar(),
@@ -140,6 +146,9 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
   /// 当前图床类型
   String get pbType;
 
+  /// 子类根据config String自定义需求
+  onLoadConfig(String config);
+
   /// 表单验证
   bool get validate => _formKey?.currentState?.validate() ?? true;
 
@@ -163,6 +172,14 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
     } catch (e) {
       Toast.show('$e', context, duration: Toast.LENGTH_LONG);
     }
+  }
+
+  /// 加载图床配置
+  loadConfig() async {
+    try {
+      var configStr = await ImageUploadUtils.getPBConfig(pbType);
+      onLoadConfig(configStr);
+    } catch (e) {}
   }
 
   /// 配置默认图床

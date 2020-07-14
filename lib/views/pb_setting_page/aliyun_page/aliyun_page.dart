@@ -1,28 +1,22 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_picgo/model/aliyun_config.dart';
 import 'package:flutter_picgo/model/config.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
-import 'package:flutter_picgo/views/pb_setting_page/aliyun_page/aliyun_page_presenter.dart';
+import 'package:flutter_picgo/utils/strings.dart';
 import 'package:flutter_picgo/views/pb_setting_page/base_pb_page_state.dart';
 
 class AliyunPage extends StatefulWidget {
   _AliyunPageState createState() => _AliyunPageState();
 }
 
-class _AliyunPageState extends BasePBSettingPageState<AliyunPage>
-    implements AliyunPageContract {
-  AliyunPagePresenter _presenter;
-
-  _AliyunPageState() {
-    _presenter = AliyunPagePresenter(this);
-  }
+class _AliyunPageState extends BasePBSettingPageState<AliyunPage> {
 
   @override
   void initState() {
     super.initState();
-    _presenter.doLoadConfig();
   }
-
   @override
   AppBar get appbar => AppBar(
         title: Text('阿里云OSS图床'),
@@ -33,9 +27,15 @@ class _AliyunPageState extends BasePBSettingPageState<AliyunPage>
   String get pbType => PBTypeKeys.aliyun;
 
   @override
-  loadConfig(AliyunConfig config) {
+  onLoadConfig(String config) {
     List<Config> configs = [];
-    config.toJson().forEach((key, value) {
+    Map<String, dynamic> map;
+    if (isBlank(config)) {
+      map = AliyunConfig().toJson();
+    } else {
+      map = json.decode(config);
+    }
+    map.forEach((key, value) {
       Config config;
       if (key == 'accessKeyId') {
         config = Config(

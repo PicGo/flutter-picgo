@@ -1,27 +1,22 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picgo/model/config.dart';
 import 'package:flutter_picgo/model/qiniu_config.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
+import 'package:flutter_picgo/utils/strings.dart';
 import 'package:flutter_picgo/views/pb_setting_page/base_pb_page_state.dart';
-import 'package:flutter_picgo/views/pb_setting_page/qiniu_page/qiniu_page_presenter.dart';
 
 class QiniuPage extends StatefulWidget {
   _QiniuPageState createState() => _QiniuPageState();
 }
 
-class _QiniuPageState extends BasePBSettingPageState<QiniuPage>
-    implements QiniuPageContract {
-  QiniuPagePresenter _presenter;
-
-  _QiniuPageState() {
-    _presenter = QiniuPagePresenter(this);
-  }
+class _QiniuPageState extends BasePBSettingPageState<QiniuPage> {
 
   @override
   void initState() {
     super.initState();
-    _presenter.doLoadConfig();
   }
 
   @override
@@ -34,9 +29,15 @@ class _QiniuPageState extends BasePBSettingPageState<QiniuPage>
       );
 
   @override
-  loadConfig(QiniuConfig config) {
+  onLoadConfig(String config) {
     List<Config> configs = [];
-    config.toJson().forEach((key, value) {
+    Map<String, dynamic> map;
+    if (isBlank(config)) {
+      map = QiniuConfig().toJson();
+    } else {
+      map = json.decode(config);
+    }
+    map.forEach((key, value) {
       Config config;
       if (key == 'accessKey') {
         config = Config(
