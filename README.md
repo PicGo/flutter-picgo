@@ -21,7 +21,7 @@ Flutter-PicGo 本体支持如下图床：
 - 七牛云 [v1.3+]
 - 阿里云OSS [v1.4+]
 
-> 开发进度可以查看 Projects，会同步更新开发进度
+> 开发进度可以查看 [Projects](https://github.com/PicGo/flutter-picgo/projects)，会同步更新开发进度
 
 # 特色功能
 
