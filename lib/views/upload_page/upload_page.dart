@@ -314,11 +314,13 @@ class _UploadPageState extends State<UploadPage>
       default:
         {
           //statements;
-          cliptext = _clipUrl;
+          cliptext = '';
         }
         break;
     }
-    Clipboard.setData(ClipboardData(text: cliptext));
+    if (!isBlank(cliptext)) {
+      Clipboard.setData(ClipboardData(text: cliptext));
+    }
     if (needShowTip) {
       Toast.show('已复制到剪切板', context);
     }
