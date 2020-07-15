@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
@@ -12,6 +11,11 @@ class TcyunApi {
   static const String secretKey = 'secretKey';
   static const String secretId = 'secretId';
 
+  static Future postObject(String bucket, String area, FormData data) async {
+    Response res = await NetUtils.getInstance().post('https://$bucket.cos.$area.$BASE_URL', data: data);
+    return res.headers;
+  }
+
   static Future deleteobject(String secretId, String secretKey, String bucket,
       String area, String key) async {
     Response res = await NetUtils.getInstance().delete(
@@ -20,6 +24,23 @@ class TcyunApi {
           extra: {TcyunApi.secretId: secretId, TcyunApi.secretKey: secretKey},
         ));
     return res.headers;
+  }
+
+  /// 构造“策略”（Policy）
+  /// 经过 Base64 编码的“策略”（Policy）内容
+  static String buildPolicy(
+      String bucket, String key, String secretId, String keyTime) {
+    Map<String, dynamic> map = {
+      "expiration": "2030-01-01T00:00:00.000Z",
+      "conditions": [
+        {"bucket": bucket},
+        {"key": key},
+        {"q-sign-algorithm": "sha1"},
+        {"q-ak": secretId},
+        {"q-sign-time": keyTime}
+      ]
+    };
+    return base64.encode(utf8.encode(json.encode(map)));
   }
 
   /// 生成 KeyTime
