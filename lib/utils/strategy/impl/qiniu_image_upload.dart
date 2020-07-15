@@ -37,12 +37,11 @@ class QiniuImageUpload extends ImageUploadStrategy {
         if (isBlank(result.toString())) {
           return uploaded;
         } else {
-          throw new QiniuError(error: result['error'].toString());
+          throw new QiniuError(error: '${result['error']}');
         }
       }
       return uploaded;
     } on DioError catch (e) {
-      debugPrint(e.response.data);
       if (e.type == DioErrorType.RESPONSE &&
           e.error.toString().indexOf('400') > 0) {
         throw QiniuError(error: '400 请求报文格式错误');
@@ -100,7 +99,6 @@ class QiniuImageUpload extends ImageUploadStrategy {
       await ImageUploadUtils.saveUploadedItem(uploadedItem);
       return uploadedItem;
     } on DioError catch (e) {
-      debugPrint(e.response.data);
       if (e.type == DioErrorType.RESPONSE &&
           e.error.toString().indexOf('400') > 0) {
         throw QiniuError(error: '400 请求报文格式错误');
