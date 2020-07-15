@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
@@ -15,10 +16,9 @@ class TcyunApi {
       String area, String key) async {
     Response res = await NetUtils.getInstance().delete(
         'https://$bucket.cos.$area.$BASE_URL/$key',
-        options: Options(extra: {
-          TcyunApi.secretId: secretId,
-          TcyunApi.secretKey: secretKey
-        }));
+        options: Options(
+          extra: {TcyunApi.secretId: secretId, TcyunApi.secretKey: secretKey},
+        ));
     return res.headers;
   }
 
@@ -49,8 +49,6 @@ class TcyunInterceptor extends InterceptorsWrapper {
   @override
   Future onRequest(RequestOptions options) async {
     if (options.path.contains(TcyunApi.BASE_URL)) {
-      print('run run run');
-
       /// 生成 KeyTime
       var keytime = TcyunApi.buildKeyTime();
 
@@ -78,8 +76,19 @@ class TcyunInterceptor extends InterceptorsWrapper {
       /// 生成 HeaderList 和 HttpHeaders
       String headerList = '';
       String httpHeaders = '';
-      if (options.headers != null) {
-        options.headers.forEach((key, value) {
+      Map<String, dynamic> headers = {
+        // 'Date': HttpDate.format(new DateTime.now()),
+        'Host': options.uri.host
+      };
+      headers.addAll(options.headers);
+      if (options.method.toUpperCase() == 'GET' ||
+          options.method.toUpperCase() == 'HEAD' ||
+          options.method.toUpperCase() == 'DELETE' ||
+          options.method.toUpperCase() == 'OPTIONS') {
+        headers.remove('content-type');
+      }
+      if (headers != null) {
+        headers.forEach((key, value) {
           print('key = $key, value = $value');
           headerList += '${Uri.encodeComponent(key).toLowerCase()};';
           httpHeaders +=
@@ -114,8 +123,8 @@ class TcyunInterceptor extends InterceptorsWrapper {
           '&q-header-list=$headerList' +
           '&q-url-param-list=$urlParamList' +
           '&q-signature=$sign';
-      print('realSign = $realSign');
-      options.headers.addAll({'Authorization': realSign});
+      headers.addAll({'Authorization': realSign});
+      options.headers = headers;
     }
     return options;
   }
