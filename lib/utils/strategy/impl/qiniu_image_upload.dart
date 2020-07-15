@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter_picgo/api/qiniu_api.dart';
 import 'package:flutter_picgo/model/qiniu_config.dart';
