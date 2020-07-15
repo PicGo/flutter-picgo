@@ -21,8 +21,8 @@ class _UploadPageState extends State<UploadPage>
     implements UploadPageContract {
   String _title = '';
   String _previewPath = '';
-  String _renameImage;
-  String _clipUrl;
+  String _renameImage = '';
+  String _clipUrl = '';
   TextEditingController _controller;
   // 默认不选中则不复制
   int _selectButton = 0;
@@ -290,7 +290,7 @@ class _UploadPageState extends State<UploadPage>
 
   /// 设置剪切板
   setClipData([bool needShowTip = true]) {
-    if (_clipUrl == null || _clipUrl == '') {
+    if (isBlank(_clipUrl)) {
       Toast.show('暂无可获取图片', context);
       return;
     }
