@@ -11,11 +11,15 @@ main() {
   });
 
   test('测试Api 签名', () async {
-    await TcyunApi.deleteobject(
+    try {
+      await TcyunApi.deleteobject(
         'AKID70e28x4gazd17vKiywkITO1NSWHv6s75',
         'pN0MRGo5HCqDxTqpGPTFlCsHPKzUjhZD',
         'test-1253954259',
         'ap-nanjing',
         'wallhaven-2e9j79.jpg');
+    } catch (e) {
+      print(e);
+    }
   });
 }
