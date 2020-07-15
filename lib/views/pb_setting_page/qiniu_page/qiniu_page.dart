@@ -13,7 +13,6 @@ class QiniuPage extends StatefulWidget {
 }
 
 class _QiniuPageState extends BasePBSettingPageState<QiniuPage> {
-
   @override
   void initState() {
     super.initState();
@@ -35,7 +34,7 @@ class _QiniuPageState extends BasePBSettingPageState<QiniuPage> {
     if (isBlank(config)) {
       map = QiniuConfig().toJson();
     } else {
-      map = json.decode(config);
+      map = QiniuConfig.fromJson(json.decode(config)).toJson();
     }
     map.forEach((key, value) {
       Config config;

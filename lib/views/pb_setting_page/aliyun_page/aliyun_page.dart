@@ -12,11 +12,11 @@ class AliyunPage extends StatefulWidget {
 }
 
 class _AliyunPageState extends BasePBSettingPageState<AliyunPage> {
-
   @override
   void initState() {
     super.initState();
   }
+
   @override
   AppBar get appbar => AppBar(
         title: Text('阿里云OSS图床'),
@@ -33,7 +33,7 @@ class _AliyunPageState extends BasePBSettingPageState<AliyunPage> {
     if (isBlank(config)) {
       map = AliyunConfig().toJson();
     } else {
-      map = json.decode(config);
+      map = AliyunConfig.fromJson(json.decode(config)).toJson();
     }
     map.forEach((key, value) {
       Config config;

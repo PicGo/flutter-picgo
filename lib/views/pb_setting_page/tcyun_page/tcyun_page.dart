@@ -28,7 +28,7 @@ class _TcyunPageState extends BasePBSettingPageState<TcyunPage> {
     if (isBlank(config)) {
       map = TcyunConfig().toJson();
     } else {
-      map = json.decode(config);
+      map = TcyunConfig.fromJson(json.decode(config)).toJson();
     }
     map.forEach((key, value) {
       Config config;
