@@ -24,7 +24,8 @@ class _UploadPageState extends State<UploadPage>
   String _renameImage;
   String _clipUrl;
   TextEditingController _controller;
-  int _selectButton = 1;
+  // 默认不选中则不复制
+  int _selectButton = 0;
 
   // 通知提示
   bool needNotify = false;
@@ -280,9 +281,9 @@ class _UploadPageState extends State<UploadPage>
   }
 
   @override
-  uploadFaild(String errorMsg) {
+  uploadFaild(String errorMsg) async {
     if (needNotify) {
-      _showNotification(0, '上传失败：$errorMsg');
+      await _showNotification(0, '上传失败：$errorMsg');
     }
     Toast.show(errorMsg ?? '', context);
   }
