@@ -331,7 +331,7 @@ class _UploadPageState extends State<UploadPage>
     }
     this._clipUrl = imageUrl;
     setClipData(false);
-    Toast.show('上传成功：已复制到剪切板，图片链接为：$imageUrl', context);
+    Toast.show('上传成功，图片链接为：$imageUrl', context);
   }
 
   Future<void> _showNotification(int id, String body) async {
