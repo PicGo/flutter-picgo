@@ -329,7 +329,7 @@ class _UploadPageState extends State<UploadPage>
   @override
   uploadSuccess(String imageUrl) async {
     if (needNotify) {
-      await _showNotification(1, '上传成功：图片链接已复制到剪切板，原链接：$imageUrl');
+      await _showNotification(1, '上传成功, 图片链接：$imageUrl');
     }
     this._clipUrl = imageUrl;
     setClipData(false);
