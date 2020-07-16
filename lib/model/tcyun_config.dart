@@ -1,5 +1,4 @@
 class TcyunConfig {
-  String appId;
   String area;
   String bucket;
   String customUrl;
@@ -7,8 +6,7 @@ class TcyunConfig {
   String secretId;
   String secretKey;
 
-  TcyunConfig(
-      {this.appId,
+  TcyunConfig({
       this.area,
       this.bucket,
       this.customUrl,
@@ -17,7 +15,6 @@ class TcyunConfig {
       this.secretKey});
 
   TcyunConfig.fromJson(Map<String, dynamic> json) {
-    appId = json['appId'];
     area = json['area'];
     bucket = json['bucket'];
     customUrl = json['customUrl'];
@@ -28,7 +25,6 @@ class TcyunConfig {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['appId'] = this.appId;
     data['area'] = this.area;
     data['bucket'] = this.bucket;
     data['customUrl'] = this.customUrl;

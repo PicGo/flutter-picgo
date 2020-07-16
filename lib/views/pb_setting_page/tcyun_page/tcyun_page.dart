@@ -44,16 +44,10 @@ class _TcyunPageState extends BasePBSettingPageState<TcyunPage> {
             placeholder: 'SecretKey',
             needValidate: true,
             value: value);
-      } else if (key == 'appId') {
-        config = Config(
-            label: '设定AppId',
-            placeholder: '例如1234567890',
-            needValidate: true,
-            value: value);
       } else if (key == 'bucket') {
         config = Config(
             label: '设定存储空间名',
-            placeholder: 'Bucket',
+            placeholder: '例如test-1253954259',
             needValidate: true,
             value: value);
       } else if (key == 'area') {
