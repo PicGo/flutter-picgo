@@ -40,7 +40,16 @@ class TcyunApi {
         {"q-sign-time": keyTime}
       ]
     };
-    return base64.encode(utf8.encode(json.encode(map)));
+    return json.encode(map);
+  }
+
+  /// post Signature
+  static String buildSignature(String secretKey, String keyTime, String policy) {
+    var hmacsha1 = Hmac(sha1, utf8.encode(secretKey));
+    var signKey = hmacsha1.convert(utf8.encode(keyTime));
+    var stringToSign = sha1.convert(utf8.encode(policy));
+    var hmacsha1_2 = Hmac(sha1, signKey.bytes);
+    return '${hmacsha1_2.convert(stringToSign.bytes)}';
   }
 
   /// 生成 KeyTime
