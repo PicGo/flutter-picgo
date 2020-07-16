@@ -11,8 +11,15 @@ class TcyunApi {
   static const String secretKey = 'secretKey';
   static const String secretId = 'secretId';
 
-  static Future postObject(String bucket, String area, FormData data) async {
-    Response res = await NetUtils.getInstance().post('https://$bucket.cos.$area.$BASE_URL', data: data);
+  static Future postObject(String secretId, String secretKey, String bucket, String area, String ext, FormData formData) async {
+    Response res = await NetUtils.getInstance().post(
+      'https://$bucket.cos.$area.$BASE_URL/',
+      data: formData,
+      options: Options(
+        extra: {TcyunApi.secretId: secretId, TcyunApi.secretKey: secretKey},
+        contentType: 'image/$ext'
+      )
+    );
     return res.headers;
   }
 
@@ -44,12 +51,17 @@ class TcyunApi {
   }
 
   /// post Signature
-  static String buildSignature(String secretKey, String keyTime, String policy) {
-    var hmacsha1 = Hmac(sha1, utf8.encode(secretKey));
-    var signKey = hmacsha1.convert(utf8.encode(keyTime));
+  static String buildSignature(
+      String secretKey, String keyTime, String policy) {
+    /// signkey
+    var hmacsha1Signkey = Hmac(sha1, utf8.encode(secretKey));
+    var signKey = hmacsha1Signkey.convert(utf8.encode(keyTime));
+    // string to sign 
     var stringToSign = sha1.convert(utf8.encode(policy));
-    var hmacsha1_2 = Hmac(sha1, signKey.bytes);
-    return '${hmacsha1_2.convert(stringToSign.bytes)}';
+    // signature
+    var hmacsha1Signature = Hmac(sha1, utf8.encode('$signKey'));
+    var signature = hmacsha1Signature.convert(utf8.encode('$stringToSign'));
+    return '$signature';
   }
 
   /// 生成 KeyTime

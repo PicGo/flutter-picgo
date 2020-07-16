@@ -36,21 +36,23 @@ main() {
       String keyTime = TcyunApi.buildKeyTime();
       String policy = TcyunApi.buildPolicy('ap-nanjing', 'logo.png',
           'AKIDvb0B9rqfeOr44kt2ar46rO2cwzl6JwUk', keyTime);
-      TcyunApi.postObject(
-          'test-1253954259',
-          'ap-nanjing',
-          FormData.fromMap({
-            "key": "logo.png",
-            "file": await MultipartFile.fromFile(
-                'C:\\Users\\Administrator\\Desktop\\flutter-picgo\\flutter-picgo\\assets\\images\\logo.png',
-                filename: 'logo.png'),
-            "policy": base64.encode(utf8.encode(policy)),
-            "q-sign-algorithm": "sha1",
-            "q-ak": "AKIDvb0B9rqfeOr44kt2ar46rO2cwzl6JwUk",
-            "q-key-time": keyTime,
-            "q-signature": TcyunApi.buildSignature(
-                'KOEoR1LL5apX1lFRN4VgZB0nJgmdEbie', keyTime, policy)
-          }));
+      print(policy);
+      // TcyunApi.postObject(
+      //     'test-1253954259',
+      //     'ap-nanjing',
+      //     'png',
+      //     FormData.fromMap({
+      //       "key": "logo.png",
+      //       "file": await MultipartFile.fromFile(
+      //           'C:\\Users\\Administrator\\Desktop\\flutter-picgo\\flutter-picgo\\assets\\images\\logo.png',
+      //           filename: 'logo.png'),
+      //       "policy": base64.encode(utf8.encode(policy)),
+      //       "q-sign-algorithm": "sha1",
+      //       "q-ak": "AKIDvb0B9rqfeOr44kt2ar46rO2cwzl6JwUk",
+      //       "q-key-time": keyTime,
+      //       "q-signature": TcyunApi.buildSignature(
+      //           'KOEoR1LL5apX1lFRN4VgZB0nJgmdEbie', keyTime, policy)
+      //     }));
     } catch (e) {
       print(e);
     }
