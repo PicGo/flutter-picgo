@@ -111,10 +111,10 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
                       transition: TransitionType.cupertino);
                 },
               ),
-              ListTile(
-                title: Text('设置显示图床'),
-                onTap: () {},
-              ),
+              // ListTile(
+              //   title: Text('设置显示图床'),
+              //   onTap: () {},
+              // ),
               ListTile(
                 title: Text('检查更新'),
                 onTap: () {},
