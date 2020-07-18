@@ -31,7 +31,7 @@ Flutter-PicGo: 一个用于快速上传图片并获取图片URL链接的**手机
 - 适配深色模式，可跟随系统或手动设置
 - 支持将flutter-picgo的配置导出至剪切板
 
-> 基本使用配置与PicGo无异，可参考[使用文档](https://picgo.github.io/PicGo-Doc/zh/guide/getting-started.html)。
+> 基本使用配置与PicGo无异，可参考[使用文档](https://picgo.github.io/PicGo-Doc/zh/guide/config.html#%E5%9B%BE%E5%BA%8A%E5%8C%BA)。
 > 腾讯云COS仅支持v5版配置
 
 # 应用截图
