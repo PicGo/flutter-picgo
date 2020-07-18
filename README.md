@@ -13,7 +13,7 @@
 
 Flutter-PicGo: 一个用于快速上传图片并获取图片URL链接的**手机版**工具
 
-Flutter-PicGo 本体支持如下图床：
+**Flutter-PicGo 本体支持如下图床：**
 
 - GitHub [v1.0+]
 - SM.MS [v1.1+]
@@ -30,6 +30,8 @@ Flutter-PicGo 本体支持如下图床：
 - 支持扫描二维码将PicGo配置文件转换成Flutter-PicGo的配置
 - 适配深色模式，可跟随系统或手动设置
 - 支持将flutter-picgo的配置导出至剪切板
+
+> 基本使用配置与PicGo无异，可参考[使用文档](https://picgo.github.io/PicGo-Doc/zh/guide/getting-started.html)。
 
 # 应用截图
 
