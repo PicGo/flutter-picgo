@@ -10,6 +10,7 @@ import 'package:flutter_picgo/views/album_page/album_page_presenter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter/services.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class AlbumPage extends StatefulWidget {
   @override
@@ -19,6 +20,11 @@ class AlbumPage extends StatefulWidget {
 class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
   AlbumPagePresenter _presenter;
   List<Uploaded> _uploadeds = [];
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+  int _perPageItemSize = 8;
+  int _currentPage = 0;
+  int _count = 0; //列表总数
 
   _AlbumPageState() {
     _presenter = AlbumPagePresenter(this);
@@ -27,14 +33,16 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
   @override
   void initState() {
     super.initState();
-    _presenter.doLoadUploadedImages();
+    _presenter.doGetItemCount();
+    _onRefresh();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('相册 - ${_uploadeds?.length ?? 0}'),
+        title: Text(
+            '相册 - ${_uploadeds?.length ?? 0}${_count == _uploadeds.length ? '' : " - $_count"}'),
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
@@ -49,8 +57,44 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
               transition: TransitionType.cupertino);
         },
       ),
-      body: RefreshIndicator(
+      body: SmartRefresher(
+          enablePullDown: true,
+          enablePullUp: this._uploadeds.length >= _perPageItemSize,
+          header: ClassicHeader(
+            refreshStyle: RefreshStyle.Follow,
+            idleText: '下拉刷新',
+            releaseText: '释放刷新',
+            completeText: '加载完成',
+            refreshingText: '刷新中',
+            failedText: '加载失败，请重试',
+          ),
+          footer: CustomFooter(
+            builder: (BuildContext context, LoadStatus mode) {
+              Widget body;
+              if (mode == LoadStatus.idle) {
+                body = Text("上拉加载");
+              } else if (mode == LoadStatus.loading) {
+                body = SizedBox(
+                  width: 15,
+                  height: 15,
+                  child: CircularProgressIndicator(),
+                );
+              } else if (mode == LoadStatus.failed) {
+                body = Text("加载失败！点击重试！");
+              } else if (mode == LoadStatus.canLoading) {
+                body = Text("松手,加载更多!");
+              } else {
+                body = Text("没有更多数据了!");
+              }
+              return Container(
+                height: 55.0,
+                child: Center(child: body),
+              );
+            },
+          ),
           onRefresh: _onRefresh,
+          onLoading: _onLoading,
+          controller: _refreshController,
           child: _uploadeds.length > 0 ? albumView() : emptyView()),
     );
   }
@@ -142,35 +186,44 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
   }
 
   Widget emptyView() {
-    return ListView(
-      children: <Widget>[
-        SizedBox(height: 100),
-        Center(
-          child: Container(
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
             width: 200,
             height: 200,
             child: Image.asset('assets/images/icon_empty_album.png',
                 fit: BoxFit.fill),
           ),
-        ),
-        SizedBox(height: 10),
-        Center(
-          child: Text(
-            '相册暂无任何照片，快点击右下角按钮去上传吧',
-            style: TextStyle(color: Colors.grey),
-          ),
-        )
-      ],
+          Center(
+            child: Text(
+              '相册暂无任何照片，快点击右下角按钮去上传吧',
+              style: TextStyle(color: Colors.grey),
+            ),
+          )
+        ],
+      ),
     );
   }
 
-  Future<dynamic> _onRefresh() async {
+  /// 刷新
+  _onRefresh() async {
+    // _uploadeds.clear();
     setState(() {
-      _uploadeds.clear();
+      this._currentPage = 0;
+      this._uploadeds.clear();
+      _refreshController.resetNoData();
     });
-    return _presenter.doLoadUploadedImages();
+    _presenter.doLoadUploadedImages(_perPageItemSize, this._currentPage);
   }
 
+  /// 上拉加载
+  _onLoading() async {
+    _presenter.doLoadUploadedImages(_perPageItemSize, _currentPage += 1);
+  }
+
+  /// 处理图片点击
   handleTap(int index) {
     Clipboard.setData(ClipboardData(text: _uploadeds[index].path));
     Toast.show('已复制到剪切板', context);
@@ -179,13 +232,29 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
   @override
   void loadUploadedImages(List<Uploaded> uploadeds) {
     setState(() {
-      this._uploadeds.addAll(uploadeds);
+      if (this._currentPage == 0) {
+        _refreshController.refreshCompleted();
+      } else if (this._currentPage > 0 &&
+          (uploadeds == null || uploadeds.length == 0)) {
+        _refreshController.loadNoData();
+      } else {
+        this._currentPage += 1;
+        _refreshController.loadComplete();
+      }
+      if (uploadeds != null && uploadeds.length > 0) {
+        this._uploadeds.addAll(uploadeds);
+      }
     });
   }
 
   @override
   void loadError() {
     Toast.show('加载失败', context);
+    if (this._currentPage == 1) {
+      _refreshController.refreshFailed();
+    } else {
+      _refreshController.loadFailed();
+    }
   }
 
   @override
@@ -197,6 +266,13 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
   void deleteSuccess(Uploaded uploaded) {
     this.setState(() {
       this._uploadeds.remove(uploaded);
+    });
+  }
+
+  @override
+  void loadItemCount(int count) {
+    setState(() {
+      this._count = count;
     });
   }
 }
