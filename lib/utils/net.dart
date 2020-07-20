@@ -11,13 +11,13 @@ class NetUtils {
     _dio = new Dio(BaseOptions(
         connectTimeout: 30000, receiveTimeout: 30000, sendTimeout: 30000));
     if (!inProduction) {
-      /// Tcyun
-      dio.interceptors.add(TcyunInterceptor());
-
       /// Log
       dio.interceptors
           .add(LogInterceptor(requestBody: true, responseBody: true));
     }
+
+    /// Tcyun Interceptor
+    dio.interceptors.add(TcyunInterceptor());
   }
 
   Dio get dio => _dio;
