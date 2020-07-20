@@ -1,10 +1,10 @@
 {
   "iOS": {
-    "versionName": "1.4.0",
-    "versionCode": "8"
+    "versionName": "1.5.0",
+    "versionCode": "10"
   },
   "Android": {
-    "versionName": "1.4.1",
-    "versionCode": "9"
+    "versionName": "1.5.0",
+    "versionCode": "10"
   }
 }
