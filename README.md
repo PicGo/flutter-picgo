@@ -26,7 +26,7 @@ Flutter-PicGo: 一个用于快速上传图片并获取图片URL链接的**手机
 
 # 特色功能
 
-- 长按相册列表项可同步删除图床下的图片，也可配置仅删除本地列表
+- 长按相册列表项可**同步删除远端的文件**，也可配置仅删除本地列表
 - 支持扫描二维码将PicGo配置文件转换成Flutter-PicGo的配置
 - 适配深色模式，可跟随系统或手动设置
 - 支持将flutter-picgo的配置导出至剪切板
@@ -51,6 +51,10 @@ iOS版本请扫描二维码下载或[点击链接](https://apps.apple.com/cn/app
 ![](https://github.static.si-yee.com/picgo/appstore.png)
 
 > 感谢[Trevor-Lan](https://github.com/Trevor-Lan)提供的苹果开发者账户
+
+# 应用说明
+
+目前仅支持iOS与Android端，由于部分插件例如[sqflite](https://pub.dev/packages/sqflite)，所以并不支持Web端。
 
 # 致谢
 
