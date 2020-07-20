@@ -24,7 +24,6 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
       RefreshController(initialRefresh: false);
   int _perPageItemSize = 8;
   int _currentPage = 0;
-  int _count = 0; //列表总数
 
   _AlbumPageState() {
     _presenter = AlbumPagePresenter(this);
@@ -33,7 +32,6 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
   @override
   void initState() {
     super.initState();
-    _presenter.doGetItemCount();
     _onRefresh();
   }
 
@@ -41,8 +39,7 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            '相册 - ${_uploadeds?.length ?? 0}${_count == _uploadeds.length ? '' : " - $_count"}'),
+        title: Text('相册 - ${_uploadeds?.length ?? 0}'),
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
@@ -266,13 +263,6 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
   void deleteSuccess(Uploaded uploaded) {
     this.setState(() {
       this._uploadeds.remove(uploaded);
-    });
-  }
-
-  @override
-  void loadItemCount(int count) {
-    setState(() {
-      this._count = count;
     });
   }
 }

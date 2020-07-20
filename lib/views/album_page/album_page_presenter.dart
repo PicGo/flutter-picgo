@@ -8,8 +8,6 @@ abstract class AlbumPageContract {
   void loadUploadedImages(List<Uploaded> uploadeds);
   void loadError();
 
-  void loadItemCount(int count);
-
   void deleteSuccess(Uploaded uploaded);
   void deleteError(String msg);
 }
@@ -32,14 +30,6 @@ class AlbumPagePresenter {
       print(e);
       _view.loadError();
     }
-  }
-
-  doGetItemCount() async {
-    try {
-      var sql = Sql.setTable(TABLE_NAME_UPLOADED);
-      var result = await sql.get();
-      _view.loadItemCount(result.length ?? 0);
-    } catch (e) {}
   }
 
   doDeleteImage(Uploaded uploaded) async {
