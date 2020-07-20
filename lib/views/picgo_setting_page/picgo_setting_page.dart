@@ -1,11 +1,17 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_picgo/api/picgo_api.dart';
 import 'package:flutter_picgo/routers/application.dart';
 import 'package:flutter_picgo/routers/routers.dart';
 import 'package:flutter_picgo/utils/local_notification.dart';
 import 'package:flutter_picgo/utils/shared_preferences.dart';
+import 'package:package_info/package_info.dart';
 import 'package:toast/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PicGoSettingPage extends StatefulWidget {
   @override
@@ -17,6 +23,7 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
   bool isTimestampRename = false;
   bool isUploadedTip = false;
   bool isForceDelete = false;
+  bool isNeedUpdate = false;
 
   @override
   void initState() {
@@ -33,6 +40,8 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
             u?.getBool(SharedPreferencesKeys.settingIsForceDelete) ?? false;
       });
     });
+    // update
+    _getLatestVersion();
   }
 
   @override
@@ -117,7 +126,20 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
               // ),
               ListTile(
                 title: Text('检查更新'),
-                onTap: () {},
+                onTap: () {
+                  _handleUpdateTap();
+                },
+                trailing: CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  child: Container(
+                    width: 8,
+                    height: 8,
+                    // color: Colors.red,
+                    decoration: BoxDecoration(
+                        color: isNeedUpdate ? Colors.red : Colors.transparent,
+                        borderRadius: BorderRadius.circular(4)),
+                  ),
+                ),
               ),
             ],
           );
@@ -130,5 +152,39 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
     var instance = await SpUtil.getInstance();
     instance.putBool(key, value);
     Toast.show('保存成功', context);
+  }
+
+  _getLatestVersion() async {
+    try {
+      Response res = await PicgoApi.getLatestVersion();
+      PackageInfo info = await PackageInfo.fromPlatform();
+      int version = int.parse(info.buildNumber);
+      debugPrint('$version');
+      int remoteVersion = 0;
+      if (Platform.isAndroid) {
+        remoteVersion = int.parse('${res.data["Android"]["versionCode"]}');
+      } else if (Platform.isIOS) {
+        remoteVersion = int.parse('${res.data["iOS"]["versionCode"]}');
+      }
+      if (version < remoteVersion) {
+        setState(() {
+          this.isNeedUpdate = true;
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  _handleUpdateTap() async {
+    if (isNeedUpdate) {
+      if (Platform.isAndroid) {
+        launch('https://www.pgyer.com/flutter-picgo');
+      } else if (Platform.isIOS) {
+        launch('https://apps.apple.com/cn/app/flutter-picgo/id1519714305');
+      }
+    } else {
+      Toast.show('当前已经是最新版本', context);
+    }
   }
 }
