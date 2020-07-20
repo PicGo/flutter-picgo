@@ -17,10 +17,11 @@ class AlbumPagePresenter {
 
   AlbumPagePresenter(this._view);
 
-  doLoadUploadedImages() async {
+  doLoadUploadedImages(int limit, int offest) async {
     try {
       var sql = Sql.setTable(TABLE_NAME_UPLOADED);
-      var result = await sql.get();
+      var result = await sql.getBySql(null, null,
+          limit: limit, offset: offest * limit, orderBy: 'id DESC');
       List<Uploaded> uploadeds = result.map((v) {
         return Uploaded.fromMap(v);
       }).toList();
