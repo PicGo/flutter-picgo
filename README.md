@@ -53,7 +53,7 @@ Flutter-PicGo: 一个用于快速上传图片并获取图片URL链接的**手机
 
 # 相关
 
-- [PC端PicGo](https://github.com/Molunerfinn/PicGo)
+- [PicGo](https://github.com/Molunerfinn/PicGo)
 
 # 致谢
 
