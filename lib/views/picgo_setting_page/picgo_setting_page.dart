@@ -125,7 +125,7 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
               //   onTap: () {},
               // ),
               ListTile(
-                title: Text('检查更新'),
+                title: Text('版本更新'),
                 onTap: () {
                   _handleUpdateTap();
                 },
