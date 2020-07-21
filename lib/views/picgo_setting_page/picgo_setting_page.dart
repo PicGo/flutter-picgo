@@ -171,20 +171,15 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
           this.isNeedUpdate = true;
         });
       }
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
   }
 
+  /// 无论有无更新都进行跳转，不允许放置蒲公英链接
   _handleUpdateTap() async {
-    if (isNeedUpdate) {
-      if (Platform.isAndroid) {
-        launch('https://www.pgyer.com/flutter-picgo');
-      } else if (Platform.isIOS) {
-        launch('https://apps.apple.com/cn/app/flutter-picgo/id1519714305');
-      }
-    } else {
-      Toast.show('当前已经是最新版本', context);
+    if (Platform.isAndroid) {
+      launch('https://github.com/PicGo/flutter-picgo/releases');
+    } else if (Platform.isIOS) {
+      launch('https://apps.apple.com/cn/app/flutter-picgo/id1519714305');
     }
   }
 }
