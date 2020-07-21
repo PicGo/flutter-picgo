@@ -40,15 +40,10 @@ Flutter-PicGo: 一个用于快速上传图片并获取图片URL链接的**手机
 
 # 下载安装
 
-点击此处下载应用[releases](https://github.com/hackycy/flutter-picgo/releases)或[蒲公英](https://www.pgyer.com/flutter-picgo)。
-
-Android版直接下载apk安装包或扫码
-
-![](https://github.static.si-yee.com/picgo/android.png)
-
-iOS版本请扫描二维码下载或[点击链接](https://apps.apple.com/cn/app/flutter-picgo/id1519714305)。
-
-![](https://github.static.si-yee.com/picgo/appstore.png)
+|        |                           Android                            |                             iOS                              |
+| :----: | :----------------------------------------------------------: | :----------------------------------------------------------: |
+| 二维码 |   ![](https://github.static.si-yee.com/picgo/android.png)    |   ![](https://github.static.si-yee.com/picgo/appstore.png)   |
+|  链接  | [点击链接](https://github.com/hackycy/flutter-picgo/releases) | [点击链接](https://apps.apple.com/cn/app/flutter-picgo/id1519714305) |
 
 > 感谢[Trevor-Lan](https://github.com/Trevor-Lan)提供的苹果开发者账户
 
