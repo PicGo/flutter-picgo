@@ -43,10 +43,10 @@ class SpUtil {
     putString(SharedPreferencesKeys.settingDefaultPB, type);
   }
 
-  /// 获取当前默认图床，默认为github
+  /// 获取当前默认图床，默认为牛图网图床
   String getDefaultPB() {
     return getString(SharedPreferencesKeys.settingDefaultPB) ??
-        PBTypeKeys.github;
+        PBTypeKeys.niupic;
   }
 
   // 判断是否存在数据
