@@ -27,9 +27,9 @@ Flutter-PicGo: 一个用于快速上传图片并获取图片URL链接的**手机
 # 特色功能
 
 - 长按相册列表项可**同步删除远端的文件**，也可配置仅删除本地列表
-- 支持扫描二维码将PicGo(v2.3.0-beta.2以上版本)配置文件转换成Flutter-PicGo的配置，使用请移步[链接](https://github.com/Molunerfinn/PicGo/releases/tag/v2.3.0-beta.2)
+- 支持扫描二维码将*PicGo(v2.3.0-beta.2以上版本)*配置文件转换成*Flutter-PicGo*的配置，使用请移步[链接](https://github.com/Molunerfinn/PicGo/releases/tag/v2.3.0-beta.2)
 - 适配深色模式，可跟随系统或手动设置
-- 支持将flutter-picgo的配置导出至剪切板
+- 支持将*Flutter-PicGo*的配置导出至剪切板
 
 > 基本使用配置与PicGo无异，可参考[配置文档](https://picgo.github.io/PicGo-Doc/zh/guide/config.html#%E5%9B%BE%E5%BA%8A%E5%8C%BA)。
 > 腾讯云COS仅支持v5版配置
@@ -49,14 +49,45 @@ Flutter-PicGo: 一个用于快速上传图片并获取图片URL链接的**手机
 
 # 应用说明
 
-目前仅支持iOS与Android端，由于部分插件例如[sqflite](https://pub.dev/packages/sqflite)，所以并不支持Web端。
+目前仅支持iOS与Android端，由于部分插件例如[sqflite](https://pub.dev/packages/sqflite)不支持Web端，所以应用也并不支持Web端。
+
+# 有问题或者有更好的建议
+
+- 欢迎提 [Issues](https://github.com/PicGo/flutter-picgo/issues)
+
+> 如果项目有帮助到你或者喜欢这个项目，可以给个Star支持一下鸭
+
+# 相关
+
+- [PicGo](https://github.com/Molunerfinn/PicGo)
 
 # 致谢
 
-- [PicGo](https://github.com/Molunerfinn/PicGo)
 - [Flutter-Go](https://github.com/alibaba/flutter-go)
 
-# License
+# [License](https://github.com/hackycy/flutter-picgo/blob/master/LICENSE)
 
-[MIT](https://github.com/hackycy/flutter-picgo/blob/master/LICENSE)
+``` txt
+MIT License
+
+Copyright (c) 2020 Mr.Yang
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
 

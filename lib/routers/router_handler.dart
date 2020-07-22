@@ -7,6 +7,7 @@ import 'package:flutter_picgo/views/pb_setting_page/aliyun_page/aliyun_page.dart
 import 'package:flutter_picgo/views/pb_setting_page/gitee_page/gitee_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/gitee_page/gitee_repo_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/github_page/github_repo_page.dart';
+import 'package:flutter_picgo/views/pb_setting_page/niupic_page/niupic_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/pb_setting_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/qiniu_page/qiniu_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/smms_page/smms_page.dart';
@@ -118,6 +119,11 @@ var pbsettingAliyunHandler = new Handler(
 // 腾讯云COS图床设置页面
 var pbsettingTcyunHandler = new Handler(
   handlerFunc: (context, parameters) => TcyunPage(),
+);
+
+// 牛图网图床设置页面
+var pbsettingNiupicHandler = new Handler(
+  handlerFunc: (context, parameters) => NiupicPage(),
 );
 
 // picgo设置页面

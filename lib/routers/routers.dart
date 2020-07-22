@@ -28,8 +28,11 @@ class Routes {
   // --------- aliyun -------------------
   static const String settingPbAliyun = '/setting/pb/aliyun';
   // -----------------------------------
-  // --------- aliyun -------------------
+  // --------- tcyun -------------------
   static const String settingPbTcyun = '/setting/pb/tcyun';
+  // -----------------------------------
+  // --------- niupic -------------------
+  static const String settingPbNiupic = '/setting/pb/niupic';
   // -----------------------------------
 
   static void configureRoutes(Router router) {
@@ -50,5 +53,6 @@ class Routes {
     router.define(settingPbQiniu, handler: pbsettingQiniuHandler);
     router.define(settingPbAliyun, handler: pbsettingAliyunHandler);
     router.define(settingPbTcyun, handler: pbsettingTcyunHandler);
+    router.define(settingPbNiupic, handler: pbsettingNiupicHandler);
   }
 }

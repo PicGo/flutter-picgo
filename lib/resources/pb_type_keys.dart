@@ -10,4 +10,6 @@ class PBTypeKeys {
   static const aliyun = 'aliyun';
 
   static const tcyun = 'tcyun';
+
+  static const niupic = 'niupic';
 }
