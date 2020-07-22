@@ -49,11 +49,13 @@ Flutter-PicGo: 一个用于快速上传图片并获取图片URL链接的**手机
 
 # 应用说明
 
-目前仅支持iOS与Android端，由于部分插件例如[sqflite](https://pub.dev/packages/sqflite)，所以并不支持Web端。
+目前仅支持iOS与Android端，由于部分插件例如[sqflite](https://pub.dev/packages/sqflite)不支持Web端，所以应用也并不支持Web端。
 
 # 有问题或者有更好的建议
 
-欢迎提 [Issues](https://github.com/PicGo/flutter-picgo/issues)
+- 欢迎提 [Issues](https://github.com/PicGo/flutter-picgo/issues)
+
+> 如果项目有帮助到你或者喜欢这个项目，可以给个Star支持一下鸭
 
 # 相关
 
@@ -63,7 +65,29 @@ Flutter-PicGo: 一个用于快速上传图片并获取图片URL链接的**手机
 
 - [Flutter-Go](https://github.com/alibaba/flutter-go)
 
-# License
+# [License](https://github.com/hackycy/flutter-picgo/blob/master/LICENSE)
 
-[MIT](https://github.com/hackycy/flutter-picgo/blob/master/LICENSE)
+``` txt
+MIT License
+
+Copyright (c) 2020 Mr.Yang
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
 
