@@ -105,6 +105,9 @@ class DbProvider {
     // 腾讯云COS
     await db.rawInsert(
         'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.tcyun}", "/setting/pb/tcyun", "腾讯云COS图床", NULL, 1)');
+    // 牛图网
+    await db.rawInsert(
+        'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.niupic}", "/setting/pb/niupic", "牛图网图床", NULL, 1)');
     // copy data
     // update authors set dynasty_index=(select id  from dynasties where dynasties .name=authors.dynasty) where dynasty in (select name from dynasties )
     if (isExists) {
