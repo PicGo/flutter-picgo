@@ -34,7 +34,7 @@ class DbProvider {
     try {
       db = await openDatabase(
         path,
-        version: 6,
+        version: 7,
         onCreate: (db, version) async {
           // 创建pb_setting表
           _initPb(db);
@@ -44,7 +44,7 @@ class DbProvider {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             path varchar(255) NOT NULL,
             type varchar(20) NOT NULL,
-            info varchar(255) NOT NULL
+            info varchar(255)
           )''');
         },
         onUpgrade: (db, oldVersion, newVersion) {
