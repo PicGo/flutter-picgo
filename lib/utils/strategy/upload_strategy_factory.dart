@@ -3,6 +3,7 @@ import 'package:flutter_picgo/utils/strategy/impl/aliyun_image_upload.dart';
 import 'package:flutter_picgo/utils/strategy/impl/gitee_image_upload.dart';
 import 'package:flutter_picgo/utils/strategy/impl/github_image_upload.dart';
 import 'package:flutter_picgo/utils/strategy/image_upload_strategy.dart';
+import 'package:flutter_picgo/utils/strategy/impl/lsky_image_upload.dart';
 import 'package:flutter_picgo/utils/strategy/impl/niupic_image_upload.dart';
 import 'package:flutter_picgo/utils/strategy/impl/qiniu_image_upload.dart';
 import 'package:flutter_picgo/utils/strategy/impl/smms_image_upload.dart';
@@ -39,6 +40,9 @@ class UploadStrategyFactory {
       } else if (type == PBTypeKeys.niupic) {
         /// 牛图网
         cache[type] = new NiupicImageUpload();
+      } else if (type == PBTypeKeys.lsky) {
+        /// 兰空
+        cache[type] = new LskyImageUpload();
       }
     }
     return cache[type];
