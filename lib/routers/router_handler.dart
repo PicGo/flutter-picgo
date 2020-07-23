@@ -7,6 +7,7 @@ import 'package:flutter_picgo/views/pb_setting_page/aliyun_page/aliyun_page.dart
 import 'package:flutter_picgo/views/pb_setting_page/gitee_page/gitee_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/gitee_page/gitee_repo_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/github_page/github_repo_page.dart';
+import 'package:flutter_picgo/views/pb_setting_page/lsky_page/lsky_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/niupic_page/niupic_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/pb_setting_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/qiniu_page/qiniu_page.dart';
@@ -124,6 +125,11 @@ var pbsettingTcyunHandler = new Handler(
 // 牛图网图床设置页面
 var pbsettingNiupicHandler = new Handler(
   handlerFunc: (context, parameters) => NiupicPage(),
+);
+
+// 兰空图床设置页面
+var pbsettingLskyHandler = new Handler(
+  handlerFunc: (context, parameters) => LskyPage(),
 );
 
 // picgo设置页面

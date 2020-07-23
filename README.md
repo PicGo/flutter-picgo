@@ -21,6 +21,7 @@ Flutter-PicGo: 一个用于快速上传图片并获取图片URL链接的**手机
 - 七牛云 [v1.3+]
 - 阿里云OSS [v1.4+]
 - 腾讯云COS [v1.5+]
+- 牛图网 [v1.6+]
 
 > 开发进度可以查看 [Projects](https://github.com/PicGo/flutter-picgo/projects)，会同步更新开发进度
 
@@ -65,7 +66,7 @@ Flutter-PicGo: 一个用于快速上传图片并获取图片URL链接的**手机
 
 - [Flutter-Go](https://github.com/alibaba/flutter-go)
 
-# [License](https://github.com/hackycy/flutter-picgo/blob/master/LICENSE)
+# License
 
 ``` txt
 MIT License

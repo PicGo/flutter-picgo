@@ -66,7 +66,7 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
             ),
             Center(
               child: Text(
-                '请先保存后再进行连接测试',
+                tip,
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.grey[400]),
               ),
@@ -151,6 +151,9 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
 
   /// 表单验证
   bool get validate => _formKey?.currentState?.validate() ?? true;
+
+  /// 子类可重写更改文本
+  String get tip => '请先保存后再进行连接测试';
 
   /// 保存配置
   save() async {
