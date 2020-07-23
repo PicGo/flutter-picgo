@@ -34,7 +34,7 @@ class DbProvider {
     try {
       db = await openDatabase(
         path,
-        version: 7,
+        version: 8,
         onCreate: (db, version) async {
           // 创建pb_setting表
           _initPb(db);
@@ -108,6 +108,9 @@ class DbProvider {
     // 牛图网
     await db.rawInsert(
         'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.niupic}", "/setting/pb/niupic", "牛图网图床", NULL, 1)');
+    // 兰空图床
+    await db.rawInsert(
+        'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.lsky}", "/setting/pb/lsky", "兰空图床", NULL, 1)');
     // copy data
     // update authors set dynasty_index=(select id  from dynasties where dynasties .name=authors.dynasty) where dynasty in (select name from dynasties )
     if (isExists) {
