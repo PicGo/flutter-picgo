@@ -14,4 +14,6 @@ class PBTypeKeys {
   static const niupic = 'niupic';
 
   static const lsky = 'lsky';
+
+  static const upyun = 'upyun';
 }
