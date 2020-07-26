@@ -8,6 +8,7 @@ import 'package:flutter_picgo/utils/strategy/impl/niupic_image_upload.dart';
 import 'package:flutter_picgo/utils/strategy/impl/qiniu_image_upload.dart';
 import 'package:flutter_picgo/utils/strategy/impl/smms_image_upload.dart';
 import 'package:flutter_picgo/utils/strategy/impl/tcyun_image_upload.dart';
+import 'package:flutter_picgo/utils/strategy/impl/upyun_image_upload.dart';
 import 'package:flutter_picgo/utils/strings.dart';
 
 class UploadStrategyFactory {
@@ -43,6 +44,9 @@ class UploadStrategyFactory {
       } else if (type == PBTypeKeys.lsky) {
         /// 兰空
         cache[type] = new LskyImageUpload();
+      } else if (type == PBTypeKeys.upyun) {
+        /// 又拍云
+        cache[type] = new UpyunImageUpload();
       }
     }
     return cache[type];
