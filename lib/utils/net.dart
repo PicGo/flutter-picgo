@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_picgo/api/tcyun_api.dart';
+import 'package:flutter_picgo/api/upyun_api.dart';
 
 const bool inProduction = const bool.fromEnvironment("dart.vm.product");
 
@@ -10,14 +11,19 @@ class NetUtils {
   NetUtils._internal() {
     _dio = new Dio(BaseOptions(
         connectTimeout: 30000, receiveTimeout: 30000, sendTimeout: 30000));
+
+    /// Tcyun Interceptor
+    dio.interceptors.add(TcyunInterceptor());
+
+    /// Upyun Interceptor
+    dio.interceptors.add(UpyunInterceptor());
+
+    /// Log Interceptor
     if (!inProduction) {
       /// Log
       dio.interceptors
           .add(LogInterceptor(requestBody: true, responseBody: true));
     }
-
-    /// Tcyun Interceptor
-    dio.interceptors.add(TcyunInterceptor());
   }
 
   Dio get dio => _dio;
