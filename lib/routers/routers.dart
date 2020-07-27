@@ -37,6 +37,9 @@ class Routes {
   // --------- lsky -------------------
   static const String settingPbLsky = '/setting/pb/lsky';
   // -----------------------------------
+  // --------- upyun -------------------
+  static const String settingPbUpyun = '/setting/pb/upyun';
+  // -----------------------------------
 
   static void configureRoutes(Router router) {
     router.notFoundHandler = notfoundHandler;
@@ -58,5 +61,6 @@ class Routes {
     router.define(settingPbTcyun, handler: pbsettingTcyunHandler);
     router.define(settingPbNiupic, handler: pbsettingNiupicHandler);
     router.define(settingPbLsky, handler: pbsettingLskyHandler);
+    router.define(settingPbUpyun, handler: pbsettingUpyunHandler);
   }
 }

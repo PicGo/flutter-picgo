@@ -34,7 +34,7 @@ class DbProvider {
     try {
       db = await openDatabase(
         path,
-        version: 8,
+        version: 9,
         onCreate: (db, version) async {
           // 创建pb_setting表
           _initPb(db);
@@ -87,30 +87,42 @@ class DbProvider {
             config varchar(255) DEFAULT NULL,
             visible INTEGER DEFAULT 1
           )''');
-    // github图床
+
+    /// github图床
     await db.rawInsert(
         'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.github}", "/setting/pb/github", "Github图床", NULL, 1)');
-    // SM.MS图床
+
+    /// SM.MS图床
     await db.rawInsert(
         'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.smms}", "/setting/pb/smms", "SM.MS图床", NULL, 1)');
-    // Gitee图床
+
+    /// Gitee图床
     await db.rawInsert(
         'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.gitee}", "/setting/pb/gitee", "Gitee图床", NULL, 1)');
-    // Qiniu图床
+
+    /// Qiniu图床
     await db.rawInsert(
         'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.qiniu}", "/setting/pb/qiniu", "七牛图床", NULL, 1)');
-    // 阿里云OSS
+
+    /// 阿里云OSS
     await db.rawInsert(
         'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.aliyun}", "/setting/pb/aliyun", "阿里云OSS图床", NULL, 1)');
-    // 腾讯云COS
+
+    /// 腾讯云COS
     await db.rawInsert(
         'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.tcyun}", "/setting/pb/tcyun", "腾讯云COS图床", NULL, 1)');
-    // 牛图网
+
+    /// 牛图网
     await db.rawInsert(
         'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.niupic}", "/setting/pb/niupic", "牛图网图床", NULL, 1)');
-    // 兰空图床
+
+    /// 兰空图床
     await db.rawInsert(
         'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.lsky}", "/setting/pb/lsky", "兰空图床", NULL, 1)');
+
+    /// 又拍云图床
+    await db.rawInsert(
+        'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.upyun}", "/setting/pb/upyun", "又拍云图床", NULL, 1)');
     // copy data
     // update authors set dynasty_index=(select id  from dynasties where dynasties .name=authors.dynasty) where dynasty in (select name from dynasties )
     if (isExists) {
