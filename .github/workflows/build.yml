@@ -32,3 +32,7 @@ jobs:
           path: build/app/outputs/apk/release/*.apk
       - run: |
           curl -F "file=@build/app/outputs/apk/release/app-release.apk" -F "uKey=${{ secrets.PGY_USER_KEY }}" -F "_api_key=${{ secrets.PGY_API_KEY }}" https://upload.pgyer.com/apiv1/app/upload
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/apk/release/*.apk"
+          token: ${{ secrets.TOKEN }}
