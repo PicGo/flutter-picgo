@@ -13,17 +13,6 @@ class AliyunPage extends StatefulWidget {
 
 class _AliyunPageState extends BasePBSettingPageState<AliyunPage> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  AppBar get appbar => AppBar(
-        title: Text('阿里云OSS图床'),
-        centerTitle: true,
-      );
-
-  @override
   String get pbType => PBTypeKeys.aliyun;
 
   @override
@@ -77,4 +66,7 @@ class _AliyunPageState extends BasePBSettingPageState<AliyunPage> {
     });
     setConfigs(configs);
   }
+
+  @override
+  String get title => '阿里云OSS图床';
 }

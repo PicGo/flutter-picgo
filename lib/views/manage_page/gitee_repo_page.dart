@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_picgo/model/gitee_content.dart';
 import 'package:flutter_picgo/routers/application.dart';
 import 'package:flutter_picgo/routers/routers.dart';
-import 'package:flutter_picgo/views/pb_setting_page/gitee_page/gitee_repo_page_presenter.dart';
+import 'package:flutter_picgo/views/manage_page/gitee_repo_page_presenter.dart';
 import 'package:path/path.dart' as pathlib;
 import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';

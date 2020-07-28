@@ -22,7 +22,9 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appbar ?? AppBar(),
+      appBar: AppBar(
+        title: Text(title ?? ''),
+      ),
       body: Padding(
         padding: EdgeInsets.all(10.0),
         child: ListView(
@@ -140,11 +142,11 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
     }
   }
 
-  /// 子类自定义AppBar，不实现则默认为空实现AppBar()
-  AppBar get appbar;
-
   /// 当前图床类型
   String get pbType;
+
+  /// 子类AppBar Title
+  String get title;
 
   /// 子类根据config String自定义需求
   onLoadConfig(String config);

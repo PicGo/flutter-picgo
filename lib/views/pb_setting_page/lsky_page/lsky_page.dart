@@ -15,12 +15,6 @@ class LskyPage extends StatefulWidget {
 
 class _LskyPageState extends BasePBSettingPageState<LskyPage> {
   @override
-  AppBar get appbar => AppBar(
-        title: Text('兰空图床'),
-        centerTitle: true,
-      );
-
-  @override
   onLoadConfig(String config) {
     List<Config> configs = [];
     Map<String, dynamic> map;
@@ -90,4 +84,7 @@ class _LskyPageState extends BasePBSettingPageState<LskyPage> {
       return super.save();
     }
   }
+
+  @override
+  String get title => '兰空图床';
 }

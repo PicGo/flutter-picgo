@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_picgo/model/github_content.dart';
 import 'package:flutter_picgo/routers/application.dart';
 import 'package:flutter_picgo/routers/routers.dart';
-import 'package:flutter_picgo/views/pb_setting_page/github_page/github_repo_page_presenter.dart';
+import 'package:flutter_picgo/views/manage_page/github_repo_page_presenter.dart';
 import 'package:path/path.dart' as pathlib;
 import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';

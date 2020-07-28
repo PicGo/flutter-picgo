@@ -13,12 +13,6 @@ class TcyunPage extends StatefulWidget {
 
 class _TcyunPageState extends BasePBSettingPageState<TcyunPage> {
   @override
-  AppBar get appbar => AppBar(
-        title: Text('腾讯云COS图床'),
-        centerTitle: true,
-      );
-
-  @override
   String get pbType => PBTypeKeys.tcyun;
 
   @override
@@ -69,4 +63,7 @@ class _TcyunPageState extends BasePBSettingPageState<TcyunPage> {
     });
     setConfigs(configs);
   }
+
+  @override
+  String get title => '腾讯云COS图床';
 }
