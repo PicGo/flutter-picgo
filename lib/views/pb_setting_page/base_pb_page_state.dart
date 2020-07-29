@@ -28,7 +28,11 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
             ? <Widget>[
                 IconButton(
                   icon: Icon(IconData(0xe6ab, fontFamily: 'iconfont')),
-                  onPressed: handleManage,
+                  onPressed: () {
+                    if (validate) {
+                      handleManage();
+                    }
+                  },
                 )
               ]
             : null,
@@ -51,7 +55,6 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
                       textColor: Colors.white,
                       child: Text('保存'),
                       onPressed: () {
-                        //_saveConfig();
                         if (validate) {
                           save();
                         }
@@ -163,16 +166,13 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
   bool get validate => _formKey?.currentState?.validate() ?? true;
 
   /// 子类可重写更改文本
-  String get tip => '请先保存后再进行连接测试';
+  String get tip => '请先保存配置后再进行管理';
 
   /// 是否支持管理
   bool get isSupportManage => false;
 
   /// 子类重写，点击IconButton回调方法
-  handleManage() async {
-    /// 先调用保存
-    await save();
-  }
+  handleManage() {}
 
   /// 保存配置
   save() async {
