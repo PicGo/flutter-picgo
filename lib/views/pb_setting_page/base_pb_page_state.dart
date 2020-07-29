@@ -24,6 +24,14 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
     return Scaffold(
       appBar: AppBar(
         title: Text(title ?? ''),
+        actions: isSupportManage
+            ? <Widget>[
+                IconButton(
+                  icon: Icon(IconData(0xe6ab, fontFamily: 'iconfont')),
+                  onPressed: handleManage,
+                )
+              ]
+            : null,
       ),
       body: Padding(
         padding: EdgeInsets.all(10.0),
@@ -58,7 +66,7 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
                       child: Text('设为默认图床'),
                       onPressed: () {
                         if (validate) {
-                          _setDefaultPB();
+                          setDefaultPB();
                         }
                       },
                     ),
@@ -157,6 +165,15 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
   /// 子类可重写更改文本
   String get tip => '请先保存后再进行连接测试';
 
+  /// 是否支持管理
+  bool get isSupportManage => false;
+
+  /// 子类重写，点击IconButton回调方法
+  handleManage() async {
+    /// 先调用保存
+    await save();
+  }
+
   /// 保存配置
   save() async {
     if (isBlank(pbType)) {
@@ -188,7 +205,7 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
   }
 
   /// 配置默认图床
-  _setDefaultPB() async {
+  setDefaultPB() async {
     if (!isBlank(pbType)) {
       await ImageUploadUtils.setDefaultPB(pbType);
       Toast.show('设置成功', context);
