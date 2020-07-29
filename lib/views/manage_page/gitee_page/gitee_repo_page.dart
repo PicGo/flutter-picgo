@@ -1,5 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_picgo/components/manage_item.dart';
 import 'package:flutter_picgo/model/gitee_content.dart';
 import 'package:flutter_picgo/routers/application.dart';
 import 'package:flutter_picgo/routers/routers.dart';
@@ -129,34 +130,36 @@ class _GiteeRepoPageState extends BaseLoadingPageState<GiteeRepoPage>
     return ListView.builder(
         itemCount: contents.length,
         itemBuilder: (context, index) {
-          return Container(
-            decoration: BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(width: 0.5, color: Colors.grey[400])),
-            ),
-            child: ListTile(
-              title: Text(contents[index].name,
-                  textWidthBasis: TextWidthBasis.longestLine,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis),
-              leading: Icon(contents[index].type == GiteeContentType.FILE
-                  ? IconData(0xe654, fontFamily: 'iconfont')
-                  : IconData(0xe63f, fontFamily: 'iconfont')),
-              onTap: () {
-                if (contents[index].type == GiteeContentType.DIR) {
-                  var prePathParam = pathlib
-                      .joinAll([_prePath ?? '', _path == '/' ? '' : _path]);
-                  Application.router.navigateTo(context,
-                      '${Routes.settingPbGiteeRepo}?path=${Uri.encodeComponent(contents[index].name)}&prePath=${Uri.encodeComponent(prePathParam)}',
-                      transition: TransitionType.cupertino);
-                } else {
-                  Clipboard.setData(
-                      ClipboardData(text: contents[index].downloadUrl));
-                  Toast.show('已获取下载链接到剪切板', context);
-                }
-              },
-            ),
-          );
+          return ManageItem(
+              contents[index].downloadUrl,
+              contents[index].name,
+              'unknown',
+              contents[index].type == GiteeContentType.FILE
+                  ? FileContentType.FILE
+                  : FileContentType.DIR);
         });
   }
 }
+
+// ListTile(
+//               title: Text(contents[index].name,
+//                   textWidthBasis: TextWidthBasis.longestLine,
+//                   maxLines: 1,
+//                   overflow: TextOverflow.ellipsis),
+//               leading: Icon(contents[index].type == GiteeContentType.FILE
+//                   ? IconData(0xe654, fontFamily: 'iconfont')
+//                   : IconData(0xe63f, fontFamily: 'iconfont')),
+//               onTap: () {
+//                 if (contents[index].type == GiteeContentType.DIR) {
+//                   var prePathParam = pathlib
+//                       .joinAll([_prePath ?? '', _path == '/' ? '' : _path]);
+//                   Application.router.navigateTo(context,
+//                       '${Routes.settingPbGiteeRepo}?path=${Uri.encodeComponent(contents[index].name)}&prePath=${Uri.encodeComponent(prePathParam)}',
+//                       transition: TransitionType.cupertino);
+//                 } else {
+//                   Clipboard.setData(
+//                       ClipboardData(text: contents[index].downloadUrl));
+//                   Toast.show('已获取下载链接到剪切板', context);
+//                 }
+//               },
+//             )
