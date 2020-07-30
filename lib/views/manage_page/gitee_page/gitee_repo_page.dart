@@ -160,17 +160,20 @@ class _GiteeRepoPageState extends BaseLoadingPageState<GiteeRepoPage>
                       content: Text('删除后无法恢复'),
                       actions: <Widget>[
                         FlatButton(
-                          child: Text('确定'),
-                          onPressed: () {
-                            _presenter.doDeleteContents(_path, _prePath,
-                                contents[index].name, contents[index].sha);
-                            Navigator.pop(context, true);
-                          },
-                        ),
+                            child: Text('确定'),
+                            onPressed: () {
+                              Navigator.pop(context, true);
+                            }),
                       ],
                     );
                   });
-              return result;
+              if (!(result ?? false)) {
+                return false;
+              }
+
+              var del = await _presenter.doDeleteContents(
+                  _path, _prePath, contents[index].name, contents[index].sha);
+              return del;
             },
           );
         });
