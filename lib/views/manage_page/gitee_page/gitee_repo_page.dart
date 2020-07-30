@@ -135,11 +135,9 @@ class _GiteeRepoPageState extends BaseLoadingPageState<GiteeRepoPage>
             contents[index].downloadUrl,
             contents[index].name,
             '${contents[index].size}k',
-            contents[index].type == GiteeContentType.FILE
-                ? FileContentType.FILE
-                : FileContentType.DIR,
+            contents[index].type,
             onTap: () {
-              if (contents[index].type == GiteeContentType.DIR) {
+              if (contents[index].type == FileContentType.DIR) {
                 var prePathParam = pathlib
                     .joinAll([_prePath ?? '', _path == '/' ? '' : _path]);
                 Application.router.navigateTo(context,
@@ -150,7 +148,7 @@ class _GiteeRepoPageState extends BaseLoadingPageState<GiteeRepoPage>
               }
             },
             confirmDismiss: (direction) async {
-              if (contents[index].type == GiteeContentType.DIR) {
+              if (contents[index].type == FileContentType.DIR) {
                 Toast.show('暂不支持删除文件夹', context);
                 return false;
               }

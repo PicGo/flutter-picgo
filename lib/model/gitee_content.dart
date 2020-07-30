@@ -1,5 +1,7 @@
+import 'package:flutter_picgo/components/manage_item.dart';
+
 class GiteeContent {
-  GiteeContentType type;
+  FileContentType type;
   int size;
   String name;
   String path;
@@ -19,8 +21,7 @@ class GiteeContent {
       this.downloadUrl});
 
   GiteeContent.fromJson(Map<String, dynamic> json) {
-    type =
-        json['type'] == 'file' ? GiteeContentType.FILE : GiteeContentType.DIR;
+    type = json['type'] == 'file' ? FileContentType.FILE : FileContentType.DIR;
     size = json['size'];
     name = json['name'];
     path = json['path'];
@@ -32,7 +33,7 @@ class GiteeContent {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['type'] = this.type == GiteeContentType.FILE ? 'file' : 'dir';
+    data['type'] = this.type == FileContentType.FILE ? 'file' : 'dir';
     data['size'] = this.size;
     data['name'] = this.name;
     data['path'] = this.path;
@@ -42,13 +43,4 @@ class GiteeContent {
     data['download_url'] = this.downloadUrl;
     return data;
   }
-}
-
-/// 文件类型
-enum GiteeContentType {
-  /// 文件
-  FILE,
-
-  /// 文件夹
-  DIR,
 }
