@@ -1,5 +1,7 @@
+import 'package:flutter_picgo/components/manage_item.dart';
+
 class GithubContent {
-  GithubContentType type;
+  FileContentType type;
   String encoding;
   int size;
   String name;
@@ -26,7 +28,7 @@ class GithubContent {
   });
 
   GithubContent.fromJson(Map<String, dynamic> json) {
-    type = json['type'] == 'file' ? GithubContentType.FILE : GithubContentType.DIR;
+    type = json['type'] == 'file' ? FileContentType.FILE : FileContentType.DIR;
     encoding = json['encoding'];
     size = json['size'];
     name = json['name'];
@@ -41,7 +43,7 @@ class GithubContent {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['type'] = this.type == GithubContentType.FILE ? 'file' : 'dir';
+    data['type'] = this.type == FileContentType.FILE ? 'file' : 'dir';
     data['encoding'] = this.encoding;
     data['size'] = this.size;
     data['name'] = this.name;
@@ -54,13 +56,4 @@ class GithubContent {
     data['download_url'] = this.downloadUrl;
     return data;
   }
-}
-
-/// 文件类型
-enum GithubContentType {
-  /// 文件
-  FILE,
-
-  /// 文件夹
-  DIR,
 }

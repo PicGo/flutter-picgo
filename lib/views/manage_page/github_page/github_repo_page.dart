@@ -1,5 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_picgo/components/loading.dart';
+import 'package:flutter_picgo/components/manage_item.dart';
 import 'package:flutter_picgo/model/github_content.dart';
 import 'package:flutter_picgo/routers/application.dart';
 import 'package:flutter_picgo/routers/routers.dart';
@@ -8,6 +10,7 @@ import 'package:flutter_picgo/views/manage_page/github_page/github_repo_page_pre
 import 'package:path/path.dart' as pathlib;
 import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GithubRepoPage extends StatefulWidget {
   final String path;
@@ -129,33 +132,51 @@ class _GithubRepoPageState extends BaseLoadingPageState<GithubRepoPage>
     return ListView.builder(
         itemCount: contents.length,
         itemBuilder: (context, index) {
-          return Container(
-            decoration: BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(width: 0.5, color: Colors.grey[400])),
-            ),
-            child: ListTile(
-              title: Text(contents[index].name,
-                  textWidthBasis: TextWidthBasis.longestLine,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis),
-              leading: Icon(contents[index].type == GithubContentType.FILE
-                  ? IconData(0xe654, fontFamily: 'iconfont')
-                  : IconData(0xe63f, fontFamily: 'iconfont')),
-              onTap: () {
-                if (contents[index].type == GithubContentType.DIR) {
-                  var prePathParam = pathlib
-                      .joinAll([_prePath ?? '', _path == '/' ? '' : _path]);
-                  Application.router.navigateTo(context,
-                      '${Routes.settingPbGitubRepo}?path=${Uri.encodeComponent(contents[index].name)}&prePath=${Uri.encodeComponent(prePathParam)}',
-                      transition: TransitionType.cupertino);
-                } else {
-                  Clipboard.setData(
-                      ClipboardData(text: contents[index].downloadUrl));
-                  Toast.show('已获取下载链接到剪切板', context);
-                }
-              },
-            ),
+          return ManageItem(
+            Key('$index'),
+            contents[index].downloadUrl,
+            contents[index].name,
+            '${contents[index].size}k',
+            contents[index].type,
+            onTap: () {
+              if (contents[index].type == FileContentType.DIR) {
+                var prePathParam = pathlib
+                    .joinAll([_prePath ?? '', _path == '/' ? '' : _path]);
+                Application.router.navigateTo(context,
+                    '${Routes.settingPbGitubRepo}?path=${Uri.encodeComponent(contents[index].name)}&prePath=${Uri.encodeComponent(prePathParam)}',
+                    transition: TransitionType.cupertino);
+              } else {
+                launch(contents[index].downloadUrl);
+              }
+            },
+            confirmDismiss: (direction) async {
+              if (contents[index].type == FileContentType.DIR) {
+                Toast.show('暂不支持删除文件夹', context);
+                return false;
+              }
+              bool result = await showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('确定删除吗'),
+                      content: Text('删除后无法恢复'),
+                      actions: <Widget>[
+                        FlatButton(
+                            child: Text('确定'),
+                            onPressed: () {
+                              Navigator.pop(context, true);
+                            }),
+                      ],
+                    );
+                  });
+              if (!(result ?? false)) {
+                return false;
+              }
+
+              var del = await _presenter.doDeleteContents(
+                  _path, _prePath, contents[index].name, contents[index].sha);
+              return del;
+            },
           );
         });
   }

@@ -90,7 +90,9 @@ class ManageItem extends StatelessWidget {
                 child: Container(
                   width: 10,
                   height: 10,
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                  ),
                 ),
               ),
               errorWidget: (context, url, error) {
