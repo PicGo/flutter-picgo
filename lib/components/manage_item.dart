@@ -3,29 +3,66 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
 typedef GestureTapCallback = void Function();
+typedef DismissDirectionCallback = void Function(DismissDirection direction);
 
 class ManageItem extends StatelessWidget {
+  final Key key;
   final String url;
   final String name;
-  final String time;
+  final String info;
   final FileContentType type;
   final GestureTapCallback onTap;
+  final DismissDirectionCallback onDismiss;
+  final ConfirmDismissCallback confirmDismiss;
 
-  ManageItem(this.url, this.name, this.time, this.type, {this.onTap});
+  ManageItem(
+    this.key,
+    this.url,
+    this.name,
+    this.info,
+    this.type, {
+    this.onTap,
+    this.onDismiss,
+    this.confirmDismiss,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: buildLeading(),
-      title: Text(
-        this.name,
-        maxLines: 2,
-        style: TextStyle(color: Colors.black),
+    return Dismissible(
+      key: key,
+      direction: DismissDirection.endToStart,
+      child: Stack(
+        children: <Widget>[
+          ListTile(
+            leading: buildLeading(),
+            title: Text(
+              this.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textWidthBasis: TextWidthBasis.parent,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+            ),
+            subtitle: Text(
+              this.info,
+              maxLines: 1,
+              style: TextStyle(color: Colors.grey),
+            ),
+            onTap: onTap,
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Divider(
+              height: 1,
+              color: Theme.of(context).dividerColor,
+              indent: 80,
+            ),
+          )
+        ],
       ),
-      subtitle: Text(
-        this.time,
-        maxLines: 1,
-        style: TextStyle(color: Colors.grey),
+      onDismissed: onDismiss,
+      confirmDismiss: confirmDismiss,
+      background: Container(
+        color: Colors.red,
       ),
     );
   }
@@ -45,7 +82,7 @@ class ManageItem extends StatelessWidget {
           child: Card(
             clipBehavior: Clip.antiAlias,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadiusDirectional.circular(8)),
+                borderRadius: BorderRadiusDirectional.circular(2)),
             child: CachedNetworkImage(
               imageUrl: this.url,
               fit: BoxFit.cover,

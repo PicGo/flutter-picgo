@@ -7,8 +7,8 @@ import 'package:flutter_picgo/routers/routers.dart';
 import 'package:flutter_picgo/views/manage_page/base_loading_page_state.dart';
 import 'package:flutter_picgo/views/manage_page/gitee_page/gitee_repo_page_presenter.dart';
 import 'package:path/path.dart' as pathlib;
-import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GiteeRepoPage extends StatefulWidget {
   final String path;
@@ -131,35 +131,50 @@ class _GiteeRepoPageState extends BaseLoadingPageState<GiteeRepoPage>
         itemCount: contents.length,
         itemBuilder: (context, index) {
           return ManageItem(
-              contents[index].downloadUrl,
-              contents[index].name,
-              'unknown',
-              contents[index].type == GiteeContentType.FILE
-                  ? FileContentType.FILE
-                  : FileContentType.DIR);
+            Key('$index'),
+            contents[index].downloadUrl,
+            contents[index].name,
+            '${contents[index].size}k',
+            contents[index].type == GiteeContentType.FILE
+                ? FileContentType.FILE
+                : FileContentType.DIR,
+            onTap: () {
+              if (contents[index].type == GiteeContentType.DIR) {
+                var prePathParam = pathlib
+                    .joinAll([_prePath ?? '', _path == '/' ? '' : _path]);
+                Application.router.navigateTo(context,
+                    '${Routes.settingPbGiteeRepo}?path=${Uri.encodeComponent(contents[index].name)}&prePath=${Uri.encodeComponent(prePathParam)}',
+                    transition: TransitionType.cupertino);
+              } else {
+                launch(contents[index].downloadUrl);
+              }
+            },
+            confirmDismiss: (direction) async {
+              if (contents[index].type == GiteeContentType.DIR) {
+                Toast.show('暂不支持删除文件夹', context);
+                return false;
+              }
+              bool result = await showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('确定删除吗'),
+                      content: Text('删除后无法恢复'),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('确定'),
+                          onPressed: () {
+                            _presenter.doDeleteContents(_path, _prePath,
+                                contents[index].name, contents[index].sha);
+                            Navigator.pop(context, true);
+                          },
+                        ),
+                      ],
+                    );
+                  });
+              return result;
+            },
+          );
         });
   }
 }
-
-// ListTile(
-//               title: Text(contents[index].name,
-//                   textWidthBasis: TextWidthBasis.longestLine,
-//                   maxLines: 1,
-//                   overflow: TextOverflow.ellipsis),
-//               leading: Icon(contents[index].type == GiteeContentType.FILE
-//                   ? IconData(0xe654, fontFamily: 'iconfont')
-//                   : IconData(0xe63f, fontFamily: 'iconfont')),
-//               onTap: () {
-//                 if (contents[index].type == GiteeContentType.DIR) {
-//                   var prePathParam = pathlib
-//                       .joinAll([_prePath ?? '', _path == '/' ? '' : _path]);
-//                   Application.router.navigateTo(context,
-//                       '${Routes.settingPbGiteeRepo}?path=${Uri.encodeComponent(contents[index].name)}&prePath=${Uri.encodeComponent(prePathParam)}',
-//                       transition: TransitionType.cupertino);
-//                 } else {
-//                   Clipboard.setData(
-//                       ClipboardData(text: contents[index].downloadUrl));
-//                   Toast.show('已获取下载链接到剪切板', context);
-//                 }
-//               },
-//             )
