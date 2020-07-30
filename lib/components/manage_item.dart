@@ -88,8 +88,8 @@ class ManageItem extends StatelessWidget {
               fit: BoxFit.cover,
               placeholder: (context, url) => Center(
                 child: Container(
-                  width: 20,
-                  height: 20,
+                  width: 10,
+                  height: 10,
                   child: CircularProgressIndicator(),
                 ),
               ),
