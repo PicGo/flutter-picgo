@@ -102,11 +102,14 @@ class ManageItem extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Icon(Icons.error),
+                        Icon(
+                          Icons.error,
+                          size: 12,
+                        ),
                         SizedBox(height: 2),
                         Text(
                           '加载失败',
-                          style: TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: 8),
                         )
                       ],
                     ),
