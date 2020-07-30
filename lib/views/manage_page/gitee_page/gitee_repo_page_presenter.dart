@@ -67,7 +67,7 @@ class GiteeRepoPagePresenter {
         "sha": sha,
       };
       if (!isBlank(config.branch)) {
-        query.addAll({"branch": config.branch});
+        query["branch"] = config.branch;
       }
       GiteeApi.deleteFile(url, query);
     } catch (e) {}
