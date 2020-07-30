@@ -21,8 +21,15 @@ class _SMMSRepoPageState extends BaseLoadingPageState<SMMSRepoPage>
   }
 
   @override
+  void initState() {
+    super.initState();
+    _presenter.doLoadContents();
+  }
+
+  @override
   AppBar get appBar => AppBar(
         title: Text('图床仓库'),
+        centerTitle: true,
       );
 
   @override

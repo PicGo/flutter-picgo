@@ -40,8 +40,8 @@ class SMMSApi {
   static Future getUploadHistory() async {
     var op = await oAuth();
     Response res = await NetUtils.getInstance()
-        .get(BASE_URL + '/upload_history', options: op);
-    return res;
+        .get(BASE_URL + 'upload_history', options: op);
+    return res.data;
   }
 
   /// 获取配置中的Token
