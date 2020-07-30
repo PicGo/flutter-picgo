@@ -1,10 +1,13 @@
 import 'dart:convert';
 
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_picgo/model/config.dart';
 import 'package:flutter_picgo/model/smms_config.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
+import 'package:flutter_picgo/routers/application.dart';
+import 'package:flutter_picgo/routers/routers.dart';
 import 'package:flutter_picgo/utils/strings.dart';
 import 'package:flutter_picgo/views/pb_setting_page/base_pb_page_state.dart';
 
@@ -13,6 +16,7 @@ class SMMSPage extends StatefulWidget {
 }
 
 class _SMMSPageState extends BasePBSettingPageState<SMMSPage> {
+
   @override
   onLoadConfig(String config) {
     List<Config> configs = [];
@@ -42,4 +46,15 @@ class _SMMSPageState extends BasePBSettingPageState<SMMSPage> {
 
   @override
   String get title => 'SM.MS图床';
+
+  @override
+  bool get isSupportManage => true;
+
+  @override
+  handleManage() {
+    Application.router.navigateTo(context,
+        '${Routes.settingPbSMMSRepo}',
+        transition: TransitionType.cupertino);
+  }
+
 }

@@ -17,6 +17,7 @@ class Routes {
   // -----------------------------------
   // --------- smms ------------------
   static const String settingPbSMMS = '/setting/pb/smms';
+  static const String settingPbSMMSRepo = '/setting/pb/smms/repo';
   // -----------------------------------
   // --------- gitee ------------------
   static const String settingPbGitee = '/setting/pb/gitee';
@@ -62,5 +63,6 @@ class Routes {
     router.define(settingPbNiupic, handler: pbsettingNiupicHandler);
     router.define(settingPbLsky, handler: pbsettingLskyHandler);
     router.define(settingPbUpyun, handler: pbsettingUpyunHandler);
+    router.define(settingPbSMMSRepo, handler: pbsettingSMMSRepoHandler);
   }
 }
