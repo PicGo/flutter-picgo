@@ -77,14 +77,15 @@ class _LskyPageState extends BasePBSettingPageState<LskyPage> {
         // controllers["token"].text = '${result["data"]["token"]}';
         setState(() {
           configs[3].value = '${result["data"]["token"]}';
-
+        });
+        Future.delayed(Duration(milliseconds: 500), () {
           super.save();
         });
       } else {
         Toast.show('Token获取失败，请检查配置', context);
       }
     } else {
-      return super.save();
+      super.save();
     }
   }
 
