@@ -19,7 +19,9 @@ class SMMSRepoPagePresenter {
       var result = await SMMSApi.getUploadHistory();
       var resultmap = json.decode(result);
       if (resultmap["success"]) {
-        _view.loadSuccess((resultmap['data'] as List<dynamic>).map<SMMSContent>((e) => SMMSContent.fromJson(e)).toList());
+        _view.loadSuccess((resultmap['data'] as List<dynamic>)
+            .map<SMMSContent>((e) => SMMSContent.fromJson(e))
+            .toList());
       } else {
         _view.loadError(resultmap['message'] ?? '未知错误');
       }
@@ -30,7 +32,8 @@ class SMMSRepoPagePresenter {
 
   Future<bool> doDeleteContents(String path) async {
     try {
-      var result = await SMMSApi.delete(path.replaceFirst('https://sm.ms/delete/', ''));
+      var result =
+          await SMMSApi.delete(path.replaceFirst('https://sm.ms/delete/', ''));
       var resultmap = json.decode(result);
       if (resultmap["success"]) {
         return true;
