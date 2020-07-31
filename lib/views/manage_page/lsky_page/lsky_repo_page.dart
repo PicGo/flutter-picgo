@@ -118,7 +118,7 @@ class _LskyRepoPageState extends BaseLoadingPageState<LskyRepoPage>
                 Key('$index'),
                 contents[index].url,
                 contents[index].name,
-                '${contents[index].size}k',
+                '${contents[index].size}b',
                 FileContentType.FILE,
                 onTap: () {
                   launch(contents[index].url);
