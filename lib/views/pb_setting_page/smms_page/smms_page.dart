@@ -1,175 +1,60 @@
+import 'dart:convert';
+
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_picgo/components/loading.dart';
+import 'package:flutter_picgo/model/config.dart';
 import 'package:flutter_picgo/model/smms_config.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
-import 'package:flutter_picgo/utils/image_upload.dart';
-import 'package:flutter_picgo/views/pb_setting_page/smms_page/smms_page_presenter.dart';
-import 'package:toast/toast.dart';
+import 'package:flutter_picgo/routers/application.dart';
+import 'package:flutter_picgo/routers/routers.dart';
+import 'package:flutter_picgo/utils/strings.dart';
+import 'package:flutter_picgo/views/pb_setting_page/base_pb_page_state.dart';
 
 class SMMSPage extends StatefulWidget {
   _SMMSPageState createState() => _SMMSPageState();
 }
 
-class _SMMSPageState extends State<SMMSPage> implements SMMSPageContract {
-  TextEditingController _tokenController;
-
-  SMMSConfig _config;
-  SMMSPagePresenter _presenter;
-
-  final _formKey = GlobalKey<FormState>();
-
-  _SMMSPageState() {
-    _presenter = SMMSPagePresenter(this);
-  }
+class _SMMSPageState extends BasePBSettingPageState<SMMSPage> {
 
   @override
-  void initState() {
-    super.initState();
-    _presenter.doLoadConfig();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _tokenController = TextEditingController(text: _config?.token ?? '');
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('SM.MS图床'),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            //连接测试
-            icon: Icon(IconData(0xe62a, fontFamily: 'iconfont')),
-            onPressed: () {
-              _testConfig();
-            },
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: ListView(
-          children: <Widget>[
-            Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  TextFormField(
-                    controller: _tokenController,
-                    obscureText: true,
-                    decoration: new InputDecoration(
-                      labelText: "设定 Token",
-                    ),
-                    keyboardType: TextInputType.text,
-                    validator: (value) {
-                      if (value == null || value == '') {
-                        return 'Token不能为空';
-                      }
-                      return null;
-                    },
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 10),
-            Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: RaisedButton(
-                      color: Theme.of(context).accentColor,
-                      textColor: Colors.white,
-                      child: Text('保存'),
-                      onPressed: () {
-                        _saveConfig();
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 5.0),
-                  Expanded(
-                    child: RaisedButton(
-                      color: Colors.greenAccent,
-                      textColor: Colors.white,
-                      child: Text('设为默认图床'),
-                      onPressed: () {
-                        _setDefaultPB();
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Center(
-              child: Text(
-                '请先保存配置',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey[400]),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  _saveConfig() {
-    if (_formKey.currentState.validate()) {
-      var config = SMMSConfig(token: _tokenController.text.trim());
-      _presenter.doSaveConfig(config);
+  onLoadConfig(String config) {
+    List<Config> configs = [];
+    Map<String, dynamic> map;
+    if (isBlank(config)) {
+      map = SMMSConfig().toJson();
+    } else {
+      map = SMMSConfig.fromJson(json.decode(config)).toJson();
     }
-  }
-
-  _setDefaultPB() {
-    if (_formKey.currentState.validate()) {
-      ImageUploadUtils.setDefaultPB(PBTypeKeys.smms);
-      Toast.show('设置成功', context);
-    }
-  }
-
-  _testConfig() {
-    if (_formKey.currentState.validate()) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return NetLoadingDialog(
-                loading: true,
-                requestCallBack: _presenter.doTestConfig(),
-                loadingText: "测试连接中...",
-                outsideDismiss: false);
-          });
-    }
-  }
-
-  @override
-  loadConfigFail(String msg) {
-    Toast.show(msg, context);
-  }
-
-  @override
-  loadConfigSuccess(SMMSConfig config) {
-    setState(() {
-      this._config = config;
+    map.forEach((key, value) {
+      Config config;
+      if (key == 'token') {
+        config = Config(
+            label: '设定Token',
+            placeholder: 'Token',
+            needValidate: true,
+            value: value);
+      }
+      config.name = key;
+      configs.add(config);
     });
+    setConfigs(configs);
   }
 
   @override
-  saveConfigFail(String msg) {
-    Toast.show(msg, context);
-  }
+  String get pbType => PBTypeKeys.smms;
 
   @override
-  saveConfigSuccess() {
-    Toast.show('保存成功', context);
-  }
+  String get title => 'SM.MS图床';
 
   @override
-  testConfigFail(String msg) {
-    Toast.show(msg, context);
-  }
+  bool get isSupportManage => true;
 
   @override
-  testConfigSuccess(String username) {
-    Toast.show('测试连接成功，您的SM.MS用户名为$username', context);
+  handleManage() {
+    Application.router.navigateTo(context,
+        '${Routes.settingPbSMMSRepo}',
+        transition: TransitionType.cupertino);
   }
+
 }

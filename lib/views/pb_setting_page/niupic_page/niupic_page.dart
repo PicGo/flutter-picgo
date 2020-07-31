@@ -8,14 +8,11 @@ class NiupicPage extends StatefulWidget {
 
 class _NiupicPageState extends BasePBSettingPageState<NiupicPage> {
   @override
-  AppBar get appbar => AppBar(
-        title: Text('牛图网图床'),
-        centerTitle: true,
-      );
-
-  @override
   onLoadConfig(String config) {}
 
   @override
   String get pbType => PBTypeKeys.niupic;
+
+  @override
+  String get title => '牛图网图床';
 }

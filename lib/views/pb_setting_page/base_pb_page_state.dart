@@ -22,7 +22,21 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appbar ?? AppBar(),
+      appBar: AppBar(
+        title: Text(title ?? ''),
+        actions: isSupportManage
+            ? <Widget>[
+                IconButton(
+                  icon: Icon(IconData(0xe6ab, fontFamily: 'iconfont')),
+                  onPressed: () {
+                    if (validate) {
+                      handleManage();
+                    }
+                  },
+                )
+              ]
+            : null,
+      ),
       body: Padding(
         padding: EdgeInsets.all(10.0),
         child: ListView(
@@ -41,7 +55,6 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
                       textColor: Colors.white,
                       child: Text('保存'),
                       onPressed: () {
-                        //_saveConfig();
                         if (validate) {
                           save();
                         }
@@ -56,7 +69,7 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
                       child: Text('设为默认图床'),
                       onPressed: () {
                         if (validate) {
-                          _setDefaultPB();
+                          setDefaultPB();
                         }
                       },
                     ),
@@ -140,11 +153,11 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
     }
   }
 
-  /// 子类自定义AppBar，不实现则默认为空实现AppBar()
-  AppBar get appbar;
-
   /// 当前图床类型
   String get pbType;
+
+  /// 子类AppBar Title
+  String get title;
 
   /// 子类根据config String自定义需求
   onLoadConfig(String config);
@@ -153,7 +166,13 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
   bool get validate => _formKey?.currentState?.validate() ?? true;
 
   /// 子类可重写更改文本
-  String get tip => '请先保存后再进行连接测试';
+  String get tip => '请先保存配置后再进行管理';
+
+  /// 是否支持管理
+  bool get isSupportManage => false;
+
+  /// 子类重写，点击IconButton回调方法
+  handleManage() {}
 
   /// 保存配置
   save() async {
@@ -186,7 +205,7 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
   }
 
   /// 配置默认图床
-  _setDefaultPB() async {
+  setDefaultPB() async {
     if (!isBlank(pbType)) {
       await ImageUploadUtils.setDefaultPB(pbType);
       Toast.show('设置成功', context);

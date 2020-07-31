@@ -17,6 +17,7 @@ class Routes {
   // -----------------------------------
   // --------- smms ------------------
   static const String settingPbSMMS = '/setting/pb/smms';
+  static const String settingPbSMMSRepo = '/setting/pb/smms/repo';
   // -----------------------------------
   // --------- gitee ------------------
   static const String settingPbGitee = '/setting/pb/gitee';
@@ -36,6 +37,7 @@ class Routes {
   // -----------------------------------
   // --------- lsky -------------------
   static const String settingPbLsky = '/setting/pb/lsky';
+  static const String settingPbLskyRepo = '/setting/pb/lsky/repo';
   // -----------------------------------
   // --------- upyun -------------------
   static const String settingPbUpyun = '/setting/pb/upyun';
@@ -62,5 +64,7 @@ class Routes {
     router.define(settingPbNiupic, handler: pbsettingNiupicHandler);
     router.define(settingPbLsky, handler: pbsettingLskyHandler);
     router.define(settingPbUpyun, handler: pbsettingUpyunHandler);
+    router.define(settingPbSMMSRepo, handler: pbsettingSMMSRepoHandler);
+    router.define(settingPbLskyRepo, handler: pbsettingLskyRepoHandler);
   }
 }

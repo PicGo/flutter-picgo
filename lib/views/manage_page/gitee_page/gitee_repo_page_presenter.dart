@@ -44,4 +44,36 @@ class GiteeRepoPagePresenter {
       _view.loadError('$e');
     }
   }
+
+  Future<bool> doDeleteContents(
+      String path, String prePath, String name, String sha) async {
+    try {
+      String configStr = await ImageUploadUtils.getPBConfig(PBTypeKeys.gitee);
+      GiteeConfig config = GiteeConfig.fromJson(json.decode(configStr));
+      if (isBlank(config.repo) || isBlank(config.token)) {
+        _view.loadError('读取配置错误！');
+        return false;
+      }
+      String url = pathutil.joinAll([
+        'repos',
+        config.owner,
+        config.repo,
+        'contents',
+        prePath ?? '',
+        path == '/' ? '' : path,
+        name
+      ]);
+      Map<String, dynamic> query = {
+        "message": "DELETE BY Flutter-PicGo",
+        "sha": sha,
+      };
+      if (!isBlank(config.branch)) {
+        query["branch"] = config.branch;
+      }
+      await GiteeApi.deleteFile(url, query);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }

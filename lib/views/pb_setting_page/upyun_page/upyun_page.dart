@@ -13,12 +13,6 @@ class UpyunPage extends StatefulWidget {
 
 class _UpyunPageState extends BasePBSettingPageState<UpyunPage> {
   @override
-  AppBar get appbar => AppBar(
-        title: Text('又拍云图床'),
-        centerTitle: true,
-      );
-
-  @override
   onLoadConfig(String config) {
     List<Config> configs = [];
     Map<String, dynamic> map;
@@ -67,4 +61,7 @@ class _UpyunPageState extends BasePBSettingPageState<UpyunPage> {
 
   @override
   String get pbType => PBTypeKeys.upyun;
+
+  @override
+  String get title => '又拍云图床';
 }

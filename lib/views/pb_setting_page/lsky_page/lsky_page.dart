@@ -1,10 +1,13 @@
 import 'dart:convert';
 
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picgo/api/lsky_api.dart';
 import 'package:flutter_picgo/model/config.dart';
 import 'package:flutter_picgo/model/lsky_config.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
+import 'package:flutter_picgo/routers/application.dart';
+import 'package:flutter_picgo/routers/routers.dart';
 import 'package:flutter_picgo/utils/strings.dart';
 import 'package:flutter_picgo/views/pb_setting_page/base_pb_page_state.dart';
 import 'package:toast/toast.dart';
@@ -14,12 +17,6 @@ class LskyPage extends StatefulWidget {
 }
 
 class _LskyPageState extends BasePBSettingPageState<LskyPage> {
-  @override
-  AppBar get appbar => AppBar(
-        title: Text('兰空图床'),
-        centerTitle: true,
-      );
-
   @override
   onLoadConfig(String config) {
     List<Config> configs = [];
@@ -80,14 +77,27 @@ class _LskyPageState extends BasePBSettingPageState<LskyPage> {
         // controllers["token"].text = '${result["data"]["token"]}';
         setState(() {
           configs[3].value = '${result["data"]["token"]}';
-
+        });
+        Future.delayed(Duration(milliseconds: 500), () {
           super.save();
         });
       } else {
         Toast.show('Token获取失败，请检查配置', context);
       }
     } else {
-      return super.save();
+      super.save();
     }
   }
+
+  @override
+  bool get isSupportManage => true;
+
+  @override
+  handleManage() {
+    Application.router.navigateTo(context, Routes.settingPbLskyRepo,
+        transition: TransitionType.cupertino);
+  }
+
+  @override
+  String get title => '兰空图床';
 }

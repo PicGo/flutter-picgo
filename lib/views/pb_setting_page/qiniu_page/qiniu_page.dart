@@ -14,18 +14,7 @@ class QiniuPage extends StatefulWidget {
 
 class _QiniuPageState extends BasePBSettingPageState<QiniuPage> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   String get pbType => PBTypeKeys.qiniu;
-
-  @override
-  AppBar get appbar => AppBar(
-        title: Text('七牛图床'),
-        centerTitle: true,
-      );
 
   @override
   onLoadConfig(String config) {
@@ -79,4 +68,7 @@ class _QiniuPageState extends BasePBSettingPageState<QiniuPage> {
     });
     setConfigs(configs);
   }
+
+  @override
+  String get title => '七牛图床';
 }

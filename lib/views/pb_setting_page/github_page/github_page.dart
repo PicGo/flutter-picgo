@@ -1,252 +1,77 @@
+import 'dart:convert';
+
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_picgo/components/loading.dart';
+import 'package:flutter_picgo/model/config.dart';
 import 'package:flutter_picgo/model/github_config.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/routers/application.dart';
 import 'package:flutter_picgo/routers/routers.dart';
-import 'package:flutter_picgo/utils/image_upload.dart';
-import 'package:flutter_picgo/views/pb_setting_page/github_page/github_page_presenter.dart';
-import 'package:toast/toast.dart';
+import 'package:flutter_picgo/utils/strings.dart';
+import 'package:flutter_picgo/views/pb_setting_page/base_pb_page_state.dart';
 
 class GithubPage extends StatefulWidget {
   @override
   _GithubPageState createState() => _GithubPageState();
 }
 
-class _GithubPageState extends State<GithubPage> implements GithubPageContract {
-  GithubConfig _config;
-  bool _configSuccess = false;
-
-  GithubPagePresenter _presenter;
-
-  TextEditingController _repositoryNameController,
-      _branchNameController,
-      _tokenController,
-      _storagePathController,
-      _customDomainController;
-
-  _GithubPageState() {
-    _presenter = GithubPagePresenter(this);
-  }
-
-  final _formKey = GlobalKey<FormState>();
-
+class _GithubPageState extends BasePBSettingPageState<GithubPage> {
   @override
-  void initState() {
-    super.initState();
-    _presenter.doLoadConfig();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _repositoryNameController =
-        TextEditingController(text: _config?.repo ?? '');
-    _branchNameController =
-        TextEditingController(text: _config?.branch ?? '');
-    _tokenController = TextEditingController(text: _config?.token ?? '');
-    _storagePathController =
-        TextEditingController(text: _config?.path ?? '');
-    _customDomainController =
-        TextEditingController(text: _config?.customUrl ?? '');
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Github图床'),
-        actions: <Widget>[
-          _configSuccess
-              ? IconButton(
-                  // 开启仓库
-                  icon: Icon(IconData(0xe6ab, fontFamily: 'iconfont')),
-                  onPressed: () {
-                    Application.router.navigateTo(context,
-                        '${Routes.settingPbGitubRepo}?path=${Uri.encodeComponent("/")}',
-                        transition: TransitionType.cupertino);
-                  },
-                )
-              : IconButton(
-                  //连接测试
-                  icon: Icon(IconData(0xe62a, fontFamily: 'iconfont')),
-                  onPressed: () {
-                    _testConfig();
-                  },
-                ),
-        ],
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: ListView(
-          children: <Widget>[
-            Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  TextFormField(
-                    controller: _repositoryNameController,
-                    decoration: new InputDecoration(
-                      labelText: "设定仓库名",
-                      hintText: "例如 hackycy/picture-bed",
-                    ),
-                    keyboardType: TextInputType.text,
-                    validator: (value) {
-                      if (value == null || value == '') {
-                        return '仓库名不能为空';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 5),
-                  TextFormField(
-                    controller: _branchNameController,
-                    decoration: new InputDecoration(
-                      labelText: "设定分支名",
-                      hintText: "例如 master",
-                    ),
-                    keyboardType: TextInputType.text,
-                    validator: (value) {
-                      if (value == null || value == '') {
-                        return '分支名不能为空';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 5),
-                  TextFormField(
-                    controller: _tokenController,
-                    obscureText: true,
-                    decoration: new InputDecoration(
-                      labelText: "设定 Token",
-                    ),
-                    keyboardType: TextInputType.text,
-                    validator: (value) {
-                      if (value == null || value == '') {
-                        return 'Token不能为空';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 5),
-                  TextFormField(
-                    controller: _storagePathController,
-                    decoration: new InputDecoration(
-                        labelText: "指定存储路径", hintText: "例如 wallpaper/"),
-                    keyboardType: TextInputType.text,
-                  ),
-                  SizedBox(height: 5),
-                  TextFormField(
-                    controller: _customDomainController,
-                    decoration: new InputDecoration(
-                        labelText: "设置自定义域名",
-                        hintText: "例如 https://www.baidu.com/"),
-                    keyboardType: TextInputType.url,
-                  )
-                ],
-              ),
-            ),
-            SizedBox(height: 10),
-            Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: RaisedButton(
-                      color: Theme.of(context).accentColor,
-                      textColor: Colors.white,
-                      child: Text('保存'),
-                      onPressed: () {
-                        _saveConfig();
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 5.0),
-                  Expanded(
-                    child: RaisedButton(
-                      color: Colors.greenAccent,
-                      textColor: Colors.white,
-                      child: Text('设为默认图床'),
-                      onPressed: () {
-                        _setDefaultPB();
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Center(
-              child: Text(
-                '请先保存后再进行连接测试',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.grey[400]
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _testConfig() {
-    if (_formKey.currentState.validate()) {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) {
-          return NetLoadingDialog(
-            loading: true,
-            loadingText: "测试连接中...",
-            requestCallBack: _presenter.doTestConfig(),
-          );
-        },
-      );
+  onLoadConfig(String config) {
+    List<Config> configs = [];
+    Map<String, dynamic> map;
+    if (isBlank(config)) {
+      map = GithubConfig().toJson();
+    } else {
+      map = GithubConfig.fromJson(json.decode(config)).toJson();
     }
-  }
-
-  void _saveConfig() {
-    if (_formKey.currentState.validate()) {
-      var config = GithubConfig(
-          repo: _repositoryNameController.text.trim(),
-          branch: _branchNameController.text.trim(),
-          token: _tokenController.text.trim(),
-          path: _storagePathController.text.trim(),
-          customUrl: _customDomainController.text.trim());
-      _presenter.doSaveConfig(config);
-    }
-  }
-
-  void _setDefaultPB() async {
-    if (_formKey.currentState.validate()) {
-      await ImageUploadUtils.setDefaultPB(PBTypeKeys.github);
-      Toast.show('设置成功', context);
-    }
-  }
-
-  @override
-  loadConfig(GithubConfig config) {
-    setState(() {
-      this._config = config;
+    map.forEach((key, value) {
+      Config config;
+      if (key == 'repo') {
+        config = Config(
+            label: '设定仓库名',
+            placeholder: '例如 hackycy/picBed',
+            needValidate: true,
+            value: value);
+      } else if (key == 'token') {
+        config = Config(
+            label: '设定Token',
+            placeholder: 'Token',
+            needValidate: true,
+            value: value);
+      } else if (key == 'customUrl') {
+        config = Config(
+            label: '设定自定义域名',
+            placeholder: '例如：http://xxx.yyy.cloudcdn.cn',
+            value: value);
+      } else if (key == 'branch') {
+        config = Config(
+            label: '确认分支名',
+            placeholder: '例如 master',
+            value: value,
+            needValidate: true);
+      } else if (key == 'path') {
+        config = Config(label: '指定存储路径', placeholder: '例如img/', value: value);
+      }
+      config.name = key;
+      configs.add(config);
     });
+    setConfigs(configs);
   }
 
   @override
-  saveConfigSuccess() {
-    Toast.show("保存成功", context,
-        duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-  }
+  String get pbType => PBTypeKeys.github;
 
   @override
-  showError(String errorMsg) {
-    Toast.show(errorMsg, context,
-        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-  }
+  String get title => 'Github图床';
 
   @override
-  testConfigSuccess() {
-    setState(() {
-      this._configSuccess = true;
-      _presenter.doLoadConfig();
-    });
-    Toast.show("测试成功", context,
-        duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+  bool get isSupportManage => true;
+
+  @override
+  handleManage() {
+    Application.router.navigateTo(context,
+        '${Routes.settingPbGitubRepo}?path=${Uri.encodeComponent("/")}',
+        transition: TransitionType.cupertino);
   }
 }
