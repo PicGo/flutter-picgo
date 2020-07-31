@@ -37,6 +37,7 @@ class Routes {
   // -----------------------------------
   // --------- lsky -------------------
   static const String settingPbLsky = '/setting/pb/lsky';
+  static const String settingPbLskyRepo = '/setting/pb/lsky/repo';
   // -----------------------------------
   // --------- upyun -------------------
   static const String settingPbUpyun = '/setting/pb/upyun';
@@ -64,5 +65,6 @@ class Routes {
     router.define(settingPbLsky, handler: pbsettingLskyHandler);
     router.define(settingPbUpyun, handler: pbsettingUpyunHandler);
     router.define(settingPbSMMSRepo, handler: pbsettingSMMSRepoHandler);
+    router.define(settingPbLskyRepo, handler: pbsettingLskyRepoHandler);
   }
 }

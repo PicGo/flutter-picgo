@@ -1,10 +1,13 @@
 import 'dart:convert';
 
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picgo/api/lsky_api.dart';
 import 'package:flutter_picgo/model/config.dart';
 import 'package:flutter_picgo/model/lsky_config.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
+import 'package:flutter_picgo/routers/application.dart';
+import 'package:flutter_picgo/routers/routers.dart';
 import 'package:flutter_picgo/utils/strings.dart';
 import 'package:flutter_picgo/views/pb_setting_page/base_pb_page_state.dart';
 import 'package:toast/toast.dart';
@@ -83,6 +86,15 @@ class _LskyPageState extends BasePBSettingPageState<LskyPage> {
     } else {
       return super.save();
     }
+  }
+
+  @override
+  bool get isSupportManage => true;
+
+  @override
+  handleManage() {
+    Application.router.navigateTo(context, Routes.settingPbLskyRepo,
+        transition: TransitionType.cupertino);
   }
 
   @override

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_picgo/views/home.dart';
 import 'package:flutter_picgo/views/album_page/album_page.dart';
+import 'package:flutter_picgo/views/manage_page/lsky_page/lsky_repo_page.dart';
 import 'package:flutter_picgo/views/manage_page/smms_page/smms_repo_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/aliyun_page/aliyun_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/gitee_page/gitee_page.dart';
@@ -137,6 +138,11 @@ var pbsettingNiupicHandler = new Handler(
 // 兰空图床设置页面
 var pbsettingLskyHandler = new Handler(
   handlerFunc: (context, parameters) => LskyPage(),
+);
+
+// 兰空管理页面
+var pbsettingLskyRepoHandler = new Handler(
+  handlerFunc: (context, parameters) => LskyRepoPage(),
 );
 
 // 又拍云图床设置页面
