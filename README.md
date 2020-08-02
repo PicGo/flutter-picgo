@@ -31,7 +31,7 @@ Flutter-PicGo: 一个用于快速上传图片并获取图片URL链接的**手机
 
 - 长按相册列表项可**同步删除远端的文件**，也可配置仅删除本地列表
 - 支持管理（查看或删除）远端图床（内测中，目前支持管理Github、Gitee、SM.MS、兰空）[v1.9+]
-- 支持扫描二维码将[PicGo(v2.3.0-beta.2以上版本)](https://github.com/Molunerfinn/PicGo/releases/tag/v2.3.0-beta.2)配置文件转换成**Flutter-PicGo**的配置
+- 支持扫描二维码将[PicGo(v2.3.0-beta.2以上版本支持将配置导出成二维码)](https://github.com/Molunerfinn/PicGo/releases/tag/v2.3.0-beta.2)配置文件转换成**Flutter-PicGo**的配置
 - 适配深色模式，可跟随系统或手动设置
 - 支持将*Flutter-PicGo*的配置导出至剪切板
 
