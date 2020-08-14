@@ -5,6 +5,12 @@ import 'package:flutter_picgo/utils/net.dart';
 import 'package:flutter_picgo/utils/strings.dart';
 
 class QiniuApi {
+  /// 管理Base_url，accesstoken和uptoken不共用baseurl
+  static const String BASE_URL = "https://rs.qbox.me";
+
+  static const String accessKey = 'accessKey';
+  static const String secretKey = 'secretKey';
+
   /// 上传
   static Future upload(
       String area, FormData data, Map<String, dynamic> headers) async {
@@ -14,12 +20,13 @@ class QiniuApi {
   }
 
   /// 删除
-  static Future delete(url, String accessToken) async {
+  static Future delete(url, String ak, String sk) async {
     Response res = await NetUtils.getInstance().post(url,
         data: '',
         options: Options(
-          headers: {
-            "Authorization": 'Qiniu $accessToken',
+          extra: {
+            QiniuApi.accessKey: ak,
+            QiniuApi.secretKey: sk,
           },
           contentType: 'application/x-www-form-urlencoded',
         ));
@@ -104,5 +111,29 @@ class QiniuApi {
       default:
         return '';
     }
+  }
+}
+
+/// 七牛管理验签拦截器
+class QiniuInterceptor extends InterceptorsWrapper {
+  @override
+  Future onRequest(RequestOptions options) async {
+    if (options.path.contains(QiniuApi.BASE_URL)) {
+      String ak = '${options.extra[QiniuApi.accessKey]}';
+      String sk = '${options.extra[QiniuApi.secretKey]}';
+      var accessToken = QiniuApi.generateAuthToken(
+          options.method.toUpperCase(),
+          options.uri.path,
+          options.uri.query,
+          options.uri.host,
+          options.contentType,
+          options.data ?? '',
+          ak,
+          sk);
+      options.headers.addAll({
+        'Authorization': 'Qiniu $accessToken',
+      });
+    }
+    return options;
   }
 }
