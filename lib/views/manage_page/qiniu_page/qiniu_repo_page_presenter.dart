@@ -22,8 +22,10 @@ class QiniuRepoPagePresenter {
       }
       var result = await QiniuApi.list({
         'bucket': config.bucket,
-        'prefix': 'Image',
+        'prefix': '',
+        'delimiter': Uri.decodeComponent('/'),
       }, config.accessKey, config.secretKey);
+      print(json.encode(result));
     } catch (e) {
       print(e);
     }

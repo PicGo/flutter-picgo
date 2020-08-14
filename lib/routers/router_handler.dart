@@ -123,8 +123,13 @@ var pbsettingQiniuHandler = new Handler(
 
 // 七牛图床管理页面
 var pbsettingQiniuRepoHandler = new Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) =>
-      QiniuRepoPage(),
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    var prefix = params["prefix"]?.first;
+    return QiniuRepoPage(
+      prefix:
+          (prefix == null || prefix == '') ? '/' : Uri.decodeComponent(prefix),
+    );
+  },
 );
 
 // 阿里云OSS图床设置页面

@@ -3,15 +3,18 @@ import 'package:flutter_picgo/views/manage_page/base_loading_page_state.dart';
 import 'package:flutter_picgo/views/manage_page/qiniu_page/qiniu_repo_page_presenter.dart';
 
 class QiniuRepoPage extends StatefulWidget {
-  _QiniuRepoPageState createState() => _QiniuRepoPageState();
+  String prefix;
+  QiniuRepoPage({this.prefix});
+  _QiniuRepoPageState createState() => _QiniuRepoPageState(prefix);
 }
 
 class _QiniuRepoPageState extends BaseLoadingPageState<QiniuRepoPage>
     implements QiniuRepoPageContract {
   String errorMsg;
+  String _prefix;
   QiniuRepoPagePresenter _presenter;
 
-  _QiniuRepoPageState() {
+  _QiniuRepoPageState(this._prefix) {
     _presenter = new QiniuRepoPagePresenter(this);
   }
 
