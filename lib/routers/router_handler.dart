@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_picgo/views/home.dart';
 import 'package:flutter_picgo/views/album_page/album_page.dart';
 import 'package:flutter_picgo/views/manage_page/lsky_page/lsky_repo_page.dart';
+import 'package:flutter_picgo/views/manage_page/qiniu_page/qiniu_repo_page.dart';
 import 'package:flutter_picgo/views/manage_page/smms_page/smms_repo_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/aliyun_page/aliyun_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/gitee_page/gitee_page.dart';
@@ -118,6 +119,12 @@ var pbsettingGiteeRepoHandler = new Handler(
 var pbsettingQiniuHandler = new Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) =>
       QiniuPage(),
+);
+
+// 七牛图床管理页面
+var pbsettingQiniuRepoHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) =>
+      QiniuRepoPage(),
 );
 
 // 阿里云OSS图床设置页面
