@@ -85,7 +85,18 @@ class QiniuApi {
     if (contentType != 'application/octet-stream' && body != null) {
       signStr += body;
     }
-    print(signStr);
+    // 使用SecertKey对上一步生成的原始字符串计算HMAC-SHA1签名：
+    var hmacsha1 = Hmac(sha1, utf8.encode(secretKey));
+    var sign = hmacsha1.convert(utf8.encode(signStr));
+    var encodedSign = urlSafeBase64Encode(sign.bytes);
+    return '$accessKey:$encodedSign';
+  }
+
+  /// 管理凭证历史文档
+  /// https://developer.qiniu.com/kodo/manual/6671/historical-document-management-certificate
+  static String generateAuthTokenByQBox(String path, String query, String body,
+      String accessKey, String secretKey) {
+    String signStr = '$path?$query\n${body ?? ''}';
     // 使用SecertKey对上一步生成的原始字符串计算HMAC-SHA1签名：
     var hmacsha1 = Hmac(sha1, utf8.encode(secretKey));
     var sign = hmacsha1.convert(utf8.encode(signStr));
@@ -134,10 +145,10 @@ class QiniuApi {
 class QiniuInterceptor extends InterceptorsWrapper {
   @override
   Future onRequest(RequestOptions options) async {
-    if (options.path.contains(QiniuApi.BASE_URL) ||
-        options.path.contains(QiniuApi.BASE_URL2)) {
+    if (options.path.contains(QiniuApi.BASE_URL)) {
       String ak = '${options.extra[QiniuApi.accessKey]}';
       String sk = '${options.extra[QiniuApi.secretKey]}';
+      options.data = options.data ?? '';
       var accessToken = QiniuApi.generateAuthToken(
           options.method,
           options.uri.path,
@@ -149,6 +160,15 @@ class QiniuInterceptor extends InterceptorsWrapper {
           sk);
       options.headers.addAll({
         'Authorization': 'Qiniu $accessToken',
+      });
+    } else if (options.path.contains(QiniuApi.BASE_URL2)) {
+      String ak = '${options.extra[QiniuApi.accessKey]}';
+      String sk = '${options.extra[QiniuApi.secretKey]}';
+      options.data = options.data ?? '';
+      var accessToken = QiniuApi.generateAuthTokenByQBox(
+          options.uri.path, options.uri.query, options.data, ak, sk);
+      options.headers.addAll({
+        'Authorization': 'QBox $accessToken',
       });
     }
     return options;
