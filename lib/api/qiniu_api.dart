@@ -7,6 +7,7 @@ import 'package:flutter_picgo/utils/strings.dart';
 class QiniuApi {
   /// 管理Base_url，accesstoken和uptoken不共用baseurl
   static const String BASE_URL = "https://rs.qbox.me";
+  static const String BASE_URL2 = "https://rsf.qbox.me";
 
   static const String accessKey = 'accessKey';
   static const String secretKey = 'secretKey';
@@ -20,9 +21,8 @@ class QiniuApi {
   }
 
   /// 删除
-  static Future delete(url, String ak, String sk) async {
+  static Future delete(String url, String ak, String sk) async {
     Response res = await NetUtils.getInstance().post(url,
-        data: '',
         options: Options(
           extra: {
             QiniuApi.accessKey: ak,
@@ -30,6 +30,21 @@ class QiniuApi {
           },
           contentType: 'application/x-www-form-urlencoded',
         ));
+    return res.data;
+  }
+
+  // 资源列举
+  static Future list(Map<String, dynamic> query, String ak, String sk) async {
+    Response res =
+        await NetUtils.getInstance().get('${QiniuApi.BASE_URL2}/list',
+            queryParameters: query,
+            options: Options(
+              extra: {
+                QiniuApi.accessKey: ak,
+                QiniuApi.secretKey: sk,
+              },
+              contentType: 'application/x-www-form-urlencoded',
+            ));
     return res.data;
   }
 
@@ -67,9 +82,10 @@ class QiniuApi {
       signStr += '\nContent-Type: $contentType';
     }
     signStr += '\n\n';
-    if (contentType != 'application/octet-stream') {
-      signStr += body ?? '';
+    if (contentType != 'application/octet-stream' && body != null) {
+      signStr += body;
     }
+    print(signStr);
     // 使用SecertKey对上一步生成的原始字符串计算HMAC-SHA1签名：
     var hmacsha1 = Hmac(sha1, utf8.encode(secretKey));
     var sign = hmacsha1.convert(utf8.encode(signStr));
@@ -118,16 +134,17 @@ class QiniuApi {
 class QiniuInterceptor extends InterceptorsWrapper {
   @override
   Future onRequest(RequestOptions options) async {
-    if (options.path.contains(QiniuApi.BASE_URL)) {
+    if (options.path.contains(QiniuApi.BASE_URL) ||
+        options.path.contains(QiniuApi.BASE_URL2)) {
       String ak = '${options.extra[QiniuApi.accessKey]}';
       String sk = '${options.extra[QiniuApi.secretKey]}';
       var accessToken = QiniuApi.generateAuthToken(
-          options.method.toUpperCase(),
+          options.method,
           options.uri.path,
           options.uri.query,
           options.uri.host,
           options.contentType,
-          options.data ?? '',
+          options.data,
           ak,
           sk);
       options.headers.addAll({

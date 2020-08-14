@@ -16,6 +16,12 @@ class _QiniuRepoPageState extends BaseLoadingPageState<QiniuRepoPage>
   }
 
   @override
+  void initState() {
+    super.initState();
+    _presenter.doLoadContents();
+  }
+
+  @override
   AppBar get appBar => AppBar(
         title: Text('图床仓库'),
         centerTitle: true,
