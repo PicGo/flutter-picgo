@@ -3,7 +3,7 @@ import 'package:flutter_picgo/views/manage_page/base_loading_page_state.dart';
 import 'package:flutter_picgo/views/manage_page/qiniu_page/qiniu_repo_page_presenter.dart';
 
 class QiniuRepoPage extends StatefulWidget {
-  String prefix;
+  final String prefix;
   QiniuRepoPage({this.prefix});
   _QiniuRepoPageState createState() => _QiniuRepoPageState(prefix);
 }

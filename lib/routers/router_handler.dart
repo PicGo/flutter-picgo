@@ -124,7 +124,7 @@ var pbsettingQiniuHandler = new Handler(
 // 七牛图床管理页面
 var pbsettingQiniuRepoHandler = new Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-    var prefix = params["prefix"]?.first;
+    var prefix = params["path"]?.first;
     return QiniuRepoPage(
       prefix:
           (prefix == null || prefix == '') ? '/' : Uri.decodeComponent(prefix),
