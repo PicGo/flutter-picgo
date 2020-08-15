@@ -1,6 +1,13 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_picgo/components/manage_item.dart';
+import 'package:flutter_picgo/model/qiniu_content.dart';
+import 'package:flutter_picgo/routers/application.dart';
+import 'package:flutter_picgo/routers/routers.dart';
 import 'package:flutter_picgo/views/manage_page/base_loading_page_state.dart';
 import 'package:flutter_picgo/views/manage_page/qiniu_page/qiniu_repo_page_presenter.dart';
+import 'package:toast/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class QiniuRepoPage extends StatefulWidget {
   final String prefix;
@@ -12,6 +19,7 @@ class _QiniuRepoPageState extends BaseLoadingPageState<QiniuRepoPage>
     implements QiniuRepoPageContract {
   String errorMsg;
   String _prefix;
+  List<QiniuContent> contents = [];
   QiniuRepoPagePresenter _presenter;
 
   _QiniuRepoPageState(this._prefix) {
@@ -21,7 +29,7 @@ class _QiniuRepoPageState extends BaseLoadingPageState<QiniuRepoPage>
   @override
   void initState() {
     super.initState();
-    _presenter.doLoadContents();
+    _presenter.doLoadContents(this._prefix);
   }
 
   @override
@@ -77,6 +85,74 @@ class _QiniuRepoPageState extends BaseLoadingPageState<QiniuRepoPage>
 
   @override
   Widget buildSuccess() {
-    return Center();
+    return ListView.builder(
+        itemCount: contents.length,
+        itemBuilder: (context, index) {
+          return ManageItem(
+            Key('$index'),
+            contents[index].url,
+            contents[index].key,
+            '${contents[index].fsize ?? 0}k',
+            contents[index].type,
+            onTap: () {
+              if (contents[index].type == FileContentType.DIR) {
+                Application.router.navigateTo(context,
+                    '${Routes.settingPbQiniuRepo}?path=${Uri.encodeComponent(contents[index].key)}',
+                    transition: TransitionType.cupertino);
+              } else {
+                launch(contents[index].url);
+              }
+            },
+            confirmDismiss: (direction) async {
+              if (contents[index].type == FileContentType.DIR) {
+                Toast.show('暂不支持删除文件夹', context);
+                return false;
+              }
+              bool result = await showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('确定删除吗'),
+                      content: Text('删除后无法恢复'),
+                      actions: <Widget>[
+                        FlatButton(
+                            child: Text('确定'),
+                            onPressed: () {
+                              Navigator.pop(context, true);
+                            }),
+                      ],
+                    );
+                  });
+              if (!(result ?? false)) {
+                return false;
+              }
+              return false;
+
+              // var del = await _presenter.doDeleteContents(
+              //     _path, _prePath, contents[index].name, contents[index].sha);
+              // return del;
+            },
+          );
+        });
+  }
+
+  @override
+  void loadError(String msg) {
+    Toast.show(msg, context);
+  }
+
+  @override
+  void loadSuccess(List<QiniuContent> data) {
+    if (data != null && data.length > 0) {
+      setState(() {
+        this.state = LoadState.SUCCESS;
+        this.contents.clear();
+        this.contents.addAll(data);
+      });
+    } else {
+      setState(() {
+        this.state = LoadState.EMTPY;
+      });
+    }
   }
 }
