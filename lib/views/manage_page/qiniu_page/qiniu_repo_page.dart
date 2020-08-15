@@ -34,7 +34,7 @@ class _QiniuRepoPageState extends BaseLoadingPageState<QiniuRepoPage>
 
   @override
   AppBar get appBar => AppBar(
-        title: Text('图床仓库'),
+        title: Text(this._prefix == '/' ? '图床仓库' : this._prefix),
         centerTitle: true,
       );
 
@@ -97,7 +97,7 @@ class _QiniuRepoPageState extends BaseLoadingPageState<QiniuRepoPage>
             onTap: () {
               if (contents[index].type == FileContentType.DIR) {
                 Application.router.navigateTo(context,
-                    '${Routes.settingPbQiniuRepo}?path=${Uri.encodeComponent(contents[index].key)}',
+                    '${Routes.settingPbQiniuRepo}?path=${Uri.encodeComponent(contents[index].url)}',
                     transition: TransitionType.cupertino);
               } else {
                 launch(contents[index].url);

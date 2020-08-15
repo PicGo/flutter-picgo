@@ -40,9 +40,9 @@ class QiniuRepoPagePresenter {
         c.type = FileContentType.FILE;
         c.url = pathlib.joinAll([
           config.url,
-          prefix == '/' ? '' : prefix,
           c.key,
         ]);
+        c.key = '${c.key}'.replaceFirst(prefix == '/' ? '' : prefix, '');
         return c;
       }).toList();
       if (result['commonPrefixes'] != null) {
@@ -50,7 +50,10 @@ class QiniuRepoPagePresenter {
           QiniuContent c = QiniuContent();
           c.type = FileContentType.DIR;
           c.url = element;
-          c.key = element;
+          /// 例如 xin/ax 去除 xin/ 只显示最后一个 ax
+          List<String> keys = '$element'.split('/');
+          print(keys);
+          c.key = keys[keys.length -2];
           data.add(c);
         });
       }
