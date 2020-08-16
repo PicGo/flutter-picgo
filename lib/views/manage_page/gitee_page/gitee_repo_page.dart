@@ -131,7 +131,7 @@ class _GiteeRepoPageState extends BaseLoadingPageState<GiteeRepoPage>
         itemCount: contents.length,
         itemBuilder: (context, index) {
           return ManageItem(
-            Key('$index'),
+            Key('${contents[index].sha}'),
             contents[index].downloadUrl,
             contents[index].name,
             '${contents[index].size}k',
@@ -146,6 +146,11 @@ class _GiteeRepoPageState extends BaseLoadingPageState<GiteeRepoPage>
               } else {
                 launch(contents[index].downloadUrl);
               }
+            },
+            onDismiss: (direction) {
+              setState(() {
+                this.contents.removeAt(index);
+              });
             },
             confirmDismiss: (direction) async {
               if (contents[index].type == FileContentType.DIR) {

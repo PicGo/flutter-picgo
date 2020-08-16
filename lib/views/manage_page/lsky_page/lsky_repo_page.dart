@@ -115,13 +115,18 @@ class _LskyRepoPageState extends BaseLoadingPageState<LskyRepoPage>
             itemCount: contents.length,
             itemBuilder: (context, index) {
               return ManageItem(
-                Key('$index'),
+                Key('${contents[index].md5}'),
                 contents[index].url,
                 contents[index].name,
                 '${contents[index].size}b',
                 FileContentType.FILE,
                 onTap: () {
                   launch(contents[index].url);
+                },
+                onDismiss: (direction) {
+                  setState(() {
+                    this.contents.removeAt(index);
+                  });
                 },
                 confirmDismiss: (direction) async {
                   bool result = await showDialog(
