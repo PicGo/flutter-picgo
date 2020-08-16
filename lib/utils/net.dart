@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_picgo/api/qiniu_api.dart';
 import 'package:flutter_picgo/api/tcyun_api.dart';
 import 'package:flutter_picgo/api/upyun_api.dart';
 
@@ -17,6 +18,9 @@ class NetUtils {
 
     /// Upyun Interceptor
     dio.interceptors.add(UpyunInterceptor());
+
+    /// Qiniu Interceptor
+    dio.interceptors.add(QiniuInterceptor());
 
     /// Log Interceptor
     if (!inProduction) {

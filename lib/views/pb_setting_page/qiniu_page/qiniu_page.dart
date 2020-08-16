@@ -1,10 +1,13 @@
 import 'dart:convert';
 
+import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picgo/model/config.dart';
 import 'package:flutter_picgo/model/qiniu_config.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
+import 'package:flutter_picgo/routers/application.dart';
+import 'package:flutter_picgo/routers/routers.dart';
 import 'package:flutter_picgo/utils/strings.dart';
 import 'package:flutter_picgo/views/pb_setting_page/base_pb_page_state.dart';
 
@@ -71,4 +74,14 @@ class _QiniuPageState extends BasePBSettingPageState<QiniuPage> {
 
   @override
   String get title => '七牛图床';
+
+  @override
+  bool get isSupportManage => true;
+
+  @override
+  handleManage() {
+    Application.router.navigateTo(context,
+        '${Routes.settingPbQiniuRepo}?path=${Uri.encodeComponent("/")}',
+        transition: TransitionType.cupertino);
+  }
 }

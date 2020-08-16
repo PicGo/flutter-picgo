@@ -21,18 +21,8 @@ class QiniuImageUpload extends ImageUploadStrategy {
       if (info != null) {
         String encodedEntryURI = QiniuApi.urlSafeBase64Encode(
             utf8.encode('${info.bucket}:${info.key}'));
-        String url = 'https://rs.qbox.me/delete/$encodedEntryURI';
-        var uri = Uri.parse(url);
-        var token = QiniuApi.generateAuthToken(
-            'POST',
-            uri.path,
-            uri.query,
-            uri.host,
-            'application/x-www-form-urlencoded',
-            null,
-            info.accessKey,
-            info.secretKey);
-        var result = await QiniuApi.delete(url, token);
+        String url = '${QiniuApi.BASE_URL}/delete/$encodedEntryURI';
+        var result = await QiniuApi.delete(url, info.accessKey, info.secretKey);
         if (isBlank(result.toString())) {
           return uploaded;
         } else {

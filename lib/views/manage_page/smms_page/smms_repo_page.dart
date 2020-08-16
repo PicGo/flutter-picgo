@@ -85,13 +85,18 @@ class _SMMSRepoPageState extends BaseLoadingPageState<SMMSRepoPage>
         itemCount: contents.length,
         itemBuilder: (context, index) {
           return ManageItem(
-            Key('$index'),
+            Key('${contents[index].hash}'),
             contents[index].url,
             contents[index].filename,
             '${contents[index].size}k',
             FileContentType.FILE,
             onTap: () {
               launch(contents[index].url);
+            },
+            onDismiss: (direction) {
+              setState(() {
+                this.contents.removeAt(index);
+              });
             },
             confirmDismiss: (direction) async {
               bool result = await showDialog(
@@ -113,7 +118,8 @@ class _SMMSRepoPageState extends BaseLoadingPageState<SMMSRepoPage>
                 return false;
               }
 
-              var del = await _presenter.doDeleteContents(contents[index].delete);
+              var del =
+                  await _presenter.doDeleteContents(contents[index].delete);
               return del;
             },
           );

@@ -25,6 +25,7 @@ class Routes {
   // -----------------------------------
   // --------- qiniu -------------------
   static const String settingPbQiniu = '/setting/pb/qiniu';
+  static const String settingPbQiniuRepo = 'setting/pb/qiniu/repo';
   // -----------------------------------
   // --------- aliyun -------------------
   static const String settingPbAliyun = '/setting/pb/aliyun';
@@ -66,5 +67,6 @@ class Routes {
     router.define(settingPbUpyun, handler: pbsettingUpyunHandler);
     router.define(settingPbSMMSRepo, handler: pbsettingSMMSRepoHandler);
     router.define(settingPbLskyRepo, handler: pbsettingLskyRepoHandler);
+    router.define(settingPbQiniuRepo, handler: pbsettingQiniuRepoHandler);
   }
 }

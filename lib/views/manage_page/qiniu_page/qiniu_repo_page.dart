@@ -1,81 +1,41 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picgo/components/manage_item.dart';
-import 'package:flutter_picgo/model/gitee_content.dart';
+import 'package:flutter_picgo/model/qiniu_content.dart';
 import 'package:flutter_picgo/routers/application.dart';
 import 'package:flutter_picgo/routers/routers.dart';
 import 'package:flutter_picgo/views/manage_page/base_loading_page_state.dart';
-import 'package:flutter_picgo/views/manage_page/gitee_page/gitee_repo_page_presenter.dart';
-import 'package:path/path.dart' as pathlib;
+import 'package:flutter_picgo/views/manage_page/qiniu_page/qiniu_repo_page_presenter.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:path/path.dart' as pathlib;
 
-class GiteeRepoPage extends StatefulWidget {
-  final String path;
-  final String prePath;
-
-  GiteeRepoPage({this.path = '/', this.prePath = ''});
-
-  _GiteeRepoPageState createState() => _GiteeRepoPageState(path, prePath);
+class QiniuRepoPage extends StatefulWidget {
+  final String prefix;
+  QiniuRepoPage({this.prefix});
+  _QiniuRepoPageState createState() => _QiniuRepoPageState(prefix);
 }
 
-class _GiteeRepoPageState extends BaseLoadingPageState<GiteeRepoPage>
-    implements GiteeRepoPageContract {
+class _QiniuRepoPageState extends BaseLoadingPageState<QiniuRepoPage>
+    implements QiniuRepoPageContract {
   String errorMsg;
-  final String _path;
-  final String _prePath;
-  List<GiteeContent> contents = [];
-  GiteeRepoPagePresenter _presenter;
+  String _prefix;
+  List<QiniuContent> contents = [];
+  QiniuRepoPagePresenter _presenter;
 
-  _GiteeRepoPageState(this._path, this._prePath) {
-    _presenter = GiteeRepoPagePresenter(this);
+  _QiniuRepoPageState(this._prefix) {
+    _presenter = new QiniuRepoPagePresenter(this);
   }
 
   @override
   void initState() {
     super.initState();
-    _presenter.doLoadContents(_path, _prePath);
-  }
-
-  @override
-  void loadError(String msg) {
-    setState(() {
-      this.state = LoadState.ERROR;
-      this.errorMsg = msg;
-    });
-  }
-
-  @override
-  void loadSuccess(List<GiteeContent> data) {
-    if (data != null && data.length > 0) {
-      setState(() {
-        this.state = LoadState.SUCCESS;
-        this.contents.clear();
-        this.contents.addAll(data);
-      });
-    } else {
-      setState(() {
-        this.state = LoadState.EMTPY;
-      });
-    }
+    _presenter.doLoadContents(this._prefix);
   }
 
   @override
   AppBar get appBar => AppBar(
-        title: _prePath == ''
-            ? Text(_path == '/' ? '图床仓库' : _path)
-            : Column(
-                children: <Widget>[
-                  Text(
-                    _path,
-                    style: TextStyle(fontSize: 18.0),
-                  ),
-                  Text(
-                    _prePath,
-                    style: TextStyle(fontSize: 14.0),
-                  )
-                ],
-              ),
+        title: Text(this._prefix == '/' ? '图床仓库' : this._prefix),
         centerTitle: true,
       );
 
@@ -99,7 +59,6 @@ class _GiteeRepoPageState extends BaseLoadingPageState<GiteeRepoPage>
             onPressed: () {
               setState(() {
                 this.state = LoadState.LOADING;
-                _presenter.doLoadContents(_path, _prePath);
               });
             },
           ),
@@ -131,20 +90,18 @@ class _GiteeRepoPageState extends BaseLoadingPageState<GiteeRepoPage>
         itemCount: contents.length,
         itemBuilder: (context, index) {
           return ManageItem(
-            Key('${contents[index].sha}'),
-            contents[index].downloadUrl,
-            contents[index].name,
-            '${contents[index].size}k',
+            Key('${contents[index].key}'),
+            contents[index].url,
+            contents[index].key,
+            '${contents[index].fsize ?? 0}k',
             contents[index].type,
             onTap: () {
               if (contents[index].type == FileContentType.DIR) {
-                var prePathParam = pathlib
-                    .joinAll([_prePath ?? '', _path == '/' ? '' : _path]);
                 Application.router.navigateTo(context,
-                    '${Routes.settingPbGiteeRepo}?path=${Uri.encodeComponent(contents[index].name)}&prePath=${Uri.encodeComponent(prePathParam)}',
+                    '${Routes.settingPbQiniuRepo}?path=${Uri.encodeComponent(contents[index].url)}',
                     transition: TransitionType.cupertino);
               } else {
-                launch(contents[index].downloadUrl);
+                launch(contents[index].url);
               }
             },
             onDismiss: (direction) {
@@ -175,12 +132,32 @@ class _GiteeRepoPageState extends BaseLoadingPageState<GiteeRepoPage>
               if (!(result ?? false)) {
                 return false;
               }
-
-              var del = await _presenter.doDeleteContents(
-                  _path, _prePath, contents[index].name, contents[index].sha);
+              String realKey = pathlib.joinAll(
+                  [_prefix == '/' ? '' : _prefix, contents[index].key]);
+              var del = await _presenter.doDeleteContents(realKey);
               return del;
             },
           );
         });
+  }
+
+  @override
+  void loadError(String msg) {
+    Toast.show(msg, context);
+  }
+
+  @override
+  void loadSuccess(List<QiniuContent> data) {
+    if (data != null && data.length > 0) {
+      setState(() {
+        this.state = LoadState.SUCCESS;
+        this.contents.clear();
+        this.contents.addAll(data);
+      });
+    } else {
+      setState(() {
+        this.state = LoadState.EMTPY;
+      });
+    }
   }
 }
