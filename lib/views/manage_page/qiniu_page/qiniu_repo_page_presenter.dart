@@ -24,7 +24,6 @@ class QiniuRepoPagePresenter {
     try {
       String configStr = await ImageUploadUtils.getPBConfig(PBTypeKeys.qiniu);
       QiniuConfig config = QiniuConfig.fromJson(json.decode(configStr));
-      print(configStr);
       if (isBlank(config.accessKey) || isBlank(config.secretKey)) {
         _view.loadError('读取配置文件错误');
         return;
@@ -63,4 +62,28 @@ class QiniuRepoPagePresenter {
       _view.loadError('$e');
     }
   }
+
+  Future<bool> doDeleteContents(String key) async {
+    try {
+      String configStr = await ImageUploadUtils.getPBConfig(PBTypeKeys.qiniu);
+      QiniuConfig config = QiniuConfig.fromJson(json.decode(configStr));
+      if (isBlank(config.accessKey) || isBlank(config.secretKey)) {
+        _view.loadError('读取配置文件错误');
+        return false;
+      }
+      String encodedEntryURI = QiniuApi.urlSafeBase64Encode(
+            utf8.encode('${config.bucket}:$key'));
+        String url = '${QiniuApi.BASE_URL}/delete/$encodedEntryURI';
+        var result = await QiniuApi.delete(url, config.accessKey, config.secretKey);
+        if (isBlank(result.toString())) {
+          return true;
+        } else {
+          _view.loadError('${result['error']}');
+          return false;
+        }
+    } catch (e) {
+      return false;
+    }
+  }
+
 }

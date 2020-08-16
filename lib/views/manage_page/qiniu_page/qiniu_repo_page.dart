@@ -8,6 +8,7 @@ import 'package:flutter_picgo/views/manage_page/base_loading_page_state.dart';
 import 'package:flutter_picgo/views/manage_page/qiniu_page/qiniu_repo_page_presenter.dart';
 import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:path/path.dart' as pathlib;
 
 class QiniuRepoPage extends StatefulWidget {
   final String prefix;
@@ -89,7 +90,7 @@ class _QiniuRepoPageState extends BaseLoadingPageState<QiniuRepoPage>
         itemCount: contents.length,
         itemBuilder: (context, index) {
           return ManageItem(
-            Key('$index'),
+            Key('${contents[index].key}'),
             contents[index].url,
             contents[index].key,
             '${contents[index].fsize ?? 0}k',
@@ -102,6 +103,11 @@ class _QiniuRepoPageState extends BaseLoadingPageState<QiniuRepoPage>
               } else {
                 launch(contents[index].url);
               }
+            },
+            onDismiss: (direction) {
+              setState(() {
+                this.contents.removeAt(index);
+              });
             },
             confirmDismiss: (direction) async {
               if (contents[index].type == FileContentType.DIR) {
@@ -126,11 +132,10 @@ class _QiniuRepoPageState extends BaseLoadingPageState<QiniuRepoPage>
               if (!(result ?? false)) {
                 return false;
               }
-              return false;
-
-              // var del = await _presenter.doDeleteContents(
-              //     _path, _prePath, contents[index].name, contents[index].sha);
-              // return del;
+              String realKey = pathlib.joinAll(
+                  [_prefix == '/' ? '' : _prefix, contents[index].key]);
+              var del = await _presenter.doDeleteContents(realKey);
+              return del;
             },
           );
         });
