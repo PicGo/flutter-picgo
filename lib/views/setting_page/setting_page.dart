@@ -87,6 +87,13 @@ class _SettingPageState extends State<SettingPage> {
             },
             trailing: Icon(Icons.arrow_right),
           ),
+          ListTile(
+            title: Text('建议或报告问题'),
+            onTap: () {
+              launch('https://github.com/PicGo/flutter-picgo/issues');
+            },
+            trailing: Icon(Icons.arrow_right),
+          ),
         ],
       ),
     );
