@@ -37,11 +37,11 @@ class _MainTabsPageState extends State<AppPage> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(IconData(0xe621, fontFamily: 'iconfont')),
-            title: Text('相册')
+            label:'相册'
           ),
           BottomNavigationBarItem(
             icon: Icon(IconData(0xe634, fontFamily: 'iconfont')),
-            title: Text('设置')
+            label: '设置'
           ),
         ],
       ),

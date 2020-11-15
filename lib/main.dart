@@ -28,7 +28,7 @@ Future<void> main() async {
 
 class App extends StatefulWidget {
   App() {
-    final router = new Router();
+    final router = new FluroRouter();
     Routes.configureRoutes(router);
     Application.router = router;
   }

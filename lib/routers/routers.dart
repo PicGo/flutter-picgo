@@ -44,7 +44,7 @@ class Routes {
   static const String settingPbUpyun = '/setting/pb/upyun';
   // -----------------------------------
 
-  static void configureRoutes(Router router) {
+  static void configureRoutes(FluroRouter router) {
     router.notFoundHandler = notfoundHandler;
     router.define(root, handler: appHandler);
     router.define(notfound, handler: notfoundHandler);

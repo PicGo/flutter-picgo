@@ -343,6 +343,8 @@ class _UploadPageState extends State<UploadPage>
         body,
         LocalNotificationUtil.createNotificationDetails(
             LocalNotificationUtil.uploadAndroidChannel(),
-            LocalNotificationUtil.normalIOSNotificationDetails()));
+            LocalNotificationUtil.normalIOSNotificationDetails(),
+            LocalNotificationUtil.normalMacOSNotificationDetails()
+            ));
   }
 }
