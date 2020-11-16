@@ -9,7 +9,7 @@ class Application {
   /// 通过Application设计环境变量
   static ENV env = ENV.DEV;
 
-  static Router router;
+  static FluroRouter router;
 
   /// 所有获取配置的唯一入口
   Map<String, String> get config {

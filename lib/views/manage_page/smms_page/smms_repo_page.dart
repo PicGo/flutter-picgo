@@ -10,6 +10,8 @@ class SMMSRepoPage extends StatefulWidget {
   _SMMSRepoPageState createState() => _SMMSRepoPageState();
 }
 
+enum SortBy { timeup, timedown, sizeup, sizedown }
+
 class _SMMSRepoPageState extends BaseLoadingPageState<SMMSRepoPage>
     implements SMMSRepoPageContract {
   String errorMsg;
@@ -30,6 +32,32 @@ class _SMMSRepoPageState extends BaseLoadingPageState<SMMSRepoPage>
   AppBar get appBar => AppBar(
         title: Text('图床仓库'),
         centerTitle: true,
+        actions: [
+          PopupMenuButton<SortBy>(
+            onSelected: (result) {
+              sortItem(result);
+            },
+            icon: Icon(Icons.more_vert),
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<SortBy>>[
+              const PopupMenuItem<SortBy>(
+                value: SortBy.timeup,
+                child: Text('时间升序'),
+              ),
+              const PopupMenuItem<SortBy>(
+                value: SortBy.timedown,
+                child: Text('时间降序'),
+              ),
+              const PopupMenuItem<SortBy>(
+                value: SortBy.sizeup,
+                child: Text('大小升序'),
+              ),
+              const PopupMenuItem<SortBy>(
+                value: SortBy.sizedown,
+                child: Text('大小降序'),
+              ),
+            ],
+          )
+        ],
       );
 
   @override
@@ -37,6 +65,53 @@ class _SMMSRepoPageState extends BaseLoadingPageState<SMMSRepoPage>
     return Center(
       child: Text('数据空空如也噢'),
     );
+  }
+
+  sortItem(SortBy s) {
+    if (this.contents != null && this.contents.length > 1) {
+      switch (s) {
+        case SortBy.timeup:
+          setState(() {
+            this.contents.sort((a, b) {
+              return a.createdAt.compareTo(b.createdAt);
+            });
+          });
+          break;
+        case SortBy.timedown:
+          setState(() {
+            this.contents.sort((a, b) {
+              if (a.createdAt < b.createdAt) {
+                return 1;
+              } else if (a.createdAt > b.createdAt) {
+                return -1;
+              } else {
+                return 0;
+              }
+            });
+          });
+          break;
+        case SortBy.sizeup:
+          setState(() {
+            this.contents.sort((a, b) {
+              return a.size.compareTo(b.size);
+            });
+          });
+          break;
+        case SortBy.sizedown:
+          setState(() {
+            this.contents.sort((a, b) {
+              if (a.size < b.size) {
+                return 1;
+              } else if (a.size > b.size) {
+                return -1;
+              } else {
+                return 0;
+              }
+            });
+          });
+          break;
+      }
+    }
   }
 
   @override

@@ -34,7 +34,7 @@ class LocalNotificationUtil {
         requestSoundPermission: false,
         onDidReceiveLocalNotification: null);
     var initializationSettings = InitializationSettings(
-        initializationSettingsAndroid, initializationSettingsIOS);
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS, macOS: new MacOSInitializationSettings());
     await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: (String payload) async {
       if (payload != null) {
@@ -84,7 +84,7 @@ class LocalNotificationUtil {
   static AndroidNotificationDetails uploadAndroidChannel() {
     return AndroidNotificationDetails(
         AndroidChannelId.upload_channel, '上传通知', '上传通知提示',
-        importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
+        importance: Importance.max, priority: Priority.high, ticker: 'ticker');
   }
 
   /// 默认IOS
@@ -92,9 +92,14 @@ class LocalNotificationUtil {
     return IOSNotificationDetails();
   }
 
+  /// 默认MacOS
+  static MacOSNotificationDetails normalMacOSNotificationDetails() {
+    return MacOSNotificationDetails();
+  }
+
   static NotificationDetails createNotificationDetails(
-      AndroidNotificationDetails android, IOSNotificationDetails iOS) {
-    return NotificationDetails(android, iOS);
+      AndroidNotificationDetails android, IOSNotificationDetails iOS, MacOSNotificationDetails macOS) {
+    return NotificationDetails(android: android, iOS: iOS, macOS: macOS);
   }
 }
 
