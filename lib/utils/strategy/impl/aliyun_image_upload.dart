@@ -30,7 +30,6 @@ class AliyunImageUpload implements ImageUploadStrategy {
   @override
   Future<Uploaded> upload(File file, String renameImage) async {
     String configStr = await ImageUploadUtils.getPBConfig(PBTypeKeys.aliyun);
-    debugPrint(configStr);
     if (isBlank(configStr)) {
       throw AliyunError(error: '读取配置文件错误！请重试');
     }
@@ -48,7 +47,9 @@ class AliyunImageUpload implements ImageUploadStrategy {
           'policy': policy,
           'Signature': AliyunApi.buildPostSignature(
               config.accessKeyId, config.accessKeySecret, policy),
-          'file': await MultipartFile.fromFile(file.path, filename: renameImage)
+          'file': await MultipartFile.fromFile(file.path, filename: renameImage),
+          // OSS支持用户在Post请求体中增加x-oss-content-type，该项允许用户指定Content-Type
+          'x-oss-content-type': 'image/${path.extension(renameImage).replaceFirst('.', '')}'
         }));
     String imgPath = path.joinAll([
       isBlank(config.customUrl)
