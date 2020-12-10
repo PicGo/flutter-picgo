@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_picgo/api/aliyun_api.dart';
 import 'package:flutter_picgo/model/aliyun_config.dart';
 import 'package:flutter_picgo/model/uploaded.dart';
@@ -47,9 +46,11 @@ class AliyunImageUpload implements ImageUploadStrategy {
           'policy': policy,
           'Signature': AliyunApi.buildPostSignature(
               config.accessKeyId, config.accessKeySecret, policy),
-          'file': await MultipartFile.fromFile(file.path, filename: renameImage),
+          'file':
+              await MultipartFile.fromFile(file.path, filename: renameImage),
           // OSS支持用户在Post请求体中增加x-oss-content-type，该项允许用户指定Content-Type
-          'x-oss-content-type': 'image/${path.extension(renameImage).replaceFirst('.', '')}'
+          'x-oss-content-type':
+              'image/${path.extension(renameImage).replaceFirst('.', '')}'
         }));
     String imgPath = path.joinAll([
       isBlank(config.customUrl)
