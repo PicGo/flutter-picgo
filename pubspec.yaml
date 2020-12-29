@@ -39,6 +39,7 @@ dependencies:
   flutter_local_notifications: ^3.0.1+4
   pull_to_refresh: ^1.6.2
   characters: ^1.0.0
+  wechat_assets_picker: ^4.2.2
 
 
   # The following adds the Cupertino Icons font to your application.
