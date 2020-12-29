@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_picgo/utils/extended.dart';
 
 class ImagePreviewUtils {
   /// 打开图片预览页面
@@ -91,12 +92,16 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
                   cache: true,
                   mode: ExtendedImageMode.gesture,
                   enableSlideOutPage: true,
+                  loadStateChanged: (state) =>
+                      defaultLoadStateChanged(state, iconSize: 50),
                 )
               : ExtendedImage.file(
                   File(item.resource),
                   fit: BoxFit.contain,
                   mode: ExtendedImageMode.gesture,
                   enableSlideOutPage: true,
+                  loadStateChanged: (state) =>
+                      defaultLoadStateChanged(state, iconSize: 50),
                 );
           image = Container(
             child: image,

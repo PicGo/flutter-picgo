@@ -131,7 +131,8 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
                     cache: true,
                     border: Border.all(color: Colors.grey, width: 1.0),
                     borderRadius: BorderRadius.all(Radius.circular(8)),
-                    loadStateChanged: (state) => defaultLoadStateChanged(state),
+                    loadStateChanged: (state) =>
+                        defaultLoadStateChanged(state, iconSize: 30),
                   ),
                 ),
               ),
