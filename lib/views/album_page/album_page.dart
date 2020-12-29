@@ -11,6 +11,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter/services.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class AlbumPage extends StatefulWidget {
   @override
@@ -45,13 +46,8 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
       floatingActionButton: FloatingActionButton(
         child: Icon(IconData(0xe639, fontFamily: 'iconfont')),
         onPressed: () async {
-          var status = await PermissionUtils.requestPhotos();
-          if (status == PermissionStatus.denied) {
-            PermissionUtils.showPermissionDialog(context);
-            return;
-          }
-          Application.router.navigateTo(context, Routes.upload,
-              transition: TransitionType.cupertino);
+          /// assets select
+          handleSelect();
         },
       ),
       body: SmartRefresher(
@@ -224,6 +220,23 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
   handleTap(int index) {
     Clipboard.setData(ClipboardData(text: _uploadeds[index].path));
     Toast.show('已复制到剪切板', context);
+  }
+
+  /// 处理选择图片
+  handleSelect() async {
+    var status = await PermissionUtils.requestPhotos();
+    if (status == PermissionStatus.denied) {
+      PermissionUtils.showPermissionDialog(context);
+      return;
+    }
+    final List<AssetEntity> assets = await AssetPicker.pickAssets(context);
+    if (assets != null && assets.length > 0) {
+      Application.router.navigateTo(context, Routes.handleUpload,
+          transition: TransitionType.cupertino,
+          routeSettings: RouteSettings(arguments: assets));
+    } else {
+      Toast.show('您已取消选择', context);
+    }
   }
 
   @override

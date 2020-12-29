@@ -40,6 +40,7 @@ dependencies:
   pull_to_refresh: ^1.6.2
   characters: ^1.0.0
   wechat_assets_picker: ^4.2.2
+  extended_image: ^1.5.0
 
 
   # The following adds the Cupertino Icons font to your application.

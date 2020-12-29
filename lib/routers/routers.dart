@@ -8,6 +8,7 @@ class Routes {
   static const String notfound = '/404';
   static const String setting = '/setting';
   static const String upload = '/upload';
+  static const String handleUpload = '/handle/upload';
   static const String settingPb = '/setting/pb';
   static const String settingPicgo = '/setting/picgo';
   static const String settingPicgoTheme = '/setting/picgo/theme';
@@ -50,6 +51,7 @@ class Routes {
     router.define(notfound, handler: notfoundHandler);
     router.define(album, handler: albumHandler);
     router.define(upload, handler: uploadHandler);
+    router.define(handleUpload, handler: preUploadHandler);
     router.define(setting, handler: settingHandler);
     router.define(settingPb, handler: pbsettingHandler);
     router.define(settingPbGithub, handler: pbsettingGithubHandler);

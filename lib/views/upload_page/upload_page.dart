@@ -214,39 +214,39 @@ class _UploadPageState extends State<UploadPage>
     //       sp.getBool(SharedPreferencesKeys.settingIsUploadedRename) ?? false;
 
     //   /// 获取文件后缀
-    //   String suffix = path.extension(pickedFile.path);
-    //   String filename = path.basenameWithoutExtension(pickedFile.path);
-    //   _renameImage = settingIsTimestampRename
-    //       ? '${new DateTime.now().millisecondsSinceEpoch.toString()}$suffix'
-    //       : '$filename$suffix';
+    // String suffix = path.extension(pickedFile.path);
+    // String filename = path.basenameWithoutExtension(pickedFile.path);
+    // _renameImage = settingIsTimestampRename
+    //     ? '${new DateTime.now().millisecondsSinceEpoch.toString()}$suffix'
+    //     : '$filename$suffix';
     //   if (settingIsUploadedRename) {
     //     _controller = TextEditingController(text: _renameImage);
-    //     await showDialog(
-    //       context: context,
-    //       barrierDismissible: false,
-    //       builder: (context) {
-    //         return AlertDialog(
-    //           title: Center(
-    //             child: Text('重命名图片'),
+    //   await showDialog(
+    //     context: context,
+    //     barrierDismissible: false,
+    //     builder: (context) {
+    //       return AlertDialog(
+    //         title: Center(
+    //           child: Text('重命名图片'),
+    //         ),
+    //         content: Padding(
+    //           padding: EdgeInsets.only(left: 4, right: 4),
+    //           child: TextField(
+    //             controller: _controller,
     //           ),
-    //           content: Padding(
-    //             padding: EdgeInsets.only(left: 4, right: 4),
-    //             child: TextField(
-    //               controller: _controller,
-    //             ),
-    //           ),
-    //           actions: <Widget>[
-    //             FlatButton(
-    //                 child: Text('确定'),
-    //                 onPressed: () {
-    //                   this._renameImage = _controller.text;
-    //                   Navigator.pop(context);
-    //                 }),
-    //           ],
-    //         );
-    //       },
-    //     );
-    //   }
+    //         ),
+    //         actions: <Widget>[
+    //           FlatButton(
+    //               child: Text('确定'),
+    //               onPressed: () {
+    //                 this._renameImage = _controller.text;
+    //                 Navigator.pop(context);
+    //               }),
+    //         ],
+    //       );
+    //     },
+    //   );
+    // }
     //   setState(() {
     //     this._previewPath = pickedFile.path;
     // });
