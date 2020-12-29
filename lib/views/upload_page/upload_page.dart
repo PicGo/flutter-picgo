@@ -6,7 +6,6 @@ import 'package:flutter_picgo/utils/permission.dart';
 import 'package:flutter_picgo/utils/shared_preferences.dart';
 import 'package:flutter_picgo/utils/strings.dart';
 import 'package:flutter_picgo/views/upload_page/upload_page_presenter.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:toast/toast.dart';
 import 'package:path/path.dart' as path;
@@ -36,7 +35,6 @@ class _UploadPageState extends State<UploadPage>
   static const URL = 3;
 
   UploadPagePresenter _presenter;
-  final picker = ImagePicker();
 
   _UploadPageState() {
     _presenter = UploadPagePresenter(this);
@@ -206,56 +204,56 @@ class _UploadPageState extends State<UploadPage>
       return;
     }
     // 获取图片
-    try {
-      final pickedFile = await picker.getImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
-        var sp = await SpUtil.getInstance();
-        var settingIsTimestampRename =
-            sp.getBool(SharedPreferencesKeys.settingIsTimestampRename) ?? false;
-        var settingIsUploadedRename =
-            sp.getBool(SharedPreferencesKeys.settingIsUploadedRename) ?? false;
+    // try {
+    // final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    // if (pickedFile != null) {
+    //   var sp = await SpUtil.getInstance();
+    //   var settingIsTimestampRename =
+    //       sp.getBool(SharedPreferencesKeys.settingIsTimestampRename) ?? false;
+    //   var settingIsUploadedRename =
+    //       sp.getBool(SharedPreferencesKeys.settingIsUploadedRename) ?? false;
 
-        /// 获取文件后缀
-        String suffix = path.extension(pickedFile.path);
-        String filename = path.basenameWithoutExtension(pickedFile.path);
-        _renameImage = settingIsTimestampRename
-            ? '${new DateTime.now().millisecondsSinceEpoch.toString()}$suffix'
-            : '$filename$suffix';
-        if (settingIsUploadedRename) {
-          _controller = TextEditingController(text: _renameImage);
-          await showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) {
-              return AlertDialog(
-                title: Center(
-                  child: Text('重命名图片'),
-                ),
-                content: Padding(
-                  padding: EdgeInsets.only(left: 4, right: 4),
-                  child: TextField(
-                    controller: _controller,
-                  ),
-                ),
-                actions: <Widget>[
-                  FlatButton(
-                      child: Text('确定'),
-                      onPressed: () {
-                        this._renameImage = _controller.text;
-                        Navigator.pop(context);
-                      }),
-                ],
-              );
-            },
-          );
-        }
-        setState(() {
-          this._previewPath = pickedFile.path;
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
+    //   /// 获取文件后缀
+    //   String suffix = path.extension(pickedFile.path);
+    //   String filename = path.basenameWithoutExtension(pickedFile.path);
+    //   _renameImage = settingIsTimestampRename
+    //       ? '${new DateTime.now().millisecondsSinceEpoch.toString()}$suffix'
+    //       : '$filename$suffix';
+    //   if (settingIsUploadedRename) {
+    //     _controller = TextEditingController(text: _renameImage);
+    //     await showDialog(
+    //       context: context,
+    //       barrierDismissible: false,
+    //       builder: (context) {
+    //         return AlertDialog(
+    //           title: Center(
+    //             child: Text('重命名图片'),
+    //           ),
+    //           content: Padding(
+    //             padding: EdgeInsets.only(left: 4, right: 4),
+    //             child: TextField(
+    //               controller: _controller,
+    //             ),
+    //           ),
+    //           actions: <Widget>[
+    //             FlatButton(
+    //                 child: Text('确定'),
+    //                 onPressed: () {
+    //                   this._renameImage = _controller.text;
+    //                   Navigator.pop(context);
+    //                 }),
+    //           ],
+    //         );
+    //       },
+    //     );
+    //   }
+    //   setState(() {
+    //     this._previewPath = pickedFile.path;
+    // });
+    //   }
+    // } catch (e) {
+    //   print(e);
+    // }
   }
 
   /// 上传图片
@@ -344,7 +342,6 @@ class _UploadPageState extends State<UploadPage>
         LocalNotificationUtil.createNotificationDetails(
             LocalNotificationUtil.uploadAndroidChannel(),
             LocalNotificationUtil.normalIOSNotificationDetails(),
-            LocalNotificationUtil.normalMacOSNotificationDetails()
-            ));
+            LocalNotificationUtil.normalMacOSNotificationDetails()));
   }
 }
