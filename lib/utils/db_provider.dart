@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/resources/table_name_keys.dart';
 import 'package:sqflite/sqflite.dart';
@@ -57,7 +58,6 @@ class DbProvider {
         },
       );
     } catch (e) {
-      print('DataBase init Error >>>>>> $e');
       var file = File(path);
       file.deleteSync();
     }

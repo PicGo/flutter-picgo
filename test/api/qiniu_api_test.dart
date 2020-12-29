@@ -4,12 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 main() {
   test('测试UpToken生成', () {
     String policy = QiniuApi.generatePutPolicy('image', 'test.png');
-    print(policy);
     var token = QiniuApi.generateUpToken(
         'CRd7Wa4PuSGvs4ArToPTLBMCigGGUY3sk3F8oc8W',
         'f2Jkrlyea5s8h8gLEToa9-k895GNM-BlmQ2RfxwU',
         policy);
-    print('UpToken : $token');
   });
 
   test('测试AuthToken生成', () {
@@ -22,7 +20,6 @@ main() {
         null,
         'MY_ACCESS_KEY',
         'MY_SECRET_KEY');
-    print('Access Token : $token');
     expect(token, 'MY_ACCESS_KEY:1uLvuZM6l6oCzZFqkJ6oI4oFMVQ=');
   });
 }

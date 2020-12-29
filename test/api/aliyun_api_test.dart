@@ -24,11 +24,7 @@ main() {
           'Date': HttpDate.format(new DateTime.now()),
         }, contentType: 'application/x-www-form-urlencoded'),
       );
-
-      print(res.data);
-    } on DioError catch (e) {
-      print(e.response.data);
-    }
+    } on DioError catch (e) {}
   });
 
   test('测试FormData提交图片', () async {
@@ -57,10 +53,6 @@ main() {
             'file': await MultipartFile.fromFile(pathname, filename: 'logo.png')
           }),
           options: Options(contentType: Headers.formUrlEncodedContentType));
-
-      print(res.data);
-    } on DioError catch (e) {
-      print(e.response.data);
-    }
+    } on DioError catch (e) {}
   });
 }

@@ -39,10 +39,8 @@ class UploadPagePresenter {
         _view.uploadFaild('上传失败！请重试');
       }
     } on DioError catch (e) {
-      debugPrint(e.toString());
       _view.uploadFaild('${e.message}');
     } catch (e) {
-      debugPrint(e.toString());
       _view.uploadFaild('$e');
     }
   }

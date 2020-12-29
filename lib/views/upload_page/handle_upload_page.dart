@@ -57,8 +57,6 @@ class _HandleUploadPageState extends State<HandleUploadPage> {
 
     List<UploadItem> items = [];
     for (int i = 0; i < files.length; i++) {
-      print(files[i]);
-      print(filesName[i]);
       items.add(new UploadItem(files[i], filesName[i]));
     }
     return items;

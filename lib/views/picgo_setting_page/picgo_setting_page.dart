@@ -159,7 +159,6 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
       Response res = await PicgoApi.getLatestVersion();
       PackageInfo info = await PackageInfo.fromPlatform();
       int version = int.parse(info.buildNumber);
-      debugPrint('$version');
       int remoteVersion = 0;
       if (Platform.isAndroid) {
         remoteVersion = int.parse('${res.data["Android"]["versionCode"]}');

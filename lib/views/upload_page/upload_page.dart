@@ -252,7 +252,7 @@ class _UploadPageState extends State<UploadPage>
     // });
     //   }
     // } catch (e) {
-    //   print(e);
+    //   debugPrint(e);
     // }
   }
 

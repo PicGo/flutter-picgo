@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_picgo/model/uploaded.dart';
 import 'package:flutter_picgo/resources/table_name_keys.dart';
 import 'package:flutter_picgo/utils/image_upload.dart';
@@ -27,7 +28,6 @@ class AlbumPagePresenter {
       }).toList();
       _view.loadUploadedImages(uploadeds);
     } catch (e) {
-      print(e);
       _view.loadError();
     }
   }
@@ -43,7 +43,6 @@ class AlbumPagePresenter {
         _view.deleteError('删除出错，请重试');
       }
     } catch (e) {
-      print(e);
       _view.deleteError('删除出错，请重试 Error >>> $e');
     }
   }
