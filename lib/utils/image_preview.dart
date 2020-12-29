@@ -6,11 +6,10 @@ import 'package:flutter/material.dart';
 
 class ImagePreviewUtils {
   /// 打开图片预览页面
-  static void open(BuildContext context, int index, String content) {
-    var item = new GalleryItem(id: index.toString(), resource: '$content');
+  static void open(BuildContext context, String content) {
+    var item = new GalleryItem(id: '0', resource: '$content');
     var page = GalleryPhotoViewWrapper(
       galleryItems: [item],
-      initialIndex: index,
     );
     Navigator.push(
       context,
@@ -18,6 +17,19 @@ class ImagePreviewUtils {
           ? TransparentMaterialPageRoute(builder: (_) => page)
           : TransparentCupertinoPageRoute(builder: (_) => page),
     );
+  }
+
+  static void openMulti(
+      BuildContext context, int index, List<GalleryItem> items) {
+    var page = GalleryPhotoViewWrapper(
+      galleryItems: items,
+      initialIndex: index,
+    );
+    Navigator.push(
+        context,
+        Platform.isAndroid
+            ? TransparentMaterialPageRoute(builder: (_) => page)
+            : TransparentCupertinoPageRoute(builder: (_) => page));
   }
 }
 
