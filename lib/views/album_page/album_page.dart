@@ -6,6 +6,7 @@ import 'package:flutter_picgo/model/uploaded.dart';
 import 'package:flutter_picgo/routers/application.dart';
 import 'package:flutter_picgo/routers/routers.dart';
 import 'package:flutter_picgo/utils/extended.dart';
+import 'package:flutter_picgo/utils/image_preview.dart';
 import 'package:flutter_picgo/utils/permission.dart';
 import 'package:flutter_picgo/views/album_page/album_page_presenter.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -109,50 +110,46 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
             handleTap(index);
           },
           onLongPress: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text('确定删除吗'),
-                    content: Text('删除后无法恢复'),
-                    actions: <Widget>[
-                      FlatButton(
-                        child: Text('确定'),
-                        onPressed: () {
-                          Navigator.pop(context);
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return NetLoadingDialog(
-                                  outsideDismiss: false,
-                                  loading: true,
-                                  loadingText: "删除中...",
-                                  requestCallBack: _presenter
-                                      .doDeleteImage(_uploadeds[index]),
-                                );
-                              });
-                        },
-                      ),
-                    ],
-                  );
-                });
+            handleLongPress(index);
           },
-          child: Container(
-            height: 150,
-            child: Card(
-              clipBehavior: Clip.antiAlias,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadiusDirectional.circular(8)),
-              child: ExtendedImage.network(
-                _uploadeds[index].path,
+          onDoubleTap: () {
+            handleDoubleTap(index);
+          },
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Container(
                 height: 150,
-                fit: BoxFit.cover,
-                cache: true,
-                border: Border.all(color: Colors.grey, width: 1.0),
-                borderRadius: BorderRadius.all(Radius.circular(8)),
-                loadStateChanged: (state) => defaultLoadStateChanged(state),
+                child: Card(
+                  clipBehavior: Clip.antiAlias,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadiusDirectional.circular(8)),
+                  child: ExtendedImage.network(
+                    _uploadeds[index].path,
+                    height: 150,
+                    fit: BoxFit.cover,
+                    cache: true,
+                    border: Border.all(color: Colors.grey, width: 1.0),
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    loadStateChanged: (state) => defaultLoadStateChanged(state),
+                  ),
+                ),
               ),
-            ),
+              Positioned(
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
+                      color: Colors.grey),
+                  padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                  child: Text(
+                    _uploadeds[index].type,
+                    style: TextStyle(color: Colors.white, fontSize: 10),
+                  ),
+                ),
+                right: 10,
+                top: 10,
+              )
+            ],
           ),
         );
       },
@@ -197,10 +194,46 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
     _presenter.doLoadUploadedImages(_perPageItemSize, _currentPage += 1);
   }
 
-  /// 处理图片点击
+  /// 处理图片点击事件
   handleTap(int index) {
+    ImagePreviewUtils.open(context, 1, _uploadeds[index].path);
+  }
+
+  /// 处理图片双击
+  handleDoubleTap(int index) {
     Clipboard.setData(ClipboardData(text: _uploadeds[index].path));
     Toast.show('已复制到剪切板', context);
+  }
+
+  /// 处理图片长按事件
+  handleLongPress(int index) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('确定删除吗'),
+            content: Text('删除后无法恢复'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('确定'),
+                onPressed: () {
+                  Navigator.pop(context);
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return NetLoadingDialog(
+                          outsideDismiss: false,
+                          loading: true,
+                          loadingText: "删除中...",
+                          requestCallBack:
+                              _presenter.doDeleteImage(_uploadeds[index]),
+                        );
+                      });
+                },
+              ),
+            ],
+          );
+        });
   }
 
   /// 处理选择图片
