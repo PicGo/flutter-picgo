@@ -102,15 +102,16 @@ class _UploadItemState extends State<UploadItem> implements UploadItemContract {
       case UploadState.UploadFail:
       case UploadState.SaveFail:
       default:
-        return IconButton(
-            iconSize: 16,
-            icon: Icon(
-              Icons.error,
-              color: Colors.red,
-            ),
-            onPressed: () {
-              _startUpload();
-            });
+        return GestureDetector(
+          child: Icon(
+            Icons.error,
+            color: Colors.red,
+            size: 16,
+          ),
+          onTap: () {
+            _startUpload();
+          },
+        );
     }
   }
 
