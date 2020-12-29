@@ -50,6 +50,9 @@ android {
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        
+        // support multidex
+        multiDexEnabled true
     }
 
     signingConfigs {
