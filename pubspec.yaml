@@ -30,7 +30,6 @@ dependencies:
   fluro: ^1.7.7
   toast: ^0.1.5
   json_serializable: ^3.3.0
-  cached_network_image: ^2.2.0+1
   url_launcher: ^5.7.10
   permission_handler: ^5.0.1
   barcode_scan: ^3.0.1

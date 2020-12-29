@@ -1,10 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picgo/components/loading.dart';
 import 'package:flutter_picgo/model/uploaded.dart';
 import 'package:flutter_picgo/routers/application.dart';
 import 'package:flutter_picgo/routers/routers.dart';
+import 'package:flutter_picgo/utils/extended.dart';
 import 'package:flutter_picgo/utils/permission.dart';
 import 'package:flutter_picgo/views/album_page/album_page_presenter.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -142,34 +143,14 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
               clipBehavior: Clip.antiAlias,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadiusDirectional.circular(8)),
-              child: CachedNetworkImage(
-                imageUrl: _uploadeds[index].path,
+              child: ExtendedImage.network(
+                _uploadeds[index].path,
+                height: 150,
                 fit: BoxFit.cover,
-                placeholder: (context, url) => Center(
-                  child: Container(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
-                errorWidget: (context, url, error) {
-                  return Container(
-                    color: Colors.grey,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(Icons.error),
-                          SizedBox(height: 2),
-                          Text(
-                            '加载失败',
-                            style: TextStyle(fontSize: 12),
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                },
+                cache: true,
+                border: Border.all(color: Colors.grey, width: 1.0),
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                loadStateChanged: (state) => defaultLoadStateChanged(state),
               ),
             ),
           ),

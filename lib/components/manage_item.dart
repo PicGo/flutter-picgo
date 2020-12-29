@@ -1,5 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_picgo/utils/extended.dart';
 import 'package:path/path.dart';
 
 typedef GestureTapCallback = void Function();
@@ -77,48 +78,23 @@ class ManageItem extends StatelessWidget {
       var imageSuffixs = ['png', 'bmp', 'jpeg', 'gif', 'jpg'];
       if (imageSuffixs.contains(suffix)) {
         return SizedBox(
-          height: 50,
-          width: 50,
-          child: Card(
-            clipBehavior: Clip.antiAlias,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadiusDirectional.circular(2)),
-            child: CachedNetworkImage(
-              imageUrl: this.url,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => Center(
-                child: Container(
-                  width: 10,
-                  height: 10,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 3,
-                  ),
-                ),
+            height: 50,
+            width: 50,
+            child: Card(
+              clipBehavior: Clip.antiAlias,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadiusDirectional.circular(2)),
+              child: ExtendedImage.network(
+                this.url,
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover,
+                cache: true,
+                border: Border.all(color: Colors.grey, width: 1.0),
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                loadStateChanged: (state) => defaultLoadStateChanged(state),
               ),
-              errorWidget: (context, url, error) {
-                return Container(
-                  color: Colors.grey,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.error,
-                          size: 12,
-                        ),
-                        SizedBox(height: 2),
-                        Text(
-                          '加载失败',
-                          style: TextStyle(fontSize: 8),
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        );
+            ));
       } else {
         return buildCenterIcon(Icon(IconData(0xe654, fontFamily: 'iconfont')));
       }

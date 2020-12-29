@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picgo/components/upload_item/upload_item_presenter.dart';
+import 'package:flutter_picgo/utils/extended.dart';
 
 enum UploadState {
   /// 上传中
@@ -129,40 +129,6 @@ class _UploadItemState extends State<UploadItem> implements UploadItemContract {
         return '保存失败';
       default:
         return '未知';
-    }
-  }
-
-  Widget defaultLoadStateChanged(ExtendedImageState state) {
-    switch (state.extendedImageLoadState) {
-      case LoadState.loading:
-        return Center(
-          child: SizedBox(
-            width: 16,
-            height: 16,
-            child: CupertinoActivityIndicator(),
-          ),
-        );
-        break;
-      case LoadState.failed:
-        return GestureDetector(
-          child: Stack(
-            fit: StackFit.expand,
-            alignment: AlignmentDirectional.center,
-            children: <Widget>[
-              Icon(
-                Icons.error,
-                size: 16,
-                color: Colors.grey[600],
-              )
-            ],
-          ),
-          onTap: () {
-            state.reLoadImage();
-          },
-        );
-        break;
-      default:
-        return null;
     }
   }
 
