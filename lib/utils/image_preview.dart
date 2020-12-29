@@ -3,7 +3,9 @@ import 'dart:math';
 
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_picgo/utils/extended.dart';
+import 'package:toast/toast.dart';
 
 class ImagePreviewUtils {
   /// 打开图片预览页面
@@ -82,46 +84,81 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
               pageSize: pageSize,
               color: Colors.black,
               pageGestureAxis: SlideAxis.both),
-      child: ExtendedImageGesturePageView.builder(
-        itemBuilder: (BuildContext context, int index) {
-          var item = widget.galleryItems[index];
-          Widget image = item.resource.startsWith('http')
-              ? ExtendedImage.network(
-                  item.resource,
-                  fit: BoxFit.contain,
-                  cache: true,
-                  mode: ExtendedImageMode.gesture,
-                  enableSlideOutPage: true,
-                  loadStateChanged: (state) =>
-                      defaultLoadStateChanged(state, iconSize: 50),
-                )
-              : ExtendedImage.file(
-                  File(item.resource),
-                  fit: BoxFit.contain,
-                  mode: ExtendedImageMode.gesture,
-                  enableSlideOutPage: true,
-                  loadStateChanged: (state) =>
-                      defaultLoadStateChanged(state, iconSize: 50),
-                );
-          image = Container(
-            child: image,
-          );
-          if (index == currentIndex) {
-            return Hero(
-              tag: index,
+      child: GestureDetector(
+        child: ExtendedImageGesturePageView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            var item = widget.galleryItems[index];
+            Widget image = item.resource.startsWith('http')
+                ? ExtendedImage.network(
+                    item.resource,
+                    fit: BoxFit.contain,
+                    cache: true,
+                    mode: ExtendedImageMode.gesture,
+                    enableSlideOutPage: true,
+                    loadStateChanged: (state) =>
+                        defaultLoadStateChanged(state, iconSize: 50),
+                  )
+                : ExtendedImage.file(
+                    File(item.resource),
+                    fit: BoxFit.contain,
+                    mode: ExtendedImageMode.gesture,
+                    enableSlideOutPage: true,
+                    loadStateChanged: (state) =>
+                        defaultLoadStateChanged(state, iconSize: 50),
+                  );
+            image = Container(
               child: image,
             );
-          } else {
-            return image;
-          }
-        },
-        itemCount: widget.galleryItems.length,
-        controller: PageController(
-          initialPage: currentIndex,
+            if (index == currentIndex) {
+              return Hero(
+                tag: index,
+                child: image,
+              );
+            } else {
+              return image;
+            }
+          },
+          itemCount: widget.galleryItems.length,
+          controller: PageController(
+            initialPage: currentIndex,
+          ),
+          scrollDirection: Axis.horizontal,
         ),
-        scrollDirection: Axis.horizontal,
+        onLongPress: () {
+          _showBottomPane();
+        },
       ),
     );
+  }
+
+  /// 底部弹窗
+  _showBottomPane() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return SafeArea(
+              child: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  title: Text('复制链接'),
+                  onTap: () {
+                    _handleCopy(context);
+                  },
+                ),
+              ],
+            ),
+          ));
+        });
+  }
+
+  /// 复制链接
+  _handleCopy(BuildContext context) {
+    Clipboard.setData(
+        ClipboardData(text: widget.galleryItems[currentIndex].resource));
+    Toast.show('已复制到剪切板', context);
+    Navigator.pop(context);
   }
 
   Color defaultSlidePageBackgroundHandler(
