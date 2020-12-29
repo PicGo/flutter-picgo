@@ -3,8 +3,11 @@ import 'dart:io';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_picgo/components/upload_item/upload_item_presenter.dart';
 import 'package:flutter_picgo/utils/extended.dart';
+import 'package:flutter_picgo/utils/local_notification.dart';
+import 'package:toast/toast.dart';
 
 enum UploadState {
   /// 上传中
@@ -26,8 +29,9 @@ enum UploadState {
 class UploadItem extends StatefulWidget {
   final File file;
   final String rename;
+  final bool needNotify;
 
-  UploadItem(this.file, this.rename);
+  UploadItem(this.file, this.rename, {this.needNotify = false});
 
   @override
   _UploadItemState createState() => _UploadItemState();
@@ -36,6 +40,9 @@ class UploadItem extends StatefulWidget {
 class _UploadItemState extends State<UploadItem> implements UploadItemContract {
   UploadState _state;
   UploadItemPresenter _presenter;
+  String _uploadedImageUrl = '';
+
+  /// construct
   _UploadItemState() {
     _state = UploadState.Uploading;
     _presenter = new UploadItemPresenter(this);
@@ -81,7 +88,9 @@ class _UploadItemState extends State<UploadItem> implements UploadItemContract {
         style: TextStyle(color: Colors.grey),
       ),
       trailing: buildStateTip(),
-      onTap: () {},
+      onTap: () {
+        _handleTap();
+      },
     );
   }
 
@@ -98,6 +107,7 @@ class _UploadItemState extends State<UploadItem> implements UploadItemContract {
         return Icon(
           Icons.done,
           size: 16,
+          color: Colors.green,
         );
       case UploadState.UploadFail:
       case UploadState.SaveFail:
@@ -141,17 +151,43 @@ class _UploadItemState extends State<UploadItem> implements UploadItemContract {
     _presenter.doUploadImage(widget.file, widget.rename);
   }
 
+  /// 处理点击事件
+  _handleTap() {
+    if (_state == UploadState.Complete) {
+      Clipboard.setData(ClipboardData(text: _uploadedImageUrl));
+      Toast.show('已复制到剪切板', context);
+    } else {
+      Toast.show('当前状态无法操作', context);
+    }
+  }
+
   @override
   uploadFaild(String errorMsg) {
     setState(() {
       _state = UploadState.UploadFail;
     });
+
+    _showNotification(0, '${widget.rename}上传失败：$errorMsg');
   }
 
   @override
-  uploadSuccess(String url) {
+  uploadSuccess(String url) async {
+    _uploadedImageUrl = url;
     setState(() {
       _state = UploadState.Complete;
     });
+
+    _showNotification(0, '${widget.rename}上传成功：$url');
+  }
+
+  Future<void> _showNotification(int id, String body) async {
+    LocalNotificationUtil.getInstance().show(
+        id,
+        '上传提示',
+        body,
+        LocalNotificationUtil.createNotificationDetails(
+            LocalNotificationUtil.uploadAndroidChannel(),
+            LocalNotificationUtil.normalIOSNotificationDetails(),
+            LocalNotificationUtil.normalMacOSNotificationDetails()));
   }
 }

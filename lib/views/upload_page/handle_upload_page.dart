@@ -26,6 +26,16 @@ class _HandleUploadPageState extends State<HandleUploadPage> {
 
   TextEditingController _controller = new TextEditingController();
 
+  /// 通知提示
+  bool needNotify = false;
+
+  _HandleUploadPageState() {
+    SpUtil.getInstance().then((sp) {
+      this.needNotify =
+          sp.getBool(SharedPreferencesKeys.settingIsUploadedTip) ?? false;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -57,7 +67,11 @@ class _HandleUploadPageState extends State<HandleUploadPage> {
 
     List<UploadItem> items = [];
     for (int i = 0; i < files.length; i++) {
-      items.add(new UploadItem(files[i], filesName[i]));
+      items.add(new UploadItem(
+        files[i],
+        filesName[i],
+        needNotify: needNotify,
+      ));
     }
     return items;
   }
