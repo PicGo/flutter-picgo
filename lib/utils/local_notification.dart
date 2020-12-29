@@ -34,12 +34,12 @@ class LocalNotificationUtil {
         requestSoundPermission: false,
         onDidReceiveLocalNotification: null);
     var initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid, iOS: initializationSettingsIOS, macOS: new MacOSInitializationSettings());
+        android: initializationSettingsAndroid,
+        iOS: initializationSettingsIOS,
+        macOS: new MacOSInitializationSettings());
     await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: (String payload) async {
-      if (payload != null) {
-        debugPrint('notification payload: ' + payload);
-      }
+      if (payload != null) {}
     });
   }
 
@@ -98,7 +98,9 @@ class LocalNotificationUtil {
   }
 
   static NotificationDetails createNotificationDetails(
-      AndroidNotificationDetails android, IOSNotificationDetails iOS, MacOSNotificationDetails macOS) {
+      AndroidNotificationDetails android,
+      IOSNotificationDetails iOS,
+      MacOSNotificationDetails macOS) {
     return NotificationDetails(android: android, iOS: iOS, macOS: macOS);
   }
 }

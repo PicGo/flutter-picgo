@@ -4,26 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_picgo/utils/image_upload.dart';
 import 'package:flutter_picgo/utils/strategy/upload_strategy_factory.dart';
 
-abstract class UploadPageContract {
-  loadCurrentPB(String pbname);
+abstract class UploadItemContract {
   uploadSuccess(String url);
   uploadFaild(String errorMsg);
 }
 
-class UploadPagePresenter {
-  UploadPageContract _view;
-  UploadPagePresenter(this._view);
-
-  /// 读取当前默认图床
-  doLoadCurrentPB() async {
-    try {
-      String pbType = await ImageUploadUtils.getDefaultPB();
-      String name = await ImageUploadUtils.getPBName(pbType);
-      if (name != null) {
-        _view.loadCurrentPB(name);
-      }
-    } catch (e) {}
-  }
+class UploadItemPresenter {
+  UploadItemContract _view;
+  UploadItemPresenter(this._view);
 
   /// 根据配置上传图片
   doUploadImage(File file, String renameImage) async {

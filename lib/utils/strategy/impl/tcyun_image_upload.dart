@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_picgo/api/tcyun_api.dart';
 import 'package:flutter_picgo/model/tcyun_config.dart';
 import 'package:flutter_picgo/model/uploaded.dart';
@@ -51,7 +52,6 @@ class TcyunImageUpload implements ImageUploadStrategy {
       "q-sign-time": keyTime,
       "q-signature": TcyunApi.buildSignature(config.secretKey, keyTime, policy)
     });
-    print(TcyunApi.buildSignature(config.secretKey, keyTime, policy));
     await TcyunApi.postObject(
         config.secretId,
         config.secretKey,

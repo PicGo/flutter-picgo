@@ -11,15 +11,14 @@ class TcyunApi {
   static const String secretKey = 'secretKey';
   static const String secretId = 'secretId';
 
-  static Future postObject(String secretId, String secretKey, String bucket, String area, String ext, FormData formData) async {
+  static Future postObject(String secretId, String secretKey, String bucket,
+      String area, String ext, FormData formData) async {
     Response res = await NetUtils.getInstance().post(
-      'https://$bucket.cos.$area.$BASE_URL/',
-      data: formData,
-      options: Options(
-        extra: {TcyunApi.secretId: secretId, TcyunApi.secretKey: secretKey},
-        contentType: 'image/$ext'
-      )
-    );
+        'https://$bucket.cos.$area.$BASE_URL/',
+        data: formData,
+        options: Options(
+            extra: {TcyunApi.secretId: secretId, TcyunApi.secretKey: secretKey},
+            contentType: 'image/$ext'));
     return res.headers;
   }
 
@@ -56,7 +55,7 @@ class TcyunApi {
     /// signkey
     var hmacsha1Signkey = Hmac(sha1, utf8.encode(secretKey));
     var signKey = hmacsha1Signkey.convert(utf8.encode(keyTime));
-    // string to sign 
+    // string to sign
     var stringToSign = sha1.convert(utf8.encode(policy));
     // signature
     var hmacsha1Signature = Hmac(sha1, utf8.encode('$signKey'));
@@ -131,7 +130,6 @@ class TcyunInterceptor extends InterceptorsWrapper {
       }
       if (headers != null) {
         headers.forEach((key, value) {
-          print('key = $key, value = $value');
           headerList += '${Uri.encodeComponent(key).toLowerCase()};';
           httpHeaders +=
               '${Uri.encodeComponent(key).toLowerCase()}=${Uri.encodeComponent(value)}&';

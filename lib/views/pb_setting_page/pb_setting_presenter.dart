@@ -35,7 +35,6 @@ class PBSettingPagePresenter {
       }).toList();
       _view.loadPb(realList);
     } catch (e) {
-      debugPrint('Error >>>> $e');
       _view.loadError('${e.toString()}');
     }
   }

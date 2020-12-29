@@ -5,13 +5,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as path;
 
 main() {
-  test('测试生成 KeyTime', () {
-    print(TcyunApi.buildKeyTime());
-  });
+  test('测试生成 KeyTime', () {});
 
-  test('测试生成 SignKey', () {
-    print(TcyunApi.buildSignKey('adsadaads', TcyunApi.buildKeyTime()));
-  });
+  test('测试生成 SignKey', () {});
 
   test('测试Api 签名', () async {
     try {
@@ -21,20 +17,16 @@ main() {
           'test-1253954259',
           'ap-nanjing',
           'wallhaven-2e9j79.jpg');
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
   });
 
   test('PostObjecy 提交', () async {
     try {
       String pathname = path.joinAll(
           [Directory.current.path, '..\\assets\\' 'images', 'logo.png']);
-      print(pathname);
       String keyTime = TcyunApi.buildKeyTime();
       String policy = TcyunApi.buildPolicy('ap-nanjing', 'logo.png',
           'AKIDvb0B9rqfeOr44kt2ar46rO2cwzl6JwUk', keyTime);
-      print(policy);
       // TcyunApi.postObject(
       //     'test-1253954259',
       //     'ap-nanjing',
@@ -51,8 +43,6 @@ main() {
       //       "q-signature": TcyunApi.buildSignature(
       //           'KOEoR1LL5apX1lFRN4VgZB0nJgmdEbie', keyTime, policy)
       //     }));
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
   });
 }

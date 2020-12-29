@@ -18,11 +18,13 @@ import 'package:flutter_picgo/views/pb_setting_page/smms_page/smms_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/tcyun_page/tcyun_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/upyun_page/upyun_page.dart';
 import 'package:flutter_picgo/views/picgo_setting_page/theme_setting_page.dart';
+import 'package:flutter_picgo/views/upload_page/handle_upload_page.dart';
 import 'package:flutter_picgo/views/upload_page/upload_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/github_page/github_page.dart';
 import 'package:flutter_picgo/views/picgo_setting_page/picgo_setting_page.dart';
 import 'package:flutter_picgo/views/setting_page/setting_page.dart';
 import 'package:flutter_picgo/views/404.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 var appHandler = new Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -57,6 +59,14 @@ var settingHandler = new Handler(
 var uploadHandler = new Handler(
   handlerFunc: (BuildContext context, Map<String, List<String>> params) =>
       UploadPage(),
+);
+
+var preUploadHandler = new Handler(
+  handlerFunc: (context, parameters) {
+    final assets = context.settings.arguments as List<AssetEntity>;
+
+    return HandleUploadPage(assets);
+  },
 );
 
 // 图床设置页面
