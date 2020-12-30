@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -120,10 +121,6 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
                       transition: TransitionType.cupertino);
                 },
               ),
-              // ListTile(
-              //   title: Text('设置显示图床'),
-              //   onTap: () {},
-              // ),
               ListTile(
                 title: Text('版本更新'),
                 onTap: () {
@@ -141,6 +138,12 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
                   ),
                 ),
               ),
+              ListTile(
+                title: Text('清除缓存'),
+                onTap: () {
+                  _handleClearCache();
+                },
+              )
             ],
           );
         },
@@ -179,6 +182,21 @@ class _PicGoSettingPageState extends State<PicGoSettingPage> {
       launch('https://github.com/PicGo/flutter-picgo/releases');
     } else if (Platform.isIOS) {
       launch('https://apps.apple.com/cn/app/flutter-picgo/id1519714305');
+    }
+  }
+
+  /// 清空缓存
+  _handleClearCache() async {
+    /// extended_image
+    try {
+      bool clear = await clearDiskCachedImages();
+      if (clear) {
+        Toast.show('清除成功', context);
+      } else {
+        throw ('clear fail');
+      }
+    } catch (e) {
+      Toast.show('清除失败', context);
     }
   }
 }
