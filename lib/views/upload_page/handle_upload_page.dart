@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 import 'package:flutter_picgo/components/upload_item/upload_item.dart';
 import 'package:flutter_picgo/utils/strings.dart';
 import 'package:path/path.dart' as path;
