@@ -4,15 +4,15 @@ import 'dart:math';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_picgo/model/uploaded.dart';
 import 'package:flutter_picgo/utils/extended.dart';
 import 'package:toast/toast.dart';
 
 class ImagePreviewUtils {
   /// 打开图片预览页面
-  static void open(BuildContext context, String content) {
-    var item = new GalleryItem(id: '0', resource: '$content');
+  static void open(BuildContext context, Uploaded content) {
     var page = GalleryPhotoViewWrapper(
-      galleryItems: [item],
+      galleryItems: [content],
     );
     Navigator.push(
       context,
@@ -22,8 +22,7 @@ class ImagePreviewUtils {
     );
   }
 
-  static void openMulti(
-      BuildContext context, int index, List<GalleryItem> items) {
+  static void openMulti(BuildContext context, int index, List<Uploaded> items) {
     var page = GalleryPhotoViewWrapper(
       galleryItems: items,
       initialIndex: index,
@@ -36,16 +35,9 @@ class ImagePreviewUtils {
   }
 }
 
-class GalleryItem {
-  GalleryItem({this.id, this.resource});
-
-  final String id;
-  final String resource;
-}
-
 class GalleryPhotoViewWrapper extends StatefulWidget {
   final int initialIndex;
-  final List<GalleryItem> galleryItems;
+  final List<Uploaded> galleryItems;
 
   GalleryPhotoViewWrapper({
     this.initialIndex = 0,
@@ -85,44 +77,67 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
               color: Colors.black,
               pageGestureAxis: SlideAxis.both),
       child: GestureDetector(
-        child: ExtendedImageGesturePageView.builder(
-          itemBuilder: (BuildContext context, int index) {
-            var item = widget.galleryItems[index];
-            Widget image = item.resource.startsWith('http')
-                ? ExtendedImage.network(
-                    item.resource,
-                    fit: BoxFit.contain,
-                    cache: true,
-                    mode: ExtendedImageMode.gesture,
-                    enableSlideOutPage: true,
-                    loadStateChanged: (state) =>
-                        defaultLoadStateChanged(state, iconSize: 50),
-                  )
-                : ExtendedImage.file(
-                    File(item.resource),
-                    fit: BoxFit.contain,
-                    mode: ExtendedImageMode.gesture,
-                    enableSlideOutPage: true,
-                    loadStateChanged: (state) =>
-                        defaultLoadStateChanged(state, iconSize: 50),
+        child: Stack(
+          // fit: StackFit.expand,
+          alignment: Alignment.bottomRight,
+          children: [
+            ExtendedImageGesturePageView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                var item = widget.galleryItems[index];
+                Widget image = item.path.startsWith('http')
+                    ? ExtendedImage.network(
+                        item.path,
+                        fit: BoxFit.contain,
+                        cache: true,
+                        mode: ExtendedImageMode.gesture,
+                        enableSlideOutPage: true,
+                        loadStateChanged: (state) =>
+                            defaultLoadStateChanged(state, iconSize: 50),
+                      )
+                    : ExtendedImage.file(
+                        File(item.path),
+                        fit: BoxFit.contain,
+                        mode: ExtendedImageMode.gesture,
+                        enableSlideOutPage: true,
+                        loadStateChanged: (state) =>
+                            defaultLoadStateChanged(state, iconSize: 50),
+                      );
+                image = Container(
+                  child: image,
+                );
+                if (index == currentIndex) {
+                  return Hero(
+                    tag: index,
+                    child: image,
                   );
-            image = Container(
-              child: image,
-            );
-            if (index == currentIndex) {
-              return Hero(
-                tag: index,
-                child: image,
-              );
-            } else {
-              return image;
-            }
-          },
-          itemCount: widget.galleryItems.length,
-          controller: PageController(
-            initialPage: currentIndex,
-          ),
-          scrollDirection: Axis.horizontal,
+                } else {
+                  return image;
+                }
+              },
+              itemCount: widget.galleryItems.length,
+              controller: PageController(
+                initialPage: currentIndex,
+              ),
+              onPageChanged: onPageChanged,
+              scrollDirection: Axis.horizontal,
+            ),
+            SafeArea(
+                child: Container(
+              margin: EdgeInsets.only(right: 10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                  color: Colors.grey),
+              padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+              child: Text(
+                '${currentIndex + 1} / ${widget.galleryItems.length}',
+                style: TextStyle(
+                    color: Colors.white,
+                    decoration: TextDecoration.none,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 10),
+              ),
+            ))
+          ],
         ),
         onLongPress: () {
           _showBottomPane();
@@ -142,9 +157,41 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  title: Text('复制链接'),
+                  title: Text(
+                    '图床类型',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(widget.galleryItems[currentIndex].type),
+                ),
+                ListTile(
+                  title: Text(
+                    '图片链接',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(widget.galleryItems[currentIndex].path),
                   onTap: () {
-                    _handleCopy(context);
+                    _handleCopy(
+                        widget.galleryItems[currentIndex].path, context);
+                  },
+                ),
+                ListTile(
+                  title: Text(
+                    '图片信息',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(widget.galleryItems[currentIndex].info),
+                  onTap: () {
+                    _handleCopy(
+                        widget.galleryItems[currentIndex].info, context);
+                  },
+                ),
+                ListTile(
+                  title: Text(
+                    '取消',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
                   },
                 ),
               ],
@@ -154,9 +201,8 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
   }
 
   /// 复制链接
-  _handleCopy(BuildContext context) {
-    Clipboard.setData(
-        ClipboardData(text: widget.galleryItems[currentIndex].resource));
+  _handleCopy(String content, BuildContext context) {
+    Clipboard.setData(ClipboardData(text: content));
     Toast.show('已复制到剪切板', context);
     Navigator.pop(context);
   }

@@ -19,7 +19,6 @@ import 'package:flutter_picgo/views/pb_setting_page/tcyun_page/tcyun_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/upyun_page/upyun_page.dart';
 import 'package:flutter_picgo/views/picgo_setting_page/theme_setting_page.dart';
 import 'package:flutter_picgo/views/upload_page/handle_upload_page.dart';
-import 'package:flutter_picgo/views/upload_page/upload_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/github_page/github_page.dart';
 import 'package:flutter_picgo/views/picgo_setting_page/picgo_setting_page.dart';
 import 'package:flutter_picgo/views/setting_page/setting_page.dart';
@@ -56,11 +55,6 @@ var settingHandler = new Handler(
 );
 
 // 上传页面
-var uploadHandler = new Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) =>
-      UploadPage(),
-);
-
 var preUploadHandler = new Handler(
   handlerFunc: (context, parameters) {
     final assets = context.settings.arguments as List<AssetEntity>;

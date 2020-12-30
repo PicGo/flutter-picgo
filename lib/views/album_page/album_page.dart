@@ -197,12 +197,7 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
 
   /// 处理图片点击事件
   handleTap(int index) {
-    ImagePreviewUtils.openMulti(
-        context,
-        index,
-        _uploadeds.map((e) {
-          return GalleryItem(id: e.id.toString(), resource: e.path);
-        }).toList());
+    ImagePreviewUtils.openMulti(context, index, _uploadeds);
   }
 
   /// 处理图片双击

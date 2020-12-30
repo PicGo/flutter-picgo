@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_picgo/api/tcyun_api.dart';
 import 'package:flutter_picgo/model/tcyun_config.dart';
 import 'package:flutter_picgo/model/uploaded.dart';

@@ -50,7 +50,6 @@ class Routes {
     router.define(root, handler: appHandler);
     router.define(notfound, handler: notfoundHandler);
     router.define(album, handler: albumHandler);
-    router.define(upload, handler: uploadHandler);
     router.define(handleUpload, handler: preUploadHandler);
     router.define(setting, handler: settingHandler);
     router.define(settingPb, handler: pbsettingHandler);

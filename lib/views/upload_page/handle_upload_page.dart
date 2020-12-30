@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 import 'package:flutter_picgo/components/upload_item/upload_item.dart';
 import 'package:flutter_picgo/utils/strings.dart';
 import 'package:path/path.dart' as path;
@@ -116,15 +115,15 @@ class _HandleUploadPageState extends State<HandleUploadPage> {
           sp.getBool(SharedPreferencesKeys.settingIsTimestampRename) ?? false;
 
       if (settingIsTimestampRename) {
+        int timestamp = new DateTime.now().millisecondsSinceEpoch;
+
         /// 处理时间戳命名
-        var random = Random();
         for (int i = 0; i < widget.assets.length; i++) {
           /// 获取图片名
           String suffix = path.extension(tmp.path);
 
           /// replace
-          filesName[i] =
-              '${new DateTime.now().millisecondsSinceEpoch.toString()}-${random.nextInt(100)}$suffix';
+          filesName[i] = '${timestamp + i}$suffix';
         }
       }
       var settingIsUploadedRename =
