@@ -4,15 +4,15 @@ import 'dart:math';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_picgo/model/uploaded.dart';
 import 'package:flutter_picgo/utils/extended.dart';
 import 'package:toast/toast.dart';
 
 class ImagePreviewUtils {
   /// 打开图片预览页面
-  static void open(BuildContext context, String content) {
-    var item = new GalleryItem(id: '0', resource: '$content');
+  static void open(BuildContext context, Uploaded content) {
     var page = GalleryPhotoViewWrapper(
-      galleryItems: [item],
+      galleryItems: [content],
     );
     Navigator.push(
       context,
@@ -22,8 +22,7 @@ class ImagePreviewUtils {
     );
   }
 
-  static void openMulti(
-      BuildContext context, int index, List<GalleryItem> items) {
+  static void openMulti(BuildContext context, int index, List<Uploaded> items) {
     var page = GalleryPhotoViewWrapper(
       galleryItems: items,
       initialIndex: index,
@@ -36,16 +35,9 @@ class ImagePreviewUtils {
   }
 }
 
-class GalleryItem {
-  GalleryItem({this.id, this.resource});
-
-  final String id;
-  final String resource;
-}
-
 class GalleryPhotoViewWrapper extends StatefulWidget {
   final int initialIndex;
-  final List<GalleryItem> galleryItems;
+  final List<Uploaded> galleryItems;
 
   GalleryPhotoViewWrapper({
     this.initialIndex = 0,
@@ -88,9 +80,9 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
         child: ExtendedImageGesturePageView.builder(
           itemBuilder: (BuildContext context, int index) {
             var item = widget.galleryItems[index];
-            Widget image = item.resource.startsWith('http')
+            Widget image = item.path.startsWith('http')
                 ? ExtendedImage.network(
-                    item.resource,
+                    item.path,
                     fit: BoxFit.contain,
                     cache: true,
                     mode: ExtendedImageMode.gesture,
@@ -99,7 +91,7 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
                         defaultLoadStateChanged(state, iconSize: 50),
                   )
                 : ExtendedImage.file(
-                    File(item.resource),
+                    File(item.path),
                     fit: BoxFit.contain,
                     mode: ExtendedImageMode.gesture,
                     enableSlideOutPage: true,
@@ -156,7 +148,7 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
   /// 复制链接
   _handleCopy(BuildContext context) {
     Clipboard.setData(
-        ClipboardData(text: widget.galleryItems[currentIndex].resource));
+        ClipboardData(text: widget.galleryItems[currentIndex].path));
     Toast.show('已复制到剪切板', context);
     Navigator.pop(context);
   }
