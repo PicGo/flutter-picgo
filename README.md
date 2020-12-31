@@ -41,7 +41,7 @@ Flutter-PicGo: 一个用于快速上传图片并获取图片URL链接的**手机
 
 ![上传页面](https://github.static.si-yee.com/image_picker_82452E23-BE11-4712-BFBA-8E93038DB410-3851-00000340B21CCF62.png)
 
-![管理页面Gif](https://github.static.si-yee.com/picgo/repo_use.gif)
+<img src="https://github.static.si-yee.com/picgo/repo_use.gif" width="300px" />
 
 # 下载安装
 
@@ -57,6 +57,8 @@ Flutter-PicGo: 一个用于快速上传图片并获取图片URL链接的**手机
 目前仅支持iOS与Android端，由于部分插件例如[sqflite](https://pub.dev/packages/sqflite)不支持Web端，所以应用也并不支持Web端。
 
 # 注意事项
+
+**上传前需要先去`设置` -> `图床设置`下设置图床的配置信息并设置默认上传图床，否则无法进行上传。**
 
 - [注意事项](https://github.com/PicGo/flutter-picgo/blob/dev/docs/注意事项.md)
 
