@@ -56,11 +56,51 @@ Flutter-PicGo: 一个用于快速上传图片并获取图片URL链接的**手机
 
 目前仅支持iOS与Android端，由于部分插件例如[sqflite](https://pub.dev/packages/sqflite)不支持Web端，所以应用也并不支持Web端。
 
-# 注意事项
+# F & Q
 
-**上传前需要先去`设置` -> `图床设置`下设置图床的配置信息并设置默认上传图床，否则无法进行上传。**
+## 简单使用说明
 
-- [注意事项](https://github.com/PicGo/flutter-picgo/blob/dev/docs/注意事项.md)
+**上传前需要先去`设置` -> `图床设置`下设置图床的配置信息并设置默认上传图床，以及给予App所申请的权限（相册），否则无法进行上传。**
+
+## 已不可用图床
+
+- 牛图网（官网也无法使用）
+
+## 关于Github图片上传问题
+
+由于国内访问Github访问速度慢的原因，API访问也会经常出错，建议切换别的图床进行使用。
+
+或者配置host提升访问速度，这里提供一种方式：
+
+<img src="https://raw.githubusercontent.com/hackycy/flutter-picgo/dev/docs/hostconfig.jpeg" width="200px" />
+
+在路由器（图中为小米的路由器）里面配置hosts，具体配置可以查看[Github520](https://github.com/521xueweihan/GitHub520)。
+
+路由器配置hosts后连接Wi-Fi可以显著提升API的访问能力。
+
+## 将配置信息转二维码供App扫码
+
+这里拿Github举例：
+
+GitHub的配置JSON（与桌面版Picgo配置信息一致）如下
+
+``` json
+{
+	"github": {
+		"branch": "",
+		"customUrl": "",
+		"path": "",
+		"repo": "",
+		"token": ""
+	}
+}
+```
+
+想要获取其它的配置信息可以在App随便填一下然后再导出配置，复制粘贴出来填写好配置信息，将这整段json去转换成二维码保存，例如[草料](https://cli.im)。在App扫码就能直接转换好配置了，不用再一项一项的填写。
+
+> 已经使用过桌面版[PicGo](https://github.com/Molunerfinn/PicGo)则更加方便，直接使用桌面版导出二维码即可。
+>
+> 暂不支持备份图床已上传的图片。
 
 # 有问题或者有更好的建议
 
