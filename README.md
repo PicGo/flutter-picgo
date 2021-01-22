@@ -39,7 +39,7 @@ Flutter-PicGo: 一个用于快速上传图片并获取图片URL链接的**手机
 
 # 应用截图
 
-![上传页面](https://github.static.si-yee.com/image_picker_82452E23-BE11-4712-BFBA-8E93038DB410-3851-00000340B21CCF62.png)
+![上传页面](https://github.static.si-yee.com/picgo/5E62E0A4-5A93-4C57-B090-E09F4100B755_L0_001_origin.IMG_8818.JPG)
 
 <img src="https://github.static.si-yee.com/picgo/repo_use.gif" width="300px" />
 
