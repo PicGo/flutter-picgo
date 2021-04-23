@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter_picgo/api/tcyun_api.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:path/path.dart' as path;
 
 main() {
   test('测试生成 KeyTime', () {});
@@ -22,11 +19,11 @@ main() {
 
   test('PostObjecy 提交', () async {
     try {
-      String pathname = path.joinAll(
-          [Directory.current.path, '..\\assets\\' 'images', 'logo.png']);
-      String keyTime = TcyunApi.buildKeyTime();
-      String policy = TcyunApi.buildPolicy('ap-nanjing', 'logo.png',
-          'AKIDvb0B9rqfeOr44kt2ar46rO2cwzl6JwUk', keyTime);
+      // String pathname = path.joinAll(
+      //     [Directory.current.path, '..\\assets\\' 'images', 'logo.png']);
+      // String keyTime = TcyunApi.buildKeyTime();
+      // String policy = TcyunApi.buildPolicy('ap-nanjing', 'logo.png',
+      //     'AKIDvb0B9rqfeOr44kt2ar46rO2cwzl6JwUk', keyTime);
       // TcyunApi.postObject(
       //     'test-1253954259',
       //     'ap-nanjing',

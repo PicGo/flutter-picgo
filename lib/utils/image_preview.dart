@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:extended_image/extended_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_picgo/model/uploaded.dart';
@@ -17,8 +18,8 @@ class ImagePreviewUtils {
     Navigator.push(
       context,
       Platform.isAndroid
-          ? TransparentMaterialPageRoute(builder: (_) => page)
-          : TransparentCupertinoPageRoute(builder: (_) => page),
+          ? MaterialPageRoute(builder: (_) => page)
+          : CupertinoPageRoute(builder: (_) => page),
     );
   }
 
@@ -30,8 +31,8 @@ class ImagePreviewUtils {
     Navigator.push(
         context,
         Platform.isAndroid
-            ? TransparentMaterialPageRoute(builder: (_) => page)
-            : TransparentCupertinoPageRoute(builder: (_) => page));
+            ? MaterialPageRoute(builder: (_) => page)
+            : CupertinoPageRoute(builder: (_) => page));
   }
 }
 

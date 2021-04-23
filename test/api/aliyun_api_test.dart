@@ -17,14 +17,14 @@ main() {
     var sign = AliyunApi.buildSignature('LTAIsXml0iczvY0J',
         'yw8eO9Fa9Py2GAPRGG8N3GPKCeKCXl', 'PUT', 'zjyzy', 'test.txt');
     try {
-      Response res = await NetUtils.getInstance().put(
+      await NetUtils.getInstance().put(
         'https://zjyzy.oss-cn-shenzhen.aliyuncs.com/test.txt',
         options: Options(headers: {
           'Authorization': sign,
           'Date': HttpDate.format(new DateTime.now()),
         }, contentType: 'application/x-www-form-urlencoded'),
       );
-    } on DioError catch (e) {}
+    } on DioError catch (_) {}
   });
 
   test('测试FormData提交图片', () async {
@@ -43,7 +43,7 @@ main() {
     var sign = hmacsha1.convert(utf8.encode(originSign));
     var encodeSign = base64.encode(sign.bytes);
     try {
-      Response res = await NetUtils.getInstance().post(
+      await NetUtils.getInstance().post(
           'https://zjyzy.oss-cn-shenzhen.aliyuncs.com',
           data: FormData.fromMap({
             'key': 'logo.png',
@@ -53,6 +53,6 @@ main() {
             'file': await MultipartFile.fromFile(pathname, filename: 'logo.png')
           }),
           options: Options(contentType: Headers.formUrlEncodedContentType));
-    } on DioError catch (e) {}
+    } on DioError catch (_) {}
   });
 }

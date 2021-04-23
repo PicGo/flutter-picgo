@@ -50,9 +50,12 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
               child: Row(
                 children: <Widget>[
                   Expanded(
-                    child: RaisedButton(
-                      color: Theme.of(context).accentColor,
-                      textColor: Colors.white,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          foregroundColor:
+                              MaterialStateProperty.all(Colors.white),
+                          backgroundColor: MaterialStateProperty.all(
+                              Theme.of(context).accentColor)),
                       child: Text('保存'),
                       onPressed: () {
                         if (validate) {
@@ -63,9 +66,12 @@ abstract class BasePBSettingPageState<T extends StatefulWidget>
                   ),
                   SizedBox(width: 5.0),
                   Expanded(
-                    child: RaisedButton(
-                      color: Colors.greenAccent,
-                      textColor: Colors.white,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          foregroundColor:
+                              MaterialStateProperty.all(Colors.white),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.greenAccent)),
                       child: Text('设为默认图床'),
                       onPressed: () {
                         if (validate) {

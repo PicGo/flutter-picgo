@@ -215,7 +215,7 @@ class _AlbumPageState extends State<AlbumPage> implements AlbumPageContract {
             title: Text('确定删除吗'),
             content: Text('删除后无法恢复'),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text('确定'),
                 onPressed: () {
                   Navigator.pop(context);

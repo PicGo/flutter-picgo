@@ -21,7 +21,7 @@ class PermissionUtils {
             title: Text('警告'),
             content: Text(text),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text('去设置'),
                 onPressed: () {
                   openAppSettings();

@@ -154,7 +154,7 @@ class _HandleUploadPageState extends State<HandleUploadPage> {
                 ),
               ),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                     child: Text('确定'),
                     onPressed: () {
                       Navigator.pop(context);

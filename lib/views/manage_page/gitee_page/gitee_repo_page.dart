@@ -92,9 +92,11 @@ class _GiteeRepoPageState extends BaseLoadingPageState<GiteeRepoPage>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          RaisedButton(
-            color: Theme.of(context).accentColor,
-            textColor: Colors.white,
+          ElevatedButton(
+            style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all(Colors.white),
+                backgroundColor:
+                    MaterialStateProperty.all(Theme.of(context).accentColor)),
             child: Text('刷新'),
             onPressed: () {
               setState(() {
@@ -164,7 +166,7 @@ class _GiteeRepoPageState extends BaseLoadingPageState<GiteeRepoPage>
                       title: Text('确定删除吗'),
                       content: Text('删除后无法恢复'),
                       actions: <Widget>[
-                        FlatButton(
+                        TextButton(
                             child: Text('确定'),
                             onPressed: () {
                               Navigator.pop(context, true);

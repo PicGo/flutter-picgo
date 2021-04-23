@@ -31,16 +31,16 @@ class QiniuImageUpload extends ImageUploadStrategy {
       }
       return uploaded;
     } on DioError catch (e) {
-      if (e.type == DioErrorType.RESPONSE &&
+      if (e.type == DioErrorType.response &&
           e.error.toString().indexOf('400') > 0) {
         throw QiniuError(error: '400 请求报文格式错误');
-      } else if (e.type == DioErrorType.RESPONSE &&
+      } else if (e.type == DioErrorType.response &&
           e.error.toString().indexOf('401') > 0) {
         throw QiniuError(error: '401 管理凭证无效');
-      } else if (e.type == DioErrorType.RESPONSE &&
+      } else if (e.type == DioErrorType.response &&
           e.error.toString().indexOf('599') > 0) {
         throw QiniuError(error: '599 服务端操作失败');
-      } else if (e.type == DioErrorType.RESPONSE &&
+      } else if (e.type == DioErrorType.response &&
           e.error.toString().indexOf('612') > 0) {
         throw QiniuError(error: '612 待删除资源不存在');
       } else {
@@ -88,16 +88,16 @@ class QiniuImageUpload extends ImageUploadStrategy {
       await ImageUploadUtils.saveUploadedItem(uploadedItem);
       return uploadedItem;
     } on DioError catch (e) {
-      if (e.type == DioErrorType.RESPONSE &&
+      if (e.type == DioErrorType.response &&
           e.error.toString().indexOf('400') > 0) {
         throw QiniuError(error: '400 请求报文格式错误');
-      } else if (e.type == DioErrorType.RESPONSE &&
+      } else if (e.type == DioErrorType.response &&
           e.error.toString().indexOf('401') > 0) {
         throw QiniuError(error: '401 管理凭证无效');
-      } else if (e.type == DioErrorType.RESPONSE &&
+      } else if (e.type == DioErrorType.response &&
           e.error.toString().indexOf('599') > 0) {
         throw QiniuError(error: '599 服务端操作失败');
-      } else if (e.type == DioErrorType.RESPONSE &&
+      } else if (e.type == DioErrorType.response &&
           e.error.toString().indexOf('612') > 0) {
         throw QiniuError(error: '612 待删除资源不存在');
       } else {

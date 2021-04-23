@@ -88,7 +88,10 @@ class TcyunApi {
 /// TcYun验签拦截器
 class TcyunInterceptor extends InterceptorsWrapper {
   @override
-  Future onRequest(RequestOptions options) async {
+  Future onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     if (options.path.contains(TcyunApi.BASE_URL)) {
       /// 生成 KeyTime
       var keytime = TcyunApi.buildKeyTime();

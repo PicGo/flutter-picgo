@@ -50,7 +50,7 @@ class _PBSettingPageState extends State<PBSettingPage>
                           '在PC端已经配置好的用户可以使用PicGo新版的生成图床配置二维码功能。\n\n' +
                           '然后使用Flutter-PicGo直接扫描即可进行配置转换。'),
                       actions: <Widget>[
-                        FlatButton(
+                        TextButton(
                           child: Text('已了解，去扫描'),
                           onPressed: () {
                             Navigator.pop(context);

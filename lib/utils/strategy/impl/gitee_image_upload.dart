@@ -77,7 +77,7 @@ class GiteeImageUpload implements ImageUploadStrategy {
       await ImageUploadUtils.saveUploadedItem(uploadedItem);
       return uploadedItem;
     } on DioError catch (e) {
-      if (e.type == DioErrorType.RESPONSE &&
+      if (e.type == DioErrorType.response &&
           e.error.toString().indexOf('400') > 0) {
         throw GiteeError(error: '文件已存在！');
       } else {

@@ -10,8 +10,10 @@ class PageNotFound extends StatelessWidget {
       ),
       body: Container(
         child: Center(
-          child: OutlineButton(
-            color: Colors.blue,
+          child: OutlinedButton(
+            style: ButtonStyle(
+                side:
+                    MaterialStateProperty.all(BorderSide(color: Colors.blue))),
             child: Text('关闭'),
             onPressed: () {
               Application.router.pop(context);

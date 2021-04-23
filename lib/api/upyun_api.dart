@@ -68,7 +68,10 @@ class UpyunApi {
 
 class UpyunInterceptor extends InterceptorsWrapper {
   @override
-  Future onRequest(RequestOptions options) async {
+  Future onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     if (options.path.contains(UpyunApi.BASE_URL.replaceFirst('http://', ''))) {
       /// 请求方式，如：GET、POST、PUT、HEAD 等
       String method = options.method.toUpperCase();

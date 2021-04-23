@@ -64,7 +64,7 @@ class GithubImageUpload implements ImageUploadStrategy {
         throw GithubError(error: '读取配置文件错误！请重试');
       }
     } on DioError catch (e) {
-      if (e.type == DioErrorType.RESPONSE &&
+      if (e.type == DioErrorType.response &&
           e.error.toString().indexOf('422') > 0) {
         throw GithubError(error: '文件已存在！');
       } else {

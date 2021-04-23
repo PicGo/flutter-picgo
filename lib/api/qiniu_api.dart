@@ -144,7 +144,10 @@ class QiniuApi {
 /// 七牛管理验签拦截器
 class QiniuInterceptor extends InterceptorsWrapper {
   @override
-  Future onRequest(RequestOptions options) async {
+  Future onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     if (options.path.contains(QiniuApi.BASE_URL)) {
       String ak = '${options.extra[QiniuApi.accessKey]}';
       String sk = '${options.extra[QiniuApi.secretKey]}';
