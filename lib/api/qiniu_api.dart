@@ -174,6 +174,6 @@ class QiniuInterceptor extends InterceptorsWrapper {
         'Authorization': 'QBox $accessToken',
       });
     }
-    return options;
+    return handler.next(options);
   }
 }

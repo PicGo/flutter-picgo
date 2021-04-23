@@ -93,6 +93,6 @@ class UpyunInterceptor extends InterceptorsWrapper {
         'Authorization': 'UPYUN $operator:$realAuth',
       });
     }
-    return options;
+    return handler.next(options);
   }
 }

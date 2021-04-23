@@ -169,6 +169,6 @@ class TcyunInterceptor extends InterceptorsWrapper {
       headers.addAll({'Authorization': realSign});
       options.headers = headers;
     }
-    return options;
+    return handler.next(options);
   }
 }
