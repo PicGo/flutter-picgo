@@ -63,13 +63,13 @@ class _UploadItemState extends State<UploadItem> implements UploadItemContract {
         child: Card(
           clipBehavior: Clip.antiAlias,
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadiusDirectional.circular(2)),
+              borderRadius: BorderRadiusDirectional.circular(8)),
           child: ExtendedImage.file(
             File(widget.file.path),
             width: 50,
             height: 50,
             fit: BoxFit.cover,
-            border: Border.all(color: Colors.grey, width: 1.0),
+            // border: Border.all(color: Colors.grey, width: 1.0),
             borderRadius: BorderRadius.all(Radius.circular(8)),
             loadStateChanged: (state) => defaultLoadStateChanged(state),
           ),
