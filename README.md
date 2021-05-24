@@ -112,7 +112,7 @@ GitHub的配置JSON（与桌面版Picgo配置信息一致）如下
 
 - [PicGo](https://github.com/Molunerfinn/PicGo)：PicGo 的桌面版
 - [vs-picgo](https://github.com/PicGo/vs-picgo)：PicGo 的 VS Code 版。
-- [sf-midway-admin](https://github.com/hackycy/sf-midway-admin)：带七牛文件管理的后台权限系统
+- [sf-nest-admin](https://github.com/hackycy/sf-nest-admin)：基于NestJs编写的带七牛文件管理的后台权限系统
 
 # 致谢
 
