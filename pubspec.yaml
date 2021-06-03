@@ -32,6 +32,18 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  
+  get: ^4.1.4
+  shared_preferences: ^2.0.6
+  webview_flutter: ^2.0.8
+  crypto: ^3.0.1
+  wechat_assets_picker: ^5.5.3+1
+  extended_image: ^4.1.0
+  permission_handler: ^8.0.0+2
+  qr_code_scanner: ^0.5.1
+  dio: ^4.0.0
+  flutter_staggered_grid_view: ^0.4.0
+  package_info_plus: ^1.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
