@@ -24,6 +24,7 @@ Flutter-PicGo: 一个用于快速上传图片并获取图片URL链接的**手机
 - ~~牛图网（已无法使用）~~ [v1.6+]
 - 兰空 [v1.7+]
 - 又拍云 [v1.8+]
+- Codeberg
 
 > 开发进度可以查看 [Projects](https://github.com/PicGo/flutter-picgo/projects)，会同步更新开发进度
 

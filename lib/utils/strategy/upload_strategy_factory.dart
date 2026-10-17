@@ -1,5 +1,6 @@
 import 'package:flutter_picgo/resources/pb_type_keys.dart';
 import 'package:flutter_picgo/utils/strategy/impl/aliyun_image_upload.dart';
+import 'package:flutter_picgo/utils/strategy/impl/codeberg_image_upload.dart';
 import 'package:flutter_picgo/utils/strategy/impl/gitee_image_upload.dart';
 import 'package:flutter_picgo/utils/strategy/impl/github_image_upload.dart';
 import 'package:flutter_picgo/utils/strategy/image_upload_strategy.dart';
@@ -29,6 +30,9 @@ class UploadStrategyFactory {
       } else if (type == PBTypeKeys.gitee) {
         /// Gitee
         cache[type] = new GiteeImageUpload();
+      } else if (type == PBTypeKeys.codeberg) {
+        /// Codeberg
+        cache[type] = new CodebergImageUpload();
       } else if (type == PBTypeKeys.qiniu) {
         /// 七牛
         cache[type] = new QiniuImageUpload();
