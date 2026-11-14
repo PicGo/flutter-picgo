@@ -34,7 +34,7 @@ class DbProvider {
     try {
       db = await openDatabase(
         path,
-        version: 9,
+        version: 10,
         onCreate: (db, version) async {
           // 创建pb_setting表
           _initPb(db);
@@ -98,6 +98,10 @@ class DbProvider {
     /// Gitee图床
     await db.rawInsert(
         'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.gitee}", "/setting/pb/gitee", "Gitee图床", NULL, 1)');
+
+    /// GitCode图床
+    await db.rawInsert(
+        'INSERT INTO $TABLE_NAME_PBSETTING(type, path, name, config, visible) VALUES("${PBTypeKeys.gitcode}", "/setting/pb/gitcode", "GitCode图床", NULL, 1)');
 
     /// Qiniu图床
     await db.rawInsert(
