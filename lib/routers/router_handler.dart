@@ -7,6 +7,7 @@ import 'package:flutter_picgo/views/manage_page/lsky_page/lsky_repo_page.dart';
 import 'package:flutter_picgo/views/manage_page/qiniu_page/qiniu_repo_page.dart';
 import 'package:flutter_picgo/views/manage_page/smms_page/smms_repo_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/aliyun_page/aliyun_page.dart';
+import 'package:flutter_picgo/views/pb_setting_page/gitcode_page/gitcode_page.dart';
 import 'package:flutter_picgo/views/pb_setting_page/gitee_page/gitee_page.dart';
 import 'package:flutter_picgo/views/manage_page/gitee_page/gitee_repo_page.dart';
 import 'package:flutter_picgo/views/manage_page/github_page/github_repo_page.dart';
@@ -117,6 +118,12 @@ var pbsettingGiteeRepoHandler = new Handler(
           : Uri.decodeComponent(prePath),
     );
   },
+);
+
+// GitCode图床设置页面
+var pbsettingGitcodeHandler = new Handler(
+  handlerFunc: (BuildContext context, Map<String, List<String>> params) =>
+      GitcodePage(),
 );
 
 // 七牛图床设置页面

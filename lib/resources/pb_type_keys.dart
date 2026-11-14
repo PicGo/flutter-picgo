@@ -5,6 +5,8 @@ class PBTypeKeys {
 
   static const gitee = 'gitee';
 
+  static const gitcode = 'gitcode';
+
   static const qiniu = 'qiniu';
 
   static const aliyun = 'aliyun';
